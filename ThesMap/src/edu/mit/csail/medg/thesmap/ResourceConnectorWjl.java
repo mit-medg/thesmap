@@ -43,7 +43,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 		initialized = false;
 		Document test = lookup("MI");
 		if (test != null) {
-//			U.log("WJL Test \"MI\":" + test);
+			U.log("WJL Test \"MI\":" + test);
 			initialized = true;
 		}
 		U.log("ResourceConnectorWjl initialized = " + initialized);
