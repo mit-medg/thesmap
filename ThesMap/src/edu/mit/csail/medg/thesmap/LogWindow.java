@@ -170,6 +170,7 @@ public class LogWindow extends JFrameW implements ClipboardOwner{
 	public void println(String s) {
 		textArea.append(s);
 		textArea.append("\n");
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 
 	@Override

@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -41,7 +43,8 @@ public class ResourceConnectorWjl extends ResourceConnector {
 		super("WJL");
 		props = ThesMap.prop;
 		initialized = false;
-		Document test = lookup("MI");
+		Document test = null;
+		test = lookup("MI");
 		if (test != null) {
 			U.log("WJL Test \"MI\":" + test);
 			initialized = true;
@@ -79,36 +82,72 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	 * and is accessed by a URL defined in props.
 	 * @param text The text to be analyzed
 	 * @return a String containing the HTML interpretation of the text
+	 * @throws IOException 
+	 * @throws ParserConfigurationException 
+	 * @throws SAXException 
 	 */
-	public org.w3c.dom.Document lookup(String text) {
+	public org.w3c.dom.Document lookup(String text) //throws IOException, ParserConfigurationException, SAXException 
+	{
 		org.w3c.dom.Document doc = null;
+		String stringUrl = props.getProperty(ThesProps.wjlUrl);
+		URL wjlUrl;
+		HttpURLConnection conn = null;
 		try {
-			String stringUrl = props.getProperty(ThesProps.wjlUrl);
-			URL wjlUrl = new URL(stringUrl);
-			HttpURLConnection conn = (HttpURLConnection) wjlUrl.openConnection();
+			wjlUrl = new URL(stringUrl);
+			conn = (HttpURLConnection) wjlUrl.openConnection();
 			conn.setRequestMethod("POST");
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-	        conn.setRequestProperty("Accept", "text/*");
-	        conn.setRequestProperty("Accept-Charset", "UTF-8");
-	        conn.setAllowUserInteraction(false);
-			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setRequestProperty("Accept", "text/*");
+		conn.setRequestProperty("Accept-Charset", "UTF-8");
+		conn.setAllowUserInteraction(false);
+		OutputStreamWriter out = null;
+		try {
+			out = new OutputStreamWriter(conn.getOutputStream());
 			out.write("text=" + URLEncoder.encode(text, "UTF-8"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		try {
 			out.close();
 			conn.connect();
 			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				InputStream stream = conn.getInputStream();
-				doc = dBuilder.parse(stream);
+//				InputStream stream = conn.getInputStream();	
+//				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//				doc = dBuilder.parse(stream);
 			} else {
 				U.log("HTTP Error: " + conn.getResponseMessage());
 			}
-		} catch(IOException | ParserConfigurationException | SAXException e) {
+		} catch (IOException /*| ParserConfigurationException | SAXException */ e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			doc = null;
-		} 
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return null;
+			}
+			StringBuilder sb=new StringBuilder();
+			int cp;
+			try {
+			    while((cp=in.read())!=-1){
+			    sb.append((char)cp);
+			  }
+			} catch(Exception ee){
+			}
+			String html=sb.toString();
+			U.log("****************\nError in parsing.\n****************\n"+ text + "\n**************\n" + html + "\n*************\n");
+		}
 		return doc;
-	}
-	
+	}	
 }

@@ -4,13 +4,11 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="/usr/local/public_mm/src/javaapi/target/metamap-api-1.0-SNAPSHOT.jar" sourcepath="/usr/local/public_mm/src/javaapi/src/main/java"/>
 	<classpathentry kind="lib" path="/usr/local/public_mm/src/javaapi/dist/prologbeans.jar"/>
-	<classpathentry kind="lib" path="/usr/local/mysql-connector-java-5.1.26/mysql-connector-java-5.1.26-bin.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/usr/local/mysql-connector-java-5.1.26/docs/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="/Highlight/miglayout-src.zip"/>
 	<classpathentry kind="lib" path="/Highlight/miglayout15-swing.jar" sourcepath="/Highlight/miglayout-src.zip"/>
 	<classpathentry kind="lib" path="/usr/local/lvg2013/lib/lvg2013dist.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.jdt.annotation_1.1.0.v20130513-1648.jar"/>
+	<classpathentry kind="lib" path="/usr/local/mysql-connector-java-5.1.31/mysql-connector-java-5.1.31-bin.jar"/>
+	<classpathentry kind="lib" path="lib/http-core-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

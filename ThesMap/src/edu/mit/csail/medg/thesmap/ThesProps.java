@@ -28,6 +28,12 @@ public class ThesProps {
 	static final String dbpasswordName = "dbPassword";
 	static final String dbName = "db";
 	
+	// for connection to the ASD database at CH
+	static final String chdbhostName = "chdbHost";
+	static final String chdbuserName = "chdbUser";
+	static final String chdbpasswordName = "chdbPassword";
+	static final String chdbName = "chdb";
+	
 	// For connection to the norm program of the UMLS LVG package
 	static final String normYearName = "year";
 	static final String normLvgHomeName = "lvgHome";

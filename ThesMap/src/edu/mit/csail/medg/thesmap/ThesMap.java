@@ -110,7 +110,7 @@ public class ThesMap {
 
 	}
 
-	private static void setUpOSX() {
+	static void setUpOSX() {
 		try {
 
 			if (System.getProperty("os.name").contains("OS X")) {
