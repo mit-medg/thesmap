@@ -39,7 +39,7 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 	}
 	
 	public void done() {
-		myWindow.annotatorDone(name);
+		if (myWindow != null) myWindow.annotatorDone(name);
 	}
 	
 	/**

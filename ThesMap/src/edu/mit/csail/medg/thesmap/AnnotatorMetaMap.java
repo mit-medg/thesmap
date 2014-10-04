@@ -68,8 +68,12 @@ public class AnnotatorMetaMap extends Annotator{
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
+//		U.log("Starting to run AnnotatorMetaMap.doInBackground()");
+		long startTime = System.nanoTime();
 		firePropertyChange(name, 0, -1);
 		process(myWindow.textArea.getText());
+		long diff = System.nanoTime() - startTime;
+		U.log("AnnotatorMetaMap elapsed time (ms): " + diff/1000000);
 		return null;
 	}
 

@@ -36,10 +36,10 @@ public class ThesMap {
 	public static boolean interactive = true;
 	public static boolean debug = true;
 	static final String exampleFileName = "Example.txt";
-	static final Pattern basicPattern = Pattern.compile(
-			"(\\b[A-Za-z%]\\w*?)?(\\s*[:<>=~-]\\s*)?"
-					+ "([+-]?\\d+\\.?|[+-]?\\d*\\.\\d+)(([/-])(\\d+\\.?|\\d*\\.\\d+))?"
-					+ "([-/])?([a-zA-Z%]+(/([a-zA-Z%]+))?)?");
+//	static final Pattern basicPattern = Pattern.compile(
+//			"(\\b[A-Za-z%]\\w*?)?(\\s*[:<>=~-]\\s*)?"
+//					+ "([+-]?\\d+\\.?|[+-]?\\d*\\.\\d+)(([/-])(\\d+\\.?|\\d*\\.\\d+))?"
+//					+ "([-/])?([a-zA-Z%]+(/([a-zA-Z%]+))?)?");
 	
 //	public static Console console = null;
 //	public static boolean headless = false;

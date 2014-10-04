@@ -112,9 +112,9 @@ public class ResourceConnectorWjl extends ResourceConnector {
 			out.write("text=" + URLEncoder.encode(text, "UTF-8"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 			return null;
-		}
+		} 
 		try {
 			out.close();
 			conn.connect();

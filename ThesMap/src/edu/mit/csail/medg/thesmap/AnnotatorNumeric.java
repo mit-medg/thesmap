@@ -144,22 +144,9 @@ public class AnnotatorNumeric extends Annotator{
 	static final Pattern enumerationPattern =
 			Pattern.compile("\\b(\\d+\\.?)\\)([a-zA-Z].*)\\b");
 	
-	/**
-	 * Creates annotations on the text of the textArea component of UMLSWindow.
-	 * Algorithm:
-	 * We more forward by words, as identified when we tokenize by spaces.
-	 * At the end of each word, we look back to a maximum of n words to find
-	 * phrases that might have interpretations. E.g., for n=3, we consider the
-	 * last word, the last two words and the last three words.
-	 * We then prune interpretations that are also found from shorter subphrases
-	 * of a phrase.  We do this by looking back to phrases that overlap the 
-	 * current one. If the current gives the same interpretation
-	 * @param phraseLength
-	 */
-
 	@Override
 	protected Void doInBackground() throws Exception {
-		U.log("Starting to run AnnotatorNumeric.doInBackground()");
+//		U.log("Starting to run AnnotatorNumeric.doInBackground()");
 		long startTime = System.nanoTime();
 		text = myWindow.textArea.getText();
 		textl = text.length();
@@ -330,7 +317,7 @@ public class AnnotatorNumeric extends Annotator{
 				// If there was no label, but there was a relation, we could consider dropping the relation.
 				// However, then if the label was tokenized separately, we would also lose the relation.
 				
-				U.p("Make " + beg + " to " + lastGood);
+//				U.p("Make " + beg + " to " + lastGood);
 				InterpretationNumeric ni = new InterpretationNumeric(text.substring(beg, lastGood));
 				ni.label = label;	// Note: we store the label, although it is not in the span!
 				ni.int1 = numberInt;
