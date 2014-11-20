@@ -6,6 +6,7 @@ public class AnnotatorcTakes extends Annotator{
 	UmlsWindow myWindow = null;
 	int phraseLength;
 	ResourceConnectorcTakes cTakes = null;
+	ResourceConnectorUmls umls = null;
 	
 	public static final String name = "cTakes";
 	
@@ -14,6 +15,7 @@ public class AnnotatorcTakes extends Annotator{
 		myWindow = w;
 		phraseLength = ThesMap.getInteger("phraseLength");
 		cTakes = ResourceConnectorcTakes.get();
+		umls = ResourceConnectorUmls.get();
 	}
 	
 	public static AnnotatorcTakes makeAnnotatorInstance(String name, UmlsWindow w) {
@@ -35,7 +37,24 @@ public class AnnotatorcTakes extends Annotator{
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		firePropertyChange(name, 0, -1);
+        process(myWindow.textArea.getText());
+        return null;
 	}
+	
+    /**
+     * Process text using cTakes API and create Annotations.
+     *
+     * @param text the input text
+     */
+    void process(String text) throws Exception {
+    	cTakes.process(text);
+    }
+    
+    static void log(String s) {
+        if (doLog) U.log(s);
+    }
+
+    static final boolean doLog = false;
+	
 }

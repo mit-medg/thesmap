@@ -8,5 +8,30 @@
 	<classpathentry kind="lib" path="lib/lvg2013dist.jar" sourcepath="/usr/local/lvg2013/sources"/>
 	<classpathentry kind="lib" path="lib/metamap-api-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/prologbeans.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ctakes-clinical-pipeline"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ctakes-dictionary-lookup"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ctakes-type-system"/>
+	<classpathentry kind="lib" path="/Users/mwc/.m2/repository/org/apache/uima/uimaj-core/2.4.0/uimaj-core-2.4.0.jar" sourcepath="/Users/mwc/.m2/repository/org/apache/uima/uimaj-core/2.4.0/uimaj-core-2.4.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.apache.uima"/>
+			<attribute name="maven.artifactId" value="uimaj-core"/>
+			<attribute name="maven.version" value="2.4.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/mwc/.m2/repository/org/apache/uima/uimafit-core/2.1.0/uimafit-core-2.1.0.jar" sourcepath="/Users/mwc/.m2/repository/org/apache/uima/uimafit-core/2.1.0/uimafit-core-2.1.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.apache.uima"/>
+			<attribute name="maven.artifactId" value="uimafit-core"/>
+			<attribute name="maven.version" value="2.1.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/ctakes/ctakes-dictionary-lookup-fast"/>
+	<classpathentry kind="lib" path="/ctakes/ctakes-dictionary-lookup"/>
+	<classpathentry kind="lib" path="/ctakes/ctakes-dictionary-lookup-fast-res"/>
+	<classpathentry kind="lib" path="/ctakes/ctakes-dictionary-lookup-res"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
