@@ -69,7 +69,7 @@ public class ResourceConnectorASD extends ResourceConnector {
 	PreparedStatement lookupWjl;
 	static final String lookupWjlT = "select id from wjl where id=? limit 1";
 	PreparedStatement insertWjl;
-	static final String insertWjlT = "insert into wjl values(?,?,?,?,?,?,?,?,?)";
+	static final String insertWjlT = "insert into wjl values(?,?,?,?,?,?,?,?,?,?)";
 	
 	/*
 	 * We add a unique index to every row of observation_fact, so we don't need to use the compound key
@@ -125,6 +125,7 @@ public class ResourceConnectorASD extends ResourceConnector {
        concept varchar(255) not null,	-- preferred name of the CUI
        tui varchar(255) not null,	-- TUI
        str varchar(255) not null,	-- actual character string that gave rise to this interpretation
+       docstr varchar(255),	-- original document string[start .. end], if different from str
        truth varchar(25),	-- Negex's truth indicator; could be other than truth
        index wjl_id (id)	-- index by id of the Note
       );
@@ -364,18 +365,8 @@ public class ResourceConnectorASD extends ResourceConnector {
 	}
 
 	public void recordWJL(int id, Integer from, Integer to, String type,
-			String cui, String prefName, String tui, String item, String truth) throws SQLException {
-		/*
-       id integer not null,	-- this is the observation_fact identifier of the note
-       start integer not null,	-- character position of the start of the string
-       end integer not null,	-- character position of the end of the string
-       type varchar(25) not null,	-- type from WJL's parser, e.g., _symptom
-       cui char(8) not null,	-- CUI
-       concept varchar(255) not null,	-- preferred name of the CUI
-       tui varchar(255) not null,	-- TUI
-       str varchar(255) not null,	-- actual character string that gave rise to this interpretation
-       truth varchar(25),	-- Negex's truth indicator; could be other than truth
-       */
+			String cui, String prefName, String tui, String item, String orig, String truth) 
+					throws SQLException {
 		insertWjl.setInt(1, id);
 		insertWjl.setInt(2, from);
 		insertWjl.setInt(3, to);
@@ -384,7 +375,8 @@ public class ResourceConnectorASD extends ResourceConnector {
 		insertWjl.setNString(6, prefName);
 		insertWjl.setString(7, tui);
 		insertWjl.setString(8, item);
-		insertWjl.setString(9, truth);
+		insertWjl.setString(9, orig);
+		insertWjl.setString(10, truth);
 		insertWjl.execute();
 	}
 	
@@ -393,6 +385,12 @@ public class ResourceConnectorASD extends ResourceConnector {
 				"and observation_blob is not null and observation_blob != ''";
 		if (limit != null && start != null) q = q + " limit " + start + "," + limit;
 		return stmt.executeQuery(q); 
+	}
+	
+	public ResultSet getNotesById(String noteType, Integer id) throws SQLException {
+		String q = "select id, observation_blob from observation_fact where concept_type='" + noteType + "' " +
+				"and observation_blob is not null and observation_blob != '' and id=" + id;
+		return stmt.executeQuery(q);
 	}
 	
 	public ASDNotesIterator getNotesIterator(String noteType) {

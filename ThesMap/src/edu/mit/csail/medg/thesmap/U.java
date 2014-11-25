@@ -1,5 +1,8 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 
@@ -64,6 +67,11 @@ public class U {
 			if (log != null) log.println(s);
 			else System.out.println("Log: " + s);
 		}
+	}
+	
+	public static synchronized void logException(Exception e) {
+		log(e.getLocalizedMessage());
+		e.printStackTrace(log.stream);
 	}
 	
 	public static void setLogging(int val) {

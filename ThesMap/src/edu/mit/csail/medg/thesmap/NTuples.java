@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -15,9 +17,14 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import edu.mit.csail.medg.thesmap.ResourceConnectorASD.ASDNote;
 import edu.mit.csail.medg.thesmap.ResourceConnectorASD.ASDNotesIterator;
@@ -66,19 +73,33 @@ public class NTuples {
 //		me.generateAllTries(10);
 //		me.testupdate();
 //		me.extractNotes("/Users/psz/Desktop/ASDNotes/", 100);
-		me.parseWJL(20);
+		me.parseWJL(10000);
+//		me.parseWJLById(46379408);
+//		me.textUtf8();
 		long diff = System.nanoTime() - startTime;
 		U.log("NTuples elapsed time (sec): " + diff/1000000000);
 		rc.close();
 //		System.exit(0);
 	}
 	
+	private void textUtf8() {
+		String u = "24 y/o male with Canavan’s leukodystrophy with global developmental delay, seizure disorder, G-J tube with h/o multiple aspiration pneumonias presents with 3 days of increased oxygen requirement, thick secretions and fever to 101.5.  Patient typically receives intermittent BBO2 at home, but began to require continuous BBO2, then 2.5L NC at home to maintain sats in the 90’s despite increased xopenex and atrovent.  He was also noted to have HR increased from baseline of 100 to new high of 160’s.  On the night prior to admission, he had a grand mal seizure lasting 30minutes.  The seizure is described as rigidity and shaking with a distant look in the eyes, which resolved with valium per Jtube.";
+		U.p("\"" + u + "\" has " + u.length() + " chars.");
+		byte[] ub = u.getBytes();
+		byte[] b = u.getBytes(Charset.forName("UTF-8"));
+		System.out.println(ub.length);
+		for (int i = 0; i<ub.length; i++) System.out.print(" "+ub[i]);
+		System.out.println("\n"+b.length);
+		for (int i = 0; i<b.length; i++) System.out.print(" "+b[i]);
+	}
+
 	private void extractNotes(String fileRoot) {
 		extractNotes(fileRoot, 10);
 	}
 	
 	private void extractNotes(String fileRoot, Integer maxNum) {
 		int total = rc.getCountAll("Note");
+		int limit = (maxNum == null) ? total : Math.min(total,  maxNum);
 		int done = 0;
 		int atATime = 100000;
 		U.log(total + " notes; processing " + ((maxNum==null) ? "all" : maxNum) + ".");
@@ -447,31 +468,82 @@ public class NTuples {
 		if (wjl == null) wjl = ResourceConnectorWjl.get();
 		int total = rc.getCountAll("Note");
 		int max = (maxNum == null) ? total : maxNum;
+		int limit = (maxNum == null) ? total : Math.min(total,  maxNum);
 //		String which = (maxNum != null) ? maxNum.toString() : "all";
 		int done = 0;
-		int atATime = 100000;
+		int atATime = 10000;
 		if (total == 0) {
 			U.log("No Notes found!");
 		} else {
-			U.log(total + " notes; processing " + max + ".");
-			U.debug("Fetching " + max + " notes.");
+			U.log(total + " notes; processing " + limit + ".");
+			U.debug("Fetching " + limit + " notes.");
 			ResultSet rs;
 			try {
 				for (; done < max; ) {
-					rs = rc.getAllNotes("Note", done + 1, atATime);
+					rs = rc.getAllNotes("Note", done, Math.min(atATime, limit - done));
 					while (rs.next()) {
 						int id = rs.getInt(1);
 						String text = rs.getNString(2);
 						text = text.replace('\0', ' ');
 						done++;
-						U.debug(done + "/" + total + ", id=" + id + "(" + text.length() + ")");
+						U.debug(done + "/" + limit + ", id=" + id + " (" + text.length() + " chars)");
 						processWJL(text, id);
 					}
 				}
 			}
 			catch (SQLException e) {
-				// TODO Auto-generated catch block
+				U.log("Error in fetching notes: " + e);
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void parseWJLById(Integer id) {
+		if (wjl == null) wjl = ResourceConnectorWjl.get();
+		String text = "";
+		ResultSet rs = null;
+		try {
+			rs = rc.getNotesById("Note",  id);
+			while (rs.next()) {
+				text = rs.getNString(2).replace('\0',  ' ');
+				U.log("Text of Note " + id + ":");
+				U.log(text);
+			}
+		} catch (SQLException e) {
+			U.logException(e);
+			return;
+		}
+		Document doc = wjl.lookup(text);
+		if (doc == null) return;
+		doc.getDocumentElement().normalize();
+		//			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+		NodeList nList = doc.getElementsByTagName("B");
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			//				System.out.println("\nCurr Elt: " + nNode.getNodeName());
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element e = (Element) nNode;
+				// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>
+				//					System.out.println("class="+e.getAttribute("class"));
+				//					System.out.println("title="+e.getElementsByTagName("title"));
+				// Example element:
+				// <B class="red" title="Chief complaint" cui="C0277786" type="_finding" truth="false" 
+				//	  tui="T033" from="1023" to="1051">without subjective complaints</B>
+
+				String title = e.getAttribute("title");
+				String cui = e.getAttribute("cui");
+				String type = e.getAttribute("type");
+				String truth = e.getAttribute("truth");
+				String tui = e.getAttribute("tui");
+				String item = e.getTextContent();
+				Integer from = new Integer(e.getAttribute("from"));
+				Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
+				//					String itemFromText = text.substring(from, to);
+				//					if (!itemFromText.equals(item)) {
+				//						U.log("WJL text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
+				//					}
+				//					U.log("id="+id+"("+from+","+to+") type="+type+", cui="+cui+", str="+str+", tui="+tui+": "+ item);
+				U.log("["+from+","+to+"] "+title+","+cui+","+tui+", T/F="+truth+", type="+type+", item="+item);
 			}
 		}
 	}
@@ -480,51 +552,97 @@ public class NTuples {
 	public void processWJL (String text, int id) {
 		// If we have already recorded wjl data for this id, skip doing it again.
 		if (rc.existsWjl(id)) return;
+		if (!testUTF8(text)) {
+			U.log("Document " + id + " fails UTF8 test!");
+			U.log("***************************************************");
+			U.log(text);
+			U.log("***************************************************\n");
+			return;
+		}
 		try {
 			org.w3c.dom.Document doc = wjl.lookup(text);
 			if (doc == null) {
 				// An error occurred 
-				U.log("Null Document " + id);
-			}
-			doc.getDocumentElement().normalize();
-//			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-			NodeList nList = doc.getElementsByTagName("B");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-//				System.out.println("\nCurr Elt: " + nNode.getNodeName());
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element e = (Element) nNode;
-					// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>
-//					System.out.println("class="+e.getAttribute("class"));
-//					System.out.println("title="+e.getElementsByTagName("title"));
-					// Example element:
-					// <B class="red" title="Chief complaint" cui="C0277786" type="_finding" truth="false" 
-					//	  tui="T033" from="1023" to="1051">without subjective complaints</B>
+				U.log(">>>Null Document " + id);
+			} else {
+				doc.getDocumentElement().normalize();
+				//			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+				NodeList nList = doc.getElementsByTagName("B");
+				for (int temp = 0; temp < nList.getLength(); temp++) {
+					Node nNode = nList.item(temp);
+					//				System.out.println("\nCurr Elt: " + nNode.getNodeName());
+					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+						Element e = (Element) nNode;
+						// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>
+						//					System.out.println("class="+e.getAttribute("class"));
+						//					System.out.println("title="+e.getElementsByTagName("title"));
+						// Example element:
+						// <B class="red" title="Chief complaint" cui="C0277786" type="_finding" truth="false" 
+						//	  tui="T033" from="1023" to="1051">without subjective complaints</B>
 
-					String title = e.getAttribute("title");
-					String cui = e.getAttribute("cui");
-					String type = e.getAttribute("type");
-					String truth = e.getAttribute("truth");
-					String tui = e.getAttribute("tui");
-					String item = e.getTextContent();
-					Integer from = new Integer(e.getAttribute("from"));
-					Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
-					String itemFromText = text.substring(from, to);
-					if (!itemFromText.equals(item)) {
-						U.log("WJL text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
+						String title = e.getAttribute("title");
+						String cui = e.getAttribute("cui");
+						String type = e.getAttribute("type");
+						String truth = e.getAttribute("truth");
+						String tui = e.getAttribute("tui");
+						String item = e.getTextContent();
+						Integer from = new Integer(e.getAttribute("from"));
+						Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
+						String orig = null;
+						if (from < 0 || to > text.length()) {
+							orig = "err [" + from + "," + to + "]";
+							U.log("$$$ In document " + id + " (length " + text.length() + "), " + orig
+									+ "is out of range");
+						} else {
+							String itemFromText = text.substring(from, to);
+							if (!itemFromText.equals(item)) {
+								int contextFrom = Math.max(0, from - mismatchStringContextSize);
+								int contextTo = Math.min(text.length(), to + mismatchStringContextSize);
+								orig = text.substring(contextFrom, from) + "[" + itemFromText + "]" + 
+										text.substring(to,contextTo);
+//								U.log("WJL text mismatch between \"" + item + "\" and \"" + orig + "\"");
+							}
+						}
+//						U.log("id="+id+"("+from+","+to+") type="+type+", cui="+cui+", str="+str+", tui="+tui+": "+ item);
+						//recordWJL(int id, Integer from, Integer to, String type,
+						//	String cui, String prefName, String tui, String item)
+						rc.recordWJL(id, from, to, type, cui, title, tui, item, orig, truth);
 					}
-//					U.log("id="+id+"("+from+","+to+") type="+type+", cui="+cui+", str="+str+", tui="+tui+": "+ item);
-					//recordWJL(int id, Integer from, Integer to, String type,
-					//	String cui, String prefName, String tui, String item)
-					rc.recordWJL(id, from, to, type, cui, title, tui, item, truth);
 				}
 			}
 		} 
 		catch (Exception e) {
-			U.log("\n*****************\n" + e.toString());
+			U.logException(e);
+			U.log("\n\nException in processWJL\n*****************\n" + e.toString());
 			U.log(id + ": " + text + "\n*****************\n");
 			e.printStackTrace();
 		}
+	}
+	
+	static final int mismatchStringContextSize = 30;
+	
+	boolean testUTF8(String s) {
+		// Test to see if we are passing bad UTF8 to wjl.
+//		"&lt;" represents the < sign.
+//		"&gt;" represents the > sign.
+//		"&amp;" represents the & sign.
+//		"&quot; represents the " mark.
+		String text = s.replace("<", "&lt;");
+		text = text.replace(">", "&gt;");
+		text = text.replace("\"", "&quot;");
+		text = text.replace("&", "&amp;");
+		String test = "<html><body>" + text + "</body></html>\n";
+	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    try {
+	    	DocumentBuilder builder = factory.newDocumentBuilder();
+	    	InputSource is = new InputSource(new StringReader(test));
+	    	Document testDoc = builder.parse(is);
+	    } catch (Exception e) {
+	    	U.logException(e);
+//	    	e.printStackTrace();
+	    	return false;
+	    }
+		return true;
 	}
 
 	/**

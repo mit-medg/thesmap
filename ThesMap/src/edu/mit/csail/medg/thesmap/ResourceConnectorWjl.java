@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -21,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -81,14 +83,14 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	 * Handles the interface to WJL's text analysis program, which runs on a server
 	 * and is accessed by a URL defined in props.
 	 * @param text The text to be analyzed
-	 * @return a String containing the HTML interpretation of the text
+	 * @return a Document containing the HTML interpretation of the text
 	 * @throws IOException 
 	 * @throws ParserConfigurationException 
 	 * @throws SAXException 
 	 */
 	public org.w3c.dom.Document lookup(String text) //throws IOException, ParserConfigurationException, SAXException 
 	{
-		org.w3c.dom.Document doc = null;
+		Document doc = null;
 		String stringUrl = props.getProperty(ThesProps.wjlUrl);
 		URL wjlUrl;
 		HttpURLConnection conn = null;
@@ -97,8 +99,8 @@ public class ResourceConnectorWjl extends ResourceConnector {
 			conn = (HttpURLConnection) wjlUrl.openConnection();
 			conn.setRequestMethod("POST");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			U.log("***IOException trying to make HTTP connection:");
+			U.logException(e);
 			return null;
 		}
 		conn.setDoOutput(true);
@@ -111,43 +113,60 @@ public class ResourceConnectorWjl extends ResourceConnector {
 			out = new OutputStreamWriter(conn.getOutputStream());
 			out.write("text=" + URLEncoder.encode(text, "UTF-8"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
+			U.log("***IOException trying to write to HTTP output stream:");
+			U.logException(e);
 			return null;
 		} 
+		String html = null;
 		try {
 			out.close();
 			conn.connect();
 			if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				/* I tried the code commented out here, but was getting errors parsing the HTML,
+				 * as if some part of its beginning was not properly read.  I switched to using 
+				 * readHttpResponse and now those errors are gone.
+				 */
 //				InputStream stream = conn.getInputStream();	
 //				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 //				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 //				doc = dBuilder.parse(stream);
+				html = readHttpResponse(conn);
+			    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			    DocumentBuilder builder;
+				try {
+					builder = factory.newDocumentBuilder();
+			    	InputSource is = new InputSource(new StringReader(html));
+			    	doc = builder.parse(is);
+				} catch (ParserConfigurationException | SAXException e) {
+			    	U.logException(e);
+				}
 			} else {
 				U.log("HTTP Error: " + conn.getResponseMessage());
 			}
-		} catch (IOException /*| ParserConfigurationException | SAXException */ e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			BufferedReader in = null;
-			try {
-				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				return null;
-			}
-			StringBuilder sb=new StringBuilder();
-			int cp;
-			try {
-			    while((cp=in.read())!=-1){
-			    sb.append((char)cp);
-			  }
-			} catch(Exception ee){
-			}
-			String html=sb.toString();
-			U.log("****************\nError in parsing.\n****************\n"+ text + "\n**************\n" + html + "\n*************\n");
+		} catch (IOException e) {
+			U.log("\n****************\nError in parsing.\n****************\n\n"+ text + 
+					"\n\n<**************\n" + html + "\n\n*************>\n\n");
 		}
 		return doc;
-	}	
+	}
+	
+	String readHttpResponse(HttpURLConnection conn) {
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		} catch (IOException e) {
+			U.log("***IOException trying to retrieve HTTP Response: " + e.toString());
+			return null;
+		}
+		StringBuilder sb=new StringBuilder();
+		int cp;
+		try {
+			while((cp=in.read())!=-1) {
+			    sb.append((char)cp);
+			}
+		} catch (IOException e) {
+			U.log("***IOException reading from HTTP Response: " + e.toString());
+		}
+		return (sb.length() == 0) ? null : sb.toString();
+	}
 }

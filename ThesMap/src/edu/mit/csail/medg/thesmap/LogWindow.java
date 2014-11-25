@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,6 +27,7 @@ public class LogWindow extends JFrameW implements ClipboardOwner{
 	
 	JTextArea textArea = null;
 	JFrameW myFrame = null;
+	public LogPrintStream stream = new LogPrintStream();
 
 	public LogWindow() {
 		super();
@@ -176,6 +179,25 @@ public class LogWindow extends JFrameW implements ClipboardOwner{
 	@Override
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 		// Nothing to do!
+	}
+	
+	public class LogPrintStream extends PrintStream {
+
+		public LogPrintStream(OutputStream out) {
+			super(out);
+		}
+		
+		public LogPrintStream() {
+			this(new OutputStream() {
+				
+				@Override
+				public void write(int b) throws IOException {
+					char[] c = Character.toChars(b);
+					textArea.append(new String(c));
+				}
+			});
+		}
+		
 	}
 
 }

@@ -103,6 +103,7 @@ public class JTreeU extends JTree implements MouseListener{
 	 * and expands the whole tree.
 	 */
 	private void commonInit() {
+//		setFont(getFont().deriveFont(8f));    
 		getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		addMouseListener(this);
 		setUI(new MultiSelectionTreeUI());
