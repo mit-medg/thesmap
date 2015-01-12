@@ -150,6 +150,13 @@ public class ThesMap {
 		} else {
 			U.pe(errUmls);
 		}
+		String errUmlsBase = AnnotatorUmlsBase.errInit();
+		if (errUmlsBase == null) {
+			U.log("Created UMLS Base connectors. UMLS Base Annotations are feasible.");
+			Annotator.registerType(AnnotatorUmlsBase.name, "AnnotatorUmlsBase");
+		} else {
+			U.pe(errUmlsBase);
+		}
 		String errMM = AnnotatorMetaMap.errInit();
 		if (errMM == null) {
 			U.log("Created MetaMap connector. MetaMap Annotations are feasible.");

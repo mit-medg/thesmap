@@ -58,7 +58,18 @@ public class AnnotatorWjl extends Annotator{
 				return null;
 			}
 			doc.getDocumentElement().normalize();
-			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+//			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+			/* The XML format returned by Bill's parser contains <p>, <br/> and text elements, plus
+			 * annotations of concepts it has extracted.  These can be one of the following:
+			 * 1. <concept title=STR cui=CUI type=TYPE tui=TUI from=xxx to=yyy text=ORIGINAL_TEXT>STR</concept>
+			 * 2. <ambig><concept.../>...<concept.../></ambig>
+			 * 3. <clause><concept.../>...<concept.../></clause> or any of the clauses can also be <ambig/>s
+			 * A clause represents a head concept and modifiers.
+			 * 
+			 * This means we must look for concept, ambig or clause forms in the document.
+			 * Concept or top-level ambigs just create interpretations
+			 * Clauses are more complex because they may contain ambigs
+			 */
 			NodeList nList = doc.getElementsByTagName("B");
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);

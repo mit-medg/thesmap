@@ -667,6 +667,14 @@ public class UmlsWindow extends JFrameW
 		MethodChooser() {
 			setLayout(new BorderLayout());
 			int nMethods = Annotator.annotationTypes.size();
+			if (nMethods > 0) {
+				int annIndexSize = Annotator.annotationIndex.size();
+				U.log("Creating MethodChooser for " + nMethods + " methods; " + annIndexSize + ".");
+				for (int i = 0; i < annIndexSize; i++) {
+					String nm = Annotator.getName(i);
+					U.log("   " + nm);
+				}
+			}
 			panels = new SelectPanel[nMethods];
 			JPanel selectors = new JPanel();
 			selectors.setLayout(new GridLayout(0, numberOfSelectorColumns));

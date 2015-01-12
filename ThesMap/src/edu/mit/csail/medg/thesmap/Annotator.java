@@ -49,12 +49,15 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 	
 	static void registerType(String type, String className) {
 		Integer existing = annotationTypes.get(type);
+		U.log("Registering Annotation " + type + " with class " + className);
 		if (existing == null) {
 			int index = annotationTypes.size();
 			annotationTypes.put(type, index);
 			annotationIndex.add(type);
 			annotationClasses.put(type, className);
+			U.log(" ... assigned index " + index);
 		}
+		else U.log(" ... already at index " + existing);
 	}
 	
 	public BitSet getBitSet() {

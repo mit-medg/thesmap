@@ -12,16 +12,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 //import org.apache.ctakes.typesystem.type.textsem.IdentifiedAnnotation;
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.fit.factory.JCasFactory;
-import org.apache.uima.fit.pipeline.SimplePipeline;
-import org.apache.uima.fit.util.JCasUtil;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.ctakes.clinicalpipeline.ClinicalPipelineFactory;
-import org.apache.ctakes.typesystem.type.constants.CONST;
-import org.apache.ctakes.typesystem.type.textsem.IdentifiedAnnotation;
+//import org.apache.uima.UIMAException;
+//import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+//import org.apache.uima.fit.factory.JCasFactory;
+//import org.apache.uima.fit.pipeline.SimplePipeline;
+//import org.apache.uima.fit.util.JCasUtil;
+//import org.apache.uima.jcas.JCas;
+//import org.apache.uima.resource.ResourceInitializationException;
+//import org.apache.ctakes.clinicalpipeline.ClinicalPipelineFactory;
+//import org.apache.ctakes.typesystem.type.constants.CONST;
+//import org.apache.ctakes.typesystem.type.textsem.IdentifiedAnnotation;
 
 /**
  * @author mwc
@@ -43,7 +43,7 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	static final String cui2tuiStmt = 
 			"select tui from mrsty where cui=?";
 	
-	public AnalysisEngineDescription cTakesAED = null;
+//	public AnalysisEngineDescription cTakesAED = null;
 	
 	/*
 	 * If this resource is not available, we declare it broken and do not
@@ -54,38 +54,39 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	public ResourceConnectorcTakes() {
 		super("cTakes");
 		ThesProps prop = ThesMap.prop;
-		String dbhost = prop.getProperty(ThesProps.dbhostName);
-		String dbuser = prop.getProperty(ThesProps.dbuserName);
-		String dbpassword = prop.getProperty(ThesProps.dbpasswordName);
-		String db = prop.getProperty(ThesProps.dbName);
-		String dbUrl = "jdbc:mysql://" + dbhost + "/" + db;
-		U.log("Trying to open connection to "+db+" on " +dbhost + " via "+dbuser+"/"+dbpassword+"for cTakes");
-
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(dbUrl, dbuser, dbpassword);
-			query = conn.prepareStatement(nstr2cuiStmt);
-			cui2tui = conn.prepareStatement(cui2tuiStmt);
-			//SemanticEntity.init(this);
-			initialized = true;
-		}
-		catch (ClassNotFoundException e) {
-			System.err.println("Unable to load MySQL driver: " + e);
-			initialized = false;
-		}
-		catch (SQLException e) {
-			System.err.println("Unable to connect to UMLS database \"" + db + "\" on " 
-								+ dbhost + " as \"" + dbuser + "\": " + e.getMessage());
-			//e.printStackTrace(System.err);
-			initialized = false;
-		}
+		initialized = false;
+//		String dbhost = prop.getProperty(ThesProps.dbhostName);
+//		String dbuser = prop.getProperty(ThesProps.dbuserName);
+//		String dbpassword = prop.getProperty(ThesProps.dbpasswordName);
+//		String db = prop.getProperty(ThesProps.dbName);
+//		String dbUrl = "jdbc:mysql://" + dbhost + "/" + db;
+//		U.log("Trying to open connection to "+db+" on " +dbhost + " via "+dbuser+"/"+dbpassword+" for cTakes");
+//
+//		try{
+//			Class.forName("com.mysql.jdbc.Driver");
+//			conn = DriverManager.getConnection(dbUrl, dbuser, dbpassword);
+//			query = conn.prepareStatement(nstr2cuiStmt);
+//			cui2tui = conn.prepareStatement(cui2tuiStmt);
+//			//SemanticEntity.init(this);
+//			initialized = true;
+//		}
+//		catch (ClassNotFoundException e) {
+//			System.err.println("Unable to load MySQL driver: " + e);
+//			initialized = false;
+//		}
+//		catch (SQLException e) {
+//			System.err.println("Unable to connect to UMLS database \"" + db + "\" on " 
+//								+ dbhost + " as \"" + dbuser + "\": " + e.getMessage());
+//			//e.printStackTrace(System.err);
+//			initialized = false;
+//		}
 		if (initialized) pool.add(this);
 
-		try {
-			cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
-		} catch (ResourceInitializationException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
+//		} catch (ResourceInitializationException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static ResourceConnectorcTakes get() {
@@ -113,24 +114,24 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 		
 	}
 	
-	public void process(String text) throws UIMAException {
-		if (broken || cTakesAED == null) {
-			U.pe("Cannot process by cTakes because there is no connection.");
-		}
-
-	  JCas jcas = JCasFactory.createJCas();
-	  jcas.setDocumentText(text);
-	  SimplePipeline.runPipeline(jcas, cTakesAED);
-	  for(IdentifiedAnnotation entity : JCasUtil.select(jcas, IdentifiedAnnotation.class)){
-	      System.out.println("Entity: " + entity.getCoveredText() + " === Polarity: " + entity.getPolarity() +
-	    		  													" === Uncertain? " + (entity.getUncertainty()==CONST.NE_UNCERTAINTY_PRESENT) +
-	    		  													" === Subject: " + entity.getSubject() + 
-	    		  													" === Generic? "  + (entity.getGeneric() == CONST.NE_GENERIC_TRUE) +
-	    		  													" === Conditional? " + (entity.getConditional() == CONST.NE_CONDITIONAL_TRUE) +
-	    		  													" === History? " + (entity.getHistoryOf() == CONST.NE_HISTORY_OF_PRESENT) +
-	    		  													" === Type ID? " + entity.getTypeID()
-	    		  );
-	    }
+	public void process(String text) /* throws UIMAException */ {
+//		if (broken || cTakesAED == null) {
+//			U.pe("Cannot process by cTakes because there is no connection.");
+//		}
+//
+//	  JCas jcas = JCasFactory.createJCas();
+//	  jcas.setDocumentText(text);
+//	  SimplePipeline.runPipeline(jcas, cTakesAED);
+//	  for(IdentifiedAnnotation entity : JCasUtil.select(jcas, IdentifiedAnnotation.class)){
+//	      System.out.println("Entity: " + entity.getCoveredText() + " === Polarity: " + entity.getPolarity() +
+//	    		  													" === Uncertain? " + (entity.getUncertainty()==CONST.NE_UNCERTAINTY_PRESENT) +
+//	    		  													" === Subject: " + entity.getSubject() + 
+//	    		  													" === Generic? "  + (entity.getGeneric() == CONST.NE_GENERIC_TRUE) +
+//	    		  													" === Conditional? " + (entity.getConditional() == CONST.NE_CONDITIONAL_TRUE) +
+//	    		  													" === History? " + (entity.getHistoryOf() == CONST.NE_HISTORY_OF_PRESENT) +
+//	    		  													" === Type ID? " + entity.getTypeID()
+//	    		  );
+//	    }
 	  
 	  	// Write results to an XML File.
 	  //cTakesAED.toXML(new FileWriter(args[0]));

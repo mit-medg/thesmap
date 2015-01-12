@@ -28,6 +28,12 @@ public class ThesProps {
 	static final String dbpasswordName = "dbPassword";
 	static final String dbName = "db";
 	
+	// For connection to UMLS base resources
+	static final String dbbhostName = "dbbHost";
+	static final String dbbuserName = "dbbUser";
+	static final String dbbpasswordName = "dbbPassword";
+	static final String dbbName = "dbb";
+
 	// for connection to the ASD database at CH
 	static final String chdbhostName = "chdbHost";
 	static final String chdbuserName = "chdbUser";
