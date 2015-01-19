@@ -48,7 +48,7 @@ public class AnnotationHighlight {
 		 * produce Cyan, Magenta and Yellow as the primary colors.  
 		 * We perform a very inaccurate cmy->rgb conversion, which is 
 		 * suitable to this simple task.		 */
-//		System.out.println(r+"->"+rs+","+g+"->"+gs+","+b+"->"+bs);
+//      System.out.println(r+"->"+rs+","+g+"->"+gs+","+b+"->"+bs);
 		return new Color((gs+bs)/2, (rs+bs)/2, (rs+gs)/2);
 	}
 	
@@ -58,9 +58,9 @@ public class AnnotationHighlight {
 	
 	public static int nLevels = 3;
 	public static final int minCol = 96;
-	public static final int maxCol = 256;	// 1-offset; adjust to 0-offset later
+	public static final int maxCol = 255;	// 1-offset; adjust to 0-offset later
 	public static final int darken = 32;
-	public static int incCol = (maxCol-minCol)/(nLevels-1);
+	public static int incCol = (maxCol-minCol)/(nLevels);
 
 	static int scale(int orig) {
 		return (int)Math.min(255, maxCol - darken - orig * incCol);
@@ -68,7 +68,7 @@ public class AnnotationHighlight {
 	
 	static void setNumberOfBaseColors(int n) {
 		nLevels = (int)Math.ceil(n/3.0);
-		incCol = (256-minCol-32)/(int)Math.max(1, nLevels-1);
+		incCol = (255-minCol-32)/(int)Math.max(1, nLevels);
 	}
 	
 	static int getNumberOfBaseColors() {
