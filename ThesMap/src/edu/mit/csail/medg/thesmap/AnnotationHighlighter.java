@@ -83,9 +83,11 @@ public class AnnotationHighlighter extends SwingWorker<Void, Void> {
 					relevantBits.or(tb);
 				}
 				if (!relevantBits.isEmpty()) {
-					Color relevantColor = AnnotationHighlight.getColor(relevantBits);
-//					U.log("Paint " + relevantColor + " from " + start + " to " + next);
-					textArea.addHighlight(start, (next == null) ? textl : next, relevantColor);
+					if (relevantBits.cardinality() >= 2) {
+						Color relevantColor = AnnotationHighlight.getColor(relevantBits);
+	//					U.log("Paint " + relevantColor + " from " + start + " to " + next);
+						textArea.addHighlight(start, (next == null) ? textl : next, relevantColor);
+					}
 				}
 			}
 			start = next;
