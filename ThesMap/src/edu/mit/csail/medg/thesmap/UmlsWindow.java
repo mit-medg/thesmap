@@ -435,6 +435,10 @@ public class UmlsWindow extends JFrameW
 				if (osw != null) {
 					for (Annotation ann: annSet) {
 						for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
+							String preferredText = i.str;
+							if (preferredText == null) {
+								preferredText = "null";
+							}
 							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
 									+ ",\"" + fixq(i.str) + "\"\n");
 						}
