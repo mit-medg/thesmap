@@ -440,7 +440,7 @@ public class UmlsWindow extends JFrameW
 								preferredText = "null";
 							}
 							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(i.str) + "\"\n");
+									+ ",\"" + fixq(preferredText) + "\"\n");
 						}
 					}
 				}
