@@ -654,7 +654,7 @@ public class UmlsWindow extends JFrameW
 	 * @author psz
 	 *
 	 */
-	protected class MethodChooser extends JPanel implements ItemListener, PropertyChangeListener{
+	protected class MethodChooser extends JPanel implements PropertyChangeListener{
 		
 		private static final long serialVersionUID = 1L;
 		static final int numberOfSelectorColumns = 2;
