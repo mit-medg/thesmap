@@ -435,8 +435,12 @@ public class UmlsWindow extends JFrameW
 				if (osw != null) {
 					for (Annotation ann: annSet) {
 						for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
+							String preferredText = i.str;
+							if (preferredText == null) {
+								preferredText = "null";
+							}
 							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(i.str) + "\"\n");
+									+ ",\"" + fixq(preferredText) + "\"," + i.type + "\n");
 						}
 					}
 				}
@@ -650,7 +654,7 @@ public class UmlsWindow extends JFrameW
 	 * @author psz
 	 *
 	 */
-	protected class MethodChooser extends JPanel implements ItemListener, PropertyChangeListener{
+	protected class MethodChooser extends JPanel implements PropertyChangeListener{
 		
 		private static final long serialVersionUID = 1L;
 		static final int numberOfSelectorColumns = 2;
@@ -719,7 +723,7 @@ public class UmlsWindow extends JFrameW
 			doneBits = new BitSet();
 			if (!needToAnnotate.isEmpty()) {
 				setAnnotateButtonState(ANN_RUNNING);
-				int i = -1;
+				int i = -1;			
 				while ((i = needToAnnotate.nextSetBit(i + 1)) >= 0) {
 					U.log("Try to run Annotator " + Annotator.getName(i));
 					Annotator ann = Annotator.makeAnnotator(Annotator.getName(i), thisWindow);
@@ -738,22 +742,6 @@ public class UmlsWindow extends JFrameW
 				doit.setEnabled(true);
 				doit.setText(annotateButtonLabel);
 			}
-		}
-
-		@Override
-		public void itemStateChanged(ItemEvent e) {
-			String source = ((JCheckBox)e.getItemSelectable()).getText();
-			Integer annotationTypeIndex = Annotator.getIndex(source);
-			if (annotationTypeIndex == null) {
-				// Ignore selection of anything other than the possible Annotators.
-				return;
-			}
-			if (e.getStateChange() == ItemEvent.DESELECTED) {
-				chosenAnnotators.clear(annotationTypeIndex);
-			} else {
-				chosenAnnotators.set(annotationTypeIndex);
-			}
-			showAnnotations();
 		}
 		
 		public ArrayList<String> getSelectedMethods() {
@@ -834,6 +822,23 @@ public class UmlsWindow extends JFrameW
 				cb.setState(true);
 				chosenAnnotators.set(Annotator.getIndex(name));
 				cb.setBackground(AnnotationHighlight.getColor(colorNumber));
+				cb.addItemListener(new ItemListener() {
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						String source = ((Checkbox)e.getItemSelectable()).getLabel();
+						Integer annotationTypeIndex = Annotator.getIndex(source);
+						if (annotationTypeIndex == null) {
+							// Ignore selection of anything other than the possible Annotators.
+							return;
+						}
+						if (e.getStateChange() == ItemEvent.DESELECTED) {
+							chosenAnnotators.clear(annotationTypeIndex);
+						} else {
+							chosenAnnotators.set(annotationTypeIndex);
+						}
+						showAnnotations();
+					}
+				});
 				add(cb);
 
 				pb = new JProgressBar();
