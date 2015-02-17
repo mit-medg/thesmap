@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -33,7 +32,7 @@ public class ThesMap {
 
 	// The global Properties are shared by all components of ThesMap.
 	public static ThesProps prop = null; 
-	public static boolean interactive = true;
+	public static boolean interactive = false;
 	public static boolean debug = true;
 	static final String exampleFileName = "Example.txt";
 //	static final Pattern basicPattern = Pattern.compile(
@@ -100,12 +99,8 @@ public class ThesMap {
 			}
 		}
 		else {
-			for (int i = 0; i < args.length; i++) {
-				System.out.println("Start annotation " + i + ": " + args[i]);
-				if (!args[i].startsWith("-")) {
-					SwingUtilities.invokeLater(new UmlsDocument(new File(args[i])));
-				}
-			}
+			SwingUtilities.invokeLater(new DirectoryWindow());
+
 		}
 
 	}

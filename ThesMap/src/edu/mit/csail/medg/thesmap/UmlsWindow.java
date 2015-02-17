@@ -637,7 +637,10 @@ public class UmlsWindow extends JFrameW
 	}
 
 	public void annotatorDone(String annotatorName) {
-		methodChooser.annotatorDone(annotatorName);
+		System.out.println("annotator done: " + annotatorName); 
+		if (methodChooser != null ) {
+			methodChooser.annotatorDone(annotatorName);
+		}
 	}
 	
 	public void setProgress(String annotatorName, int percent) {

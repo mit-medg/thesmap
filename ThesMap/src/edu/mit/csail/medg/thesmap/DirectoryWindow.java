@@ -71,6 +71,7 @@ public class DirectoryWindow extends JFrameW
 	// public static ArrayList<UmlsWindow> windows = new ArrayList<UmlsWindow>();
 	public static final String defaultTitle = "Batch ThesMap";
 	public static final String annotateButtonLabel = "Annotate";
+	public static final String annotateButtonLabelDirectoryMissing = "Please select directory...";
 	public static final String annotateButtonLabelRunning = "Annotating...";
 	public static final int ANN_RUNNING = 1;
 	public static final int ANN_STOPPED = 0;
@@ -187,7 +188,7 @@ public class DirectoryWindow extends JFrameW
 	        		
 	        		if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            	fileDirectory = directoryChooser.getSelectedFile();
-		            	directoryPane.setText(fileDirectory.getAbsolutePath());;
+		            	directoryPane.setText(fileDirectory.getAbsolutePath());
 		            	System.out.println("Directory selected: " + fileDirectory);
 	                } else {
 		            	System.out.println("No directory selected: " + fileDirectory);
@@ -304,7 +305,7 @@ public class DirectoryWindow extends JFrameW
 	int accelMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	public void annotatorDone(String annotatorName) {
-		methodChooser.annotatorDone(annotatorName);
+	//	methodChooser.annotatorDone(annotatorName);
 	}
 	
 	public void setProgress(String annotatorName, int percent) {
@@ -353,54 +354,28 @@ public class DirectoryWindow extends JFrameW
 				selectors.add(new SelectPanel(Annotator.getName(i), i));
 			}
 			add(selectors, BorderLayout.CENTER);
-			doit = new JButton("Annotate");
+			doit = new JButton("Annotate directory");
 			doit.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					doAnnotations();
+					// Check to see if a directory has been selected.
+					//TODO(mwc): Check to see if a directory has been selected.
 					
+					// Run annotations.
+					File folder = new File(fileDirectory.getPath());
+					File[] listOfFiles = folder.listFiles();
+
+				    for (int i = 0; i < listOfFiles.length; i++) {
+						if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
+							String fileName = listOfFiles[i].getPath();
+							U.log("Currently processing: " + fileName );
+							SwingUtilities.invokeLater(new UmlsDocument(new File(fileName), chosenAnnotators, doneBits));
+						}
+				    }
 				}
-				
 			});
 			add(doit, BorderLayout.SOUTH);
-		}
-
-		public void annotatorDone(String annotatorName) {
-			U.log("Annotator " + annotatorName + " reports done.");
-			setProgress(annotatorName, 100);
-			doneBits.set(Annotator.getIndex(annotatorName));
-			if (doneBits.equals(needToAnnotate)) {
-				// We've completed all the annotations
-				setAnnotateButtonState(ANN_STOPPED);
-				//showAnnotations();
-			}
-		}
-		
-		/**
-		 * Invoke each feasible Annotator unless its annotations are already recorded in
-		 * the current AnnotationSet.
-		 * @param source
-		 */
-		private void doAnnotations() {
-			// Check which annotations are checked (chosenAnnotators) but not yet annotated
-			needToAnnotate = new BitSet();
-			needToAnnotate.or(chosenAnnotators);
-			needToAnnotate.andNot(annSet.typeBits());
-			doneBits = new BitSet();
-			if (!needToAnnotate.isEmpty()) {
-				setAnnotateButtonState(ANN_RUNNING);
-				int i = -1;			
-				while ((i = needToAnnotate.nextSetBit(i + 1)) >= 0) {
-					U.log("Try to run Annotator " + Annotator.getName(i));
-//					Annotator ann = Annotator.makeAnnotator(Annotator.getName(i), thisWindow);
-//					ann.addPropertyChangeListener(this);
-//					ann.execute();
-					/*for (int i = 0; i < args.length; i++) {
-						SwingUtilities.invokeLater(new UmlsDocument(new File(args[i])));
-					}*/
-				}
-			}
 		}
 
 
