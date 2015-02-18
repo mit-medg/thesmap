@@ -32,7 +32,7 @@ public class ThesMap {
 
 	// The global Properties are shared by all components of ThesMap.
 	public static ThesProps prop = null; 
-	public static boolean interactive = false;
+	public static boolean interactive = true;
 	public static boolean debug = true;
 	static final String exampleFileName = "Example.txt";
 //	static final Pattern basicPattern = Pattern.compile(
