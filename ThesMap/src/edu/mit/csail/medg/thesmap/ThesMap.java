@@ -100,9 +100,7 @@ public class ThesMap {
 		}
 		else {
 			SwingUtilities.invokeLater(new DirectoryWindow());
-
 		}
-
 	}
 
 	static void setUpOSX() {

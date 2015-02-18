@@ -94,12 +94,16 @@ public class DirectoryWindow extends JFrameW
 	public DirectoryWindow() {
 		super(defaultTitle);
 		thisWindow = this;
+		
+		// Default file directory is the current directory.
+		fileDirectory = new File("").getAbsoluteFile();
 	}
 	
 	public DirectoryWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
 		thisWindow = this;
+		fileDirectory = new File("").getAbsoluteFile(); 
 	}
 
 	@Override
@@ -169,6 +173,7 @@ public class DirectoryWindow extends JFrameW
 		// 1. Select the directory to annotate.
 		directoryPane = new JTextArea(1,30);
 		directoryPane.setEditable(false);
+		directoryPane.setText(new File("").getAbsoluteFile().getAbsolutePath());
  
         JButton browseButton = new JButton("Browse");
         // When the browse button is pressed, a JFileChooser is created to select the directory.
@@ -177,7 +182,6 @@ public class DirectoryWindow extends JFrameW
 	            if (e.getActionCommand().equals("Browse")) {
 	            	if (directoryChooser == null) {
 		        		directoryChooser = new JFileChooser();
-
 		        		directoryChooser.setCurrentDirectory(new java.io.File("."));
 		        		directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		        		directoryChooser.setAcceptAllFileFilterUsed(false);
