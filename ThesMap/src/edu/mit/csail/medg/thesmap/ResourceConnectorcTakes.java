@@ -68,8 +68,8 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 		if (initialized) pool.add(this);
 
 		try {
-			cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
-			//cTakesAED = ClinicalPipelineFactory.getFastPipeline();
+			//cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
+			cTakesAED = ClinicalPipelineFactory.getFastPipeline();
 		} catch (ResourceInitializationException e) {
 			e.printStackTrace();
 		}
