@@ -92,7 +92,13 @@ public class UmlsWindow extends JFrameW
 //	int annotationMethod = 0;	// The Annotator index by which to annotate.
 //	int lastAnnotationMethod = 0;	// Tracks to see if we've actually changed
 	public AnnotationSet annSet = null;	
-	BitSet chosenAnnotators = new BitSet();
+	protected BitSet chosenAnnotators = new BitSet();
+	protected BitSet doneBits = new BitSet();
+	protected BitSet needToAnnotate = new BitSet();
+	
+	// Boolean to directly save to file when done. If true, then save to file.
+	protected boolean saveFileFlag = false;
+
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -109,6 +115,13 @@ public class UmlsWindow extends JFrameW
 		thisWindow = this;
 	}
 	
+	public UmlsWindow(File file, boolean saveFile) {
+		super(defaultTitle);
+		thisWindow = this;
+		inputFile = file;
+		saveFileFlag = saveFile;
+	}
+	
 	public UmlsWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
@@ -120,6 +133,7 @@ public class UmlsWindow extends JFrameW
 		subject = subj;
 		thisWindow = this;
 	}
+	
 
 	@Override
 	public void run() {
@@ -637,10 +651,23 @@ public class UmlsWindow extends JFrameW
 	}
 
 	public void annotatorDone(String annotatorName) {
-		System.out.println("annotator done: " + annotatorName); 
+		doneBits.set(Annotator.getIndex(annotatorName));
+		if (doneBits.equals(needToAnnotate) && saveFileFlag) {
+			// If this is called from UmlsDocument, then we can save to file.
+			saveAnnotations(csvFile(inputFile), annSet);
+			U.log("Saved " + inputFile + " to file");
+		}
 		if (methodChooser != null ) {
 			methodChooser.annotatorDone(annotatorName);
 		}
+	}
+	
+	private static File csvFile(File inFile) {
+		String name = inFile.getName();
+		int dot = name.lastIndexOf('.');
+		String newName = (dot < 1) ? name + ".csv" : name.substring(0, dot)
+				+ ".csv";
+		return new File(inFile.getParentFile(), newName);
 	}
 	
 	public void setProgress(String annotatorName, int percent) {
@@ -666,8 +693,7 @@ public class UmlsWindow extends JFrameW
 		private static final int spMinW = 100;
 		private static final int spPrefH = 58;
 		protected SelectPanel[] panels;
-		BitSet needToAnnotate;
-		protected BitSet doneBits;
+
 		JButton doit;
 		
 
@@ -705,7 +731,6 @@ public class UmlsWindow extends JFrameW
 		public void annotatorDone(String annotatorName) {
 			U.log("Annotator " + annotatorName + " reports done.");
 			setProgress(annotatorName, 100);
-			doneBits.set(Annotator.getIndex(annotatorName));
 			if (doneBits.equals(needToAnnotate)) {
 				// We've completed all the annotations
 				setAnnotateButtonState(ANN_STOPPED);

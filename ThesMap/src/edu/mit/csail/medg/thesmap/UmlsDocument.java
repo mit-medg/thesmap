@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.BitSet;
 
+import edu.mit.csail.medg.thesmap.UmlsWindow.MethodChooser;
+
 /**
  * This class is a non-interactive version of UmlsWindow, for batch processing.
  * It opens a given file, annotates it, and writes the results to a csv file
@@ -36,7 +38,7 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 		this.chosenAnnotators = chosenAnnotators;
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
-		window = new UmlsWindow(inFile);
+		window = new UmlsWindow(inFile, true);
 	}
 
 	public void run() {
@@ -50,16 +52,17 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 			}
 			window.textArea.setText(text);
 			window.annSet = annSet;
-			System.out.println(window.annSet.size());
+			window.needToAnnotate = chosenAnnotators;
 			doAnnotations();
-			System.out.println(window.annSet.size());
-			try {
-				// Temporarily waiting before saving to file. Need to fix so that it knows when the annotation is done.
-				Thread.sleep(1000);
-				UmlsWindow.saveAnnotations(csvFile(inFile), window.annSet);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+
+//			try {
+//				// Temporarily waiting before saving to file. Need to fix so that it knows when the annotation is done.
+//				Thread.sleep(10000);
+//				UmlsWindow.saveAnnotations(csvFile(inFile), window.annSet);
+//				System.out.println("Just saved to file");
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + inFile + " not found: "
 					+ e.getMessage());
@@ -68,14 +71,6 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 			System.err.println("Error reading " + is + ": " + e.getMessage());
 			e.printStackTrace(System.err);
 		}
-	}
-
-	private static File csvFile(File inFile) {
-		String name = inFile.getName();
-		int dot = name.lastIndexOf('.');
-		String newName = (dot < 1) ? name + ".csv" : name.substring(0, dot)
-				+ ".csv";
-		return new File(inFile.getParentFile(), newName);
 	}
 
 	private String getContent(InputStream is) throws IOException {

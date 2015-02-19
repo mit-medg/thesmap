@@ -308,9 +308,6 @@ public class DirectoryWindow extends JFrameW
 	JMenuItem copyMenuItem, pasteMenuItem, cutMenuItem;
 	int accelMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-	public void annotatorDone(String annotatorName) {
-	//	methodChooser.annotatorDone(annotatorName);
-	}
 	
 	public void setProgress(String annotatorName, int percent) {
 		methodChooser.setProgress(annotatorName, percent);
