@@ -59,6 +59,12 @@ public class ThesProps {
 	// For connection to WJL
 	static final String wjlUrl = "WJLUrl";
 	
+	// For recording results in the thesmap database
+	static final String resultHostName = "resultHost";
+	static final String resultDbName = "resultDb";
+	static final String resultUserName = "resultUser";
+	static final String resultPasswordName = "resultPassword";
+	
 	public Properties thesMapDefaults = null;
 	public Properties thesMapProps = null;
 
