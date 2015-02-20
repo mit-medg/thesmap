@@ -81,6 +81,9 @@ public class UmlsWindow extends JFrameW
 	public static final String blankExpl = "\n\n\n\n\n";
 	public static final int nColors = 20;
 	
+	// Default font size for the Semantic Tree
+	float fontSize = 9.0f;
+	
 	// The data source:
 	private File inputFile = null;
 	private URI inputUri = null;
@@ -320,7 +323,7 @@ public class UmlsWindow extends JFrameW
 		
 		setJMenuBar(menuBar);
 	}
-
+	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
 	 * a SplitPane so it's user-adjustable.  On the left is the SemanticTree to allow selection of
@@ -348,6 +351,7 @@ public class UmlsWindow extends JFrameW
 		semanticTypes.addTreeSelectionListener(this);
 		treeScroll = new JScrollPane(semanticTypes,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		treeScroll.setFont(treeScroll.getFont().deriveFont(fontSize));
 		// 6. Create the lookup method selector
 		methodChooser = new MethodChooser();
 		// 7. Assemble the left panel
