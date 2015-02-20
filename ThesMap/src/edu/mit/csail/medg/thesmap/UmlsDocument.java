@@ -54,15 +54,6 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 			window.annSet = annSet;
 			window.needToAnnotate = chosenAnnotators;
 			doAnnotations();
-
-//			try {
-//				// Temporarily waiting before saving to file. Need to fix so that it knows when the annotation is done.
-//				Thread.sleep(10000);
-//				UmlsWindow.saveAnnotations(csvFile(inFile), window.annSet);
-//				System.out.println("Just saved to file");
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + inFile + " not found: "
 					+ e.getMessage());

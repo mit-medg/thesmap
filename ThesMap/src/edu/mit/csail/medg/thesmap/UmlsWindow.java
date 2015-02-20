@@ -36,7 +36,6 @@ import java.util.BitSet;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -98,6 +97,7 @@ public class UmlsWindow extends JFrameW
 	
 	// Boolean to directly save to file when done. If true, then save to file.
 	protected boolean saveFileFlag = false;
+	protected SaveAnnotationsDBConnector dbConnector = null;
 
 	
 	// Creating a UmlsWindow doesn't start running it;
@@ -120,6 +120,7 @@ public class UmlsWindow extends JFrameW
 		thisWindow = this;
 		inputFile = file;
 		saveFileFlag = saveFile;
+		dbConnector = new SaveAnnotationsDBConnector();
 	}
 	
 	public UmlsWindow(URI uri) {
@@ -454,7 +455,7 @@ public class UmlsWindow extends JFrameW
 								preferredText = "null";
 							}
 							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(preferredText) + "\"," + i.type + "\n");
+									+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
 						}
 					}
 				}
@@ -654,8 +655,11 @@ public class UmlsWindow extends JFrameW
 		doneBits.set(Annotator.getIndex(annotatorName));
 		if (doneBits.equals(needToAnnotate) && saveFileFlag) {
 			// If this is called from UmlsDocument, then we can save to file.
-			saveAnnotations(csvFile(inputFile), annSet);
+			File csvFileOutput = csvFile(inputFile);
+			saveAnnotations(csvFileOutput, annSet);
 			U.log("Saved " + inputFile + " to file");
+			((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
+			U.log("Saved " + inputFile + " to database");
 		}
 		if (methodChooser != null ) {
 			methodChooser.annotatorDone(annotatorName);
