@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -78,7 +79,7 @@ public class UmlsWindow extends JFrameW
 	public static final String annotateButtonLabelRunning = "Annotating...";
 	public static final int ANN_RUNNING = 1;
 	public static final int ANN_STOPPED = 0;
-	public static final String blankExpl = "\n\n\n\n\n";
+	public static final String blankExpl = " ";
 	public static final int nColors = 20;
 	
 	// Default font size for the Semantic Tree
@@ -89,6 +90,7 @@ public class UmlsWindow extends JFrameW
 	private URI inputUri = null;
 	private Subject subject = null;
 	private UmlsWindow thisWindow = null;		// self-reference
+	private AnnotationsWindow annWindow = null; // Reference to the Annotations Window.
 	
 	// The interpretations:
 //	int annotationMethod = 0;	// The Annotator index by which to annotate.
@@ -146,6 +148,12 @@ public class UmlsWindow extends JFrameW
 		Dimension frameDim = getContentPane().getSize();
 		Dimension desired = new Dimension(2 * frameDim.width / 3, 2 * frameDim.height / 3);
 		textAreaScroll.setPreferredSize(desired);
+		
+		// If not batch processing, create the Annotations Window.
+		if (saveFileFlag == false) {
+			setAnnotationsWindow();
+		}
+
 		//		System.out.println("Frame: "+frameDim+", Want: "+desired);
 	}
 
@@ -339,12 +347,12 @@ public class UmlsWindow extends JFrameW
 		textAreaScroll = new JScrollPane(textArea, 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		// 3. The explanation area
-		expl = new JTextArea(blankExpl, 10, 80);
-		explScroll = new JScrollPane(expl,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// 4. Assemble the right panel
-		rightMainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, textAreaScroll, explScroll);
-		rightMainPanel.setResizeWeight(0.8d);
+//		expl = new JTextArea(blankExpl, 10, 80);
+//		explScroll = new JScrollPane(expl,
+//				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		// 4. Assemble the right panel
+//		rightMainPanel = textAreaScroll;
+//		rightMainPanel.setResizeWeight(0.8d);
 		// 5. Create the tree display
 		semanticTypes = new SemanticTree(SemanticEntity.top);
 		semanticTypes.setRootVisible(true);
@@ -360,7 +368,7 @@ public class UmlsWindow extends JFrameW
 		leftPanel.add(treeScroll, BorderLayout.CENTER);
 		leftPanel.add(methodChooser, BorderLayout.SOUTH);
 		// 8. Combine left and right via a JSplitPane and add that to the JFrame's content
-		mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, rightMainPanel);
+		mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, textAreaScroll);
 		mainPanel.setResizeWeight(0.3);
 		add(mainPanel);
 		
@@ -388,7 +396,6 @@ public class UmlsWindow extends JFrameW
 		} else if (subject != null) {
 			
 		}	// Otherwise, pasted must be true and we just wait for the user to paste content.
-
 	}
 	
 	private void setContent(InputStream is) {
@@ -409,20 +416,31 @@ public class UmlsWindow extends JFrameW
 		textArea.setCaretPosition(0);
 	}
 	
+	private void setAnnotationsWindow() {
+		try {
+			annWindow = new AnnotationsWindow();
+			SwingUtilities.invokeLater(annWindow);
+		} catch (Exception e) {
+			System.err.println("Unable to initiate AnnotationsWindow.");
+			e.printStackTrace();
+			annWindow = null;
+		}
+	}
+	
 	// Components of the interface
 	JSplitPane mainPanel;
 	JPanel leftPanel;
 //	JPanel rightPanel;
 	JSplitPane rightMainPanel;
 	JTextAreaU textArea;
-	JTextArea expl;
+//	JTextArea expl;
 	JButton processButton;
 //	JPanel toprightPanel;
 	SemanticTree semanticTypes;
 	MethodChooser methodChooser;
 //	ButtonGroup methodGroup;
 	JScrollPane textAreaScroll;
-	JScrollPane explScroll;
+//	JScrollPane explScroll;
 	JScrollPane treeScroll;
 
 
@@ -479,6 +497,11 @@ public class UmlsWindow extends JFrameW
 		return str.replaceAll("\"", "\"\"");
 	}
 	
+	/**
+	 * Shows the annotations in the Annotation Window.
+	 * This will not be called if using the batch version.
+	 * @param pos
+	 */
 	public void showContextAnnotations(int pos) {		
 		String text = textArea.getText();
 //		U.debug("showContextAnnotations at " + pos + ": \"" + text.substring(pos, (int)Math.min(pos+8, text.length())) + "\"");
@@ -495,16 +518,14 @@ public class UmlsWindow extends JFrameW
 					sb.append(text.subSequence(ann.begin, ann.end));
 					sb.append("\n");
 					sb.append(relevantText);
-					sb.append("\n");
 					}
 				}
 			}
 			String newExpl = sb.toString();
 			if (newExpl.length() == 0) newExpl = blankExpl;
 			// Change explanation only if it is actually different.
-			if (!newExpl.equals(expl.getText())) {
-				expl.setText(newExpl);
-				expl.getCaret().setDot(0);
+			if (!newExpl.equals(annWindow.getText())) {
+				annWindow.setText(newExpl);
 			}
 		}
 	}

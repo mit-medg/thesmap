@@ -75,7 +75,6 @@ public class DirectoryWindow extends JFrameW
 	public static final String annotateButtonLabelRunning = "Annotating...";
 	public static final int ANN_RUNNING = 1;
 	public static final int ANN_STOPPED = 0;
-	public static final String blankExpl = "\n\n\n\n\n";
 	public static final int nColors = 20;
 	
 	// The data source:
