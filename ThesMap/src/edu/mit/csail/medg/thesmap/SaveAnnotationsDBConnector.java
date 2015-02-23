@@ -20,7 +20,7 @@ public class SaveAnnotationsDBConnector {
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement query = null;
-	static final String insertStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',';";
+	static final String insertStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
 	
 	public SaveAnnotationsDBConnector() {
 		ThesProps prop = ThesMap.prop;
