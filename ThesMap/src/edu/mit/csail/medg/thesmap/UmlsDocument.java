@@ -1,5 +1,7 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,52 +9,61 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.BitSet;
+
+import edu.mit.csail.medg.thesmap.UmlsWindow.MethodChooser;
 
 /**
  * This class is a non-interactive version of UmlsWindow, for batch processing.
- * It opens a given file, annotates it, and writes the results to a csv file with
- * the same name.csv. 
+ * It opens a given file, annotates it, and writes the results to a csv file
+ * with the same name.csv.
+ * 
  * @author psz
  *
  */
 
+public class UmlsDocument implements Runnable, PropertyChangeListener {
 
-public class UmlsDocument implements Runnable {
-	
 	String text = null;
 	File inFile;
 	AnnotationSet annSet = null;
+	BitSet chosenAnnotators = null;
+	BitSet doneBits = null;
+	UmlsWindow window = null;
 
-//	private static final Pattern spaces = Pattern.compile("\\s+|$");
-	
-	UmlsDocument(File inFile) {
+	// private static final Pattern spaces = Pattern.compile("\\s+|$");
+
+	UmlsDocument(File inFile, BitSet chosenAnnotators, BitSet doneBits) {
 		this.inFile = inFile;
-	}	
-	
+		this.chosenAnnotators = chosenAnnotators;
+		this.doneBits = doneBits;
+		annSet = new AnnotationSet();
+		window = new UmlsWindow(inFile, true);
+	}
+
 	public void run() {
 
 		FileInputStream is = null;
 		try {
 			is = new FileInputStream(inFile);
 			text = getContent(is);
-//			annotate(ThesMap.getInteger("phraseLength"));
-			UmlsWindow.saveAnnotations(csvFile(inFile), annSet);
+			if (window.textArea == null) {
+				window.textArea = new JTextAreaU(25, 80, window);
+			}
+			window.textArea.setText(text);
+			window.annSet = annSet;
+			window.needToAnnotate = chosenAnnotators;
+			doAnnotations();
 		} catch (FileNotFoundException e) {
-			System.err.println("File " + inFile + " not found: " + e.getMessage());
+			System.err.println("File " + inFile + " not found: "
+					+ e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.err.println("Error reading " + is + ": " + e.getMessage());
 			e.printStackTrace(System.err);
 		}
 	}
-	
-	private static File csvFile(File inFile) {
-		String name = inFile.getName();
-		int dot = name.lastIndexOf('.');
-		String newName = (dot < 1) ? name + ".csv" : name.substring(0, dot) + ".csv";
-		return new File(inFile.getParentFile(), newName);
-	}
-	
+
 	private String getContent(InputStream is) throws IOException {
 		// This works for either File or Uri input
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
@@ -65,68 +76,36 @@ public class UmlsDocument implements Runnable {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
-	 * Creates annotations on text.
-	 * This is a copy of annotate in UmlsWindow, but is not synchronized because
-	 * we expect multiple runs at the same time (on different documents).
-	 * Creates an AnnotationSet and saves it as the instance variable annSet.
-	 * @param phraseLength Maximum number of tokens in a phrase
+	 * Invoke each feasible Annotator unless its annotations are already
+	 * recorded in the current AnnotationSet.
+	 * 
+	 * @param source
 	 */
-	/*
-	public void annotate(int phraseLength) {
-		annSet = new AnnotationSet(phraseLength);
-		SpaceRecord sr = new SpaceRecord(phraseLength);
-		// Tokenize by spaces
-		Matcher m = spaces.matcher(text);
-		while (m.find()) {
-			int here = m.start();	// next found space beginning
-			sr.add(m.end());		// end of space = beginning of next word
-			//TheMap.log(sr.toShow());
-			// Consider all phrases starting phraseLength words back from here
-			for (int back = 1; back <= phraseLength; back++) {
-				int start = sr.getPrevStart(back);
-				if (start >= 0) {
-					String phrase = text.substring(start, here);
-					InterpretationSet i = InterpretationSet.lookup(phrase);
-					if (i != null && i != InterpretationSet.nullInterpretationSet) {
-						// Add these interpretations to the annotations unless they duplicate
-						// or cover the same interpretations that are already present.
-						// See note in documentation. 
-						annSet.integrate(new Annotation(start, here, phrase, i));
-					}
-				}
+	private void doAnnotations() {
+		// Check which annotations are checked (chosenAnnotators) but not yet
+		// annotated
+		BitSet needToAnnotate = new BitSet();
+		needToAnnotate.or(chosenAnnotators);
+		needToAnnotate.andNot(annSet.typeBits());
+		doneBits = new BitSet();
+		if (!needToAnnotate.isEmpty()) {
+			int i = -1;
+			while ((i = needToAnnotate.nextSetBit(i + 1)) >= 0) {
+				U.log("Try to run Annotator " + Annotator.getName(i) + "for "
+						+ inFile.getName());
+				Annotator ann = Annotator.makeAnnotator(Annotator.getName(i),
+						window);
+				ann.addPropertyChangeListener(this);
+				ann.execute();
 			}
 		}
-		*/
-	
-	
-//	protected void saveAnnotations(File chosenFile) {
-//		FileOutputStream fos = null;
-//		OutputStreamWriter osw = null;
-//		try {
-//			fos = new FileOutputStream(chosenFile);
-//			try {
-//				osw = new OutputStreamWriter(fos, "UTF-8");
-//				if (osw != null) {
-//					for (Annotation ann: annSet) {
-//						for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
-//							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-//									+ ",\"" + UmlsWindow.fixq(i.str) + "\"\n");
-//						}
-//					}
-//				}
-//				osw.close();
-//				fos.close();
-//			} catch (UnsupportedEncodingException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String prop = evt.getPropertyName();
+	}
 
 }

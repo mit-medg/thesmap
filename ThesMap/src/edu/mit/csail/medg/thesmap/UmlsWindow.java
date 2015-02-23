@@ -30,13 +30,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -79,20 +79,31 @@ public class UmlsWindow extends JFrameW
 	public static final String annotateButtonLabelRunning = "Annotating...";
 	public static final int ANN_RUNNING = 1;
 	public static final int ANN_STOPPED = 0;
-	public static final String blankExpl = "\n\n\n\n\n";
+	public static final String blankExpl = " ";
 	public static final int nColors = 20;
+	
+	// Default font size for the Semantic Tree
+	float fontSize = 9.0f;
 	
 	// The data source:
 	private File inputFile = null;
 	private URI inputUri = null;
 	private Subject subject = null;
 	private UmlsWindow thisWindow = null;		// self-reference
+	private AnnotationsWindow annWindow = null; // Reference to the Annotations Window.
 	
 	// The interpretations:
 //	int annotationMethod = 0;	// The Annotator index by which to annotate.
 //	int lastAnnotationMethod = 0;	// Tracks to see if we've actually changed
 	public AnnotationSet annSet = null;	
-	BitSet chosenAnnotators = new BitSet();
+	protected BitSet chosenAnnotators = new BitSet();
+	protected BitSet doneBits = new BitSet();
+	protected BitSet needToAnnotate = new BitSet();
+	
+	// Boolean to directly save to file when done. If true, then save to file.
+	protected boolean saveFileFlag = false;
+	protected SaveAnnotationsDBConnector dbConnector = null;
+
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -109,6 +120,14 @@ public class UmlsWindow extends JFrameW
 		thisWindow = this;
 	}
 	
+	public UmlsWindow(File file, boolean saveFile) {
+		super(defaultTitle);
+		thisWindow = this;
+		inputFile = file;
+		saveFileFlag = saveFile;
+		dbConnector = new SaveAnnotationsDBConnector();
+	}
+	
 	public UmlsWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
@@ -120,6 +139,7 @@ public class UmlsWindow extends JFrameW
 		subject = subj;
 		thisWindow = this;
 	}
+	
 
 	@Override
 	public void run() {
@@ -128,6 +148,12 @@ public class UmlsWindow extends JFrameW
 		Dimension frameDim = getContentPane().getSize();
 		Dimension desired = new Dimension(2 * frameDim.width / 3, 2 * frameDim.height / 3);
 		textAreaScroll.setPreferredSize(desired);
+		
+		// If not batch processing, create the Annotations Window.
+		if (saveFileFlag == false) {
+			setAnnotationsWindow();
+		}
+
 		//		System.out.println("Frame: "+frameDim+", Want: "+desired);
 	}
 
@@ -305,7 +331,7 @@ public class UmlsWindow extends JFrameW
 		
 		setJMenuBar(menuBar);
 	}
-
+	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
 	 * a SplitPane so it's user-adjustable.  On the left is the SemanticTree to allow selection of
@@ -321,18 +347,19 @@ public class UmlsWindow extends JFrameW
 		textAreaScroll = new JScrollPane(textArea, 
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		// 3. The explanation area
-		expl = new JTextArea(blankExpl, 10, 80);
-		explScroll = new JScrollPane(expl,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// 4. Assemble the right panel
-		rightMainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, textAreaScroll, explScroll);
-		rightMainPanel.setResizeWeight(0.8d);
+//		expl = new JTextArea(blankExpl, 10, 80);
+//		explScroll = new JScrollPane(expl,
+//				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		// 4. Assemble the right panel
+//		rightMainPanel = textAreaScroll;
+//		rightMainPanel.setResizeWeight(0.8d);
 		// 5. Create the tree display
 		semanticTypes = new SemanticTree(SemanticEntity.top);
 		semanticTypes.setRootVisible(true);
 		semanticTypes.addTreeSelectionListener(this);
 		treeScroll = new JScrollPane(semanticTypes,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		treeScroll.setFont(treeScroll.getFont().deriveFont(fontSize));
 		// 6. Create the lookup method selector
 		methodChooser = new MethodChooser();
 		// 7. Assemble the left panel
@@ -341,7 +368,7 @@ public class UmlsWindow extends JFrameW
 		leftPanel.add(treeScroll, BorderLayout.CENTER);
 		leftPanel.add(methodChooser, BorderLayout.SOUTH);
 		// 8. Combine left and right via a JSplitPane and add that to the JFrame's content
-		mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, rightMainPanel);
+		mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPanel, textAreaScroll);
 		mainPanel.setResizeWeight(0.3);
 		add(mainPanel);
 		
@@ -369,7 +396,6 @@ public class UmlsWindow extends JFrameW
 		} else if (subject != null) {
 			
 		}	// Otherwise, pasted must be true and we just wait for the user to paste content.
-
 	}
 	
 	private void setContent(InputStream is) {
@@ -390,20 +416,31 @@ public class UmlsWindow extends JFrameW
 		textArea.setCaretPosition(0);
 	}
 	
+	private void setAnnotationsWindow() {
+		try {
+			annWindow = new AnnotationsWindow();
+			SwingUtilities.invokeLater(annWindow);
+		} catch (Exception e) {
+			System.err.println("Unable to initiate AnnotationsWindow.");
+			e.printStackTrace();
+			annWindow = null;
+		}
+	}
+	
 	// Components of the interface
 	JSplitPane mainPanel;
 	JPanel leftPanel;
 //	JPanel rightPanel;
 	JSplitPane rightMainPanel;
 	JTextAreaU textArea;
-	JTextArea expl;
+//	JTextArea expl;
 	JButton processButton;
 //	JPanel toprightPanel;
 	SemanticTree semanticTypes;
 	MethodChooser methodChooser;
 //	ButtonGroup methodGroup;
 	JScrollPane textAreaScroll;
-	JScrollPane explScroll;
+//	JScrollPane explScroll;
 	JScrollPane treeScroll;
 
 
@@ -440,7 +477,7 @@ public class UmlsWindow extends JFrameW
 								preferredText = "null";
 							}
 							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(preferredText) + "\"," + i.type + "\n");
+									+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
 						}
 					}
 				}
@@ -460,6 +497,11 @@ public class UmlsWindow extends JFrameW
 		return str.replaceAll("\"", "\"\"");
 	}
 	
+	/**
+	 * Shows the annotations in the Annotation Window.
+	 * This will not be called if using the batch version.
+	 * @param pos
+	 */
 	public void showContextAnnotations(int pos) {		
 		String text = textArea.getText();
 //		U.debug("showContextAnnotations at " + pos + ": \"" + text.substring(pos, (int)Math.min(pos+8, text.length())) + "\"");
@@ -476,16 +518,14 @@ public class UmlsWindow extends JFrameW
 					sb.append(text.subSequence(ann.begin, ann.end));
 					sb.append("\n");
 					sb.append(relevantText);
-					sb.append("\n");
 					}
 				}
 			}
 			String newExpl = sb.toString();
 			if (newExpl.length() == 0) newExpl = blankExpl;
 			// Change explanation only if it is actually different.
-			if (!newExpl.equals(expl.getText())) {
-				expl.setText(newExpl);
-				expl.getCaret().setDot(0);
+			if (!newExpl.equals(annWindow.getText())) {
+				annWindow.setText(newExpl);
 			}
 		}
 	}
@@ -637,7 +677,26 @@ public class UmlsWindow extends JFrameW
 	}
 
 	public void annotatorDone(String annotatorName) {
-		methodChooser.annotatorDone(annotatorName);
+		doneBits.set(Annotator.getIndex(annotatorName));
+		if (doneBits.equals(needToAnnotate) && saveFileFlag) {
+			// If this is called from UmlsDocument, then we can save to file.
+			File csvFileOutput = csvFile(inputFile);
+			saveAnnotations(csvFileOutput, annSet);
+			U.log("Saved " + inputFile + " to file");
+			((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
+			U.log("Saved " + inputFile + " to database");
+		}
+		if (methodChooser != null ) {
+			methodChooser.annotatorDone(annotatorName);
+		}
+	}
+	
+	private static File csvFile(File inFile) {
+		String name = inFile.getName();
+		int dot = name.lastIndexOf('.');
+		String newName = (dot < 1) ? name + ".csv" : name.substring(0, dot)
+				+ ".csv";
+		return new File(inFile.getParentFile(), newName);
 	}
 	
 	public void setProgress(String annotatorName, int percent) {
@@ -663,8 +722,7 @@ public class UmlsWindow extends JFrameW
 		private static final int spMinW = 100;
 		private static final int spPrefH = 58;
 		protected SelectPanel[] panels;
-		BitSet needToAnnotate;
-		protected BitSet doneBits;
+
 		JButton doit;
 		
 
@@ -702,7 +760,6 @@ public class UmlsWindow extends JFrameW
 		public void annotatorDone(String annotatorName) {
 			U.log("Annotator " + annotatorName + " reports done.");
 			setProgress(annotatorName, 100);
-			doneBits.set(Annotator.getIndex(annotatorName));
 			if (doneBits.equals(needToAnnotate)) {
 				// We've completed all the annotations
 				setAnnotateButtonState(ANN_STOPPED);

@@ -68,8 +68,8 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 		if (initialized) pool.add(this);
 
 		try {
-			cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
-			//cTakesAED = ClinicalPipelineFactory.getFastPipeline();
+			//cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
+			cTakesAED = ClinicalPipelineFactory.getFastPipeline();
 		} catch (ResourceInitializationException e) {
 			e.printStackTrace();
 		}
@@ -108,17 +108,17 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	  JCas jcas = JCasFactory.createJCas();
 	  jcas.setDocumentText(text);
 	  SimplePipeline.runPipeline(jcas, cTakesAED);
-	  System.out.println("Finished processing");
 	  for(IdentifiedAnnotation entity : JCasUtil.select(jcas, IdentifiedAnnotation.class)){
-	      System.out.println("Entity: " + entity.getCoveredText() + " === Polarity: " + entity.getPolarity() +
-	    		  													" === Type ID? " + entity.getTypeID() +
-	    		  													" === extracted " + extractInformation(entity)
-	    		  );    
+//	      System.out.println("Entity: " + entity.getCoveredText() + " === Polarity: " + entity.getPolarity() +
+//	    		  													" === Type ID? " + entity.getTypeID() +
+//	    		  													" === extracted " + extractInformation(entity)
+//	    		  );    
 	      InterpretationSet is = makeInterpretationSet(entity);
 	      if (is != null && is != InterpretationSet.nullInterpretationSet) {
 	    	  ctakesInterpretations.put(entity, is);
 	      }
 	   }
+	  System.out.println("Finished cTakes processing");
 	  
 	  //return 
 	  
