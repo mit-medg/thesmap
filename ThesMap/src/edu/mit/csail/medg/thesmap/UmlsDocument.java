@@ -1,5 +1,6 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.BitSet;
 
-import edu.mit.csail.medg.thesmap.UmlsWindow.MethodChooser;
+import javax.swing.SwingWorker;
 
 /**
  * This class is a non-interactive version of UmlsWindow, for batch processing.
@@ -22,7 +23,7 @@ import edu.mit.csail.medg.thesmap.UmlsWindow.MethodChooser;
  *
  */
 
-public class UmlsDocument implements Runnable, PropertyChangeListener {
+public class UmlsDocument extends SwingWorker<Void, String> implements PropertyChangeListener {
 
 	String text = null;
 	File inFile;
@@ -30,38 +31,20 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 	BitSet chosenAnnotators = null;
 	BitSet doneBits = null;
 	UmlsWindow window = null;
+	DirectoryWindow dirWindow = null;
 
 	// private static final Pattern spaces = Pattern.compile("\\s+|$");
 
-	UmlsDocument(File inFile, BitSet chosenAnnotators, BitSet doneBits) {
+	UmlsDocument(DirectoryWindow dirWindow, File inFile, BitSet chosenAnnotators, BitSet doneBits) {
+		this.dirWindow = dirWindow;
 		this.inFile = inFile;
 		this.chosenAnnotators = chosenAnnotators;
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
 		window = new UmlsWindow(inFile, true);
-	}
-
-	public void run() {
-
-		FileInputStream is = null;
-		try {
-			is = new FileInputStream(inFile);
-			text = getContent(is);
-			if (window.textArea == null) {
-				window.textArea = new JTextAreaU(25, 80, window);
-			}
-			window.textArea.setText(text);
-			window.annSet = annSet;
-			window.needToAnnotate = chosenAnnotators;
-			doAnnotations();
-		} catch (FileNotFoundException e) {
-			System.err.println("File " + inFile + " not found: "
-					+ e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Error reading " + is + ": " + e.getMessage());
-			e.printStackTrace(System.err);
-		}
+		
+		// Listen for when annotations are done for this particular file.
+		window.addPropertyChangeListener(this);
 	}
 
 	private String getContent(InputStream is) throws IOException {
@@ -97,7 +80,6 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 						+ inFile.getName());
 				Annotator ann = Annotator.makeAnnotator(Annotator.getName(i),
 						window);
-				ann.addPropertyChangeListener(this);
 				ann.execute();
 			}
 		}
@@ -106,6 +88,34 @@ public class UmlsDocument implements Runnable, PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
+		if (prop.equals("Thesaurus Map") && evt.getNewValue().equals("complete")) {
+			firePropertyChange(inFile.getName(), "processing", "done");
+		}
+	}
+
+	@Override
+	protected Void doInBackground() throws Exception {
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(inFile);
+			text = getContent(is);
+			if (window.textArea == null) {
+				window.textArea = new JTextAreaU(25, 80, window);
+			}
+			window.textArea.setText(text);
+			window.annSet = annSet;
+			window.needToAnnotate = chosenAnnotators;
+			doAnnotations();
+		} catch (FileNotFoundException e) {
+			System.err.println("File " + inFile + " not found: "
+					+ e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error reading " + is + ": " + e.getMessage());
+			e.printStackTrace(System.err);
+		}
+		return null;
+
 	}
 
 }

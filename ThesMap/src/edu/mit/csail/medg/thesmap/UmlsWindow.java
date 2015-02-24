@@ -102,7 +102,7 @@ public class UmlsWindow extends JFrameW
 	
 	// Boolean to directly save to file when done. If true, then save to file.
 	protected boolean saveFileFlag = false;
-	protected SaveAnnotationsDBConnector dbConnector = null;
+	protected static SaveAnnotationsDBConnector dbConnector = null;
 
 	
 	// Creating a UmlsWindow doesn't start running it;
@@ -197,7 +197,7 @@ public class UmlsWindow extends JFrameW
 		});
 		fileMenu.add(openMI);
 		
-		JMenuItem saveMI = new JMenuItem("Save Annotations...");
+		JMenuItem saveMI = new JMenuItem("Save Annotations to .csv file");
 		saveMI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, accelMask));
 		saveMI.addActionListener(new ActionListener() {
 
@@ -215,6 +215,27 @@ public class UmlsWindow extends JFrameW
 			}
 		});
 		fileMenu.add(saveMI);
+		
+		// Could be used if the user wants to directly save to db rather than to file.
+		// TODO(mwc): Give the user the option of which database that it should be stored at.
+//		JMenuItem savedbMI = new JMenuItem("Save Annotations to Database");
+//		saveMI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, accelMask));
+//		saveMI.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// Save the annotations from file. User specifies the file to choose to save.
+//				JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
+//				File chosenFile = null;
+//				int val = chooser.showSaveDialog(thisWindow);
+//				if (val == JFileChooser.APPROVE_OPTION) {
+//					chosenFile = chooser.getSelectedFile();
+//				}
+//				if (chosenFile != null)
+//					saveAnnotationsToDB(chosenFile);
+//			}
+//		});
+//		fileMenu.add(savedbMI);
 		
 		fileMenu.add(makeClose());
 		
@@ -491,17 +512,23 @@ public class UmlsWindow extends JFrameW
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		U.log("Saved " + chosenFile + " to file");
 	}
 	
 	static String fixq(String str) {
 		return str.replaceAll("\"", "\"\"");
 	}
 	
+	public static void saveAnnotationsToDB(File csvFileOutput) {
+		((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
+		U.log("Saved " + csvFileOutput.getName() + " to database");
+	}
+
 	/**
-	 * Shows the annotations in the Annotation Window.
-	 * This will not be called if using the batch version.
-	 * @param pos
-	 */
+         * Shows the annotations in the Annotation Window.
+         * This will not be called if using the batch version.
+         * @param pos
+         */
 	public void showContextAnnotations(int pos) {		
 		String text = textArea.getText();
 //		U.debug("showContextAnnotations at " + pos + ": \"" + text.substring(pos, (int)Math.min(pos+8, text.length())) + "\"");
@@ -682,9 +709,8 @@ public class UmlsWindow extends JFrameW
 			// If this is called from UmlsDocument, then we can save to file.
 			File csvFileOutput = csvFile(inputFile);
 			saveAnnotations(csvFileOutput, annSet);
-			U.log("Saved " + inputFile + " to file");
-			((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
-			U.log("Saved " + inputFile + " to database");
+			saveAnnotationsToDB(csvFileOutput);
+			firePropertyChange(defaultTitle, "processing", "complete");
 		}
 		if (methodChooser != null ) {
 			methodChooser.annotatorDone(annotatorName);

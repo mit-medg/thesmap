@@ -65,6 +65,7 @@ import javax.swing.event.TreeSelectionListener;
 public class DirectoryWindow extends JFrameW 
 	implements Runnable
 	, ClipboardOwner
+	, PropertyChangeListener
 	{
 	
 	// The collection of all windows is defined in JListedFrame:
@@ -85,6 +86,10 @@ public class DirectoryWindow extends JFrameW
 	// The interpretations:
 	public AnnotationSet annSet = null;	
 	BitSet chosenAnnotators = new BitSet();
+	
+	// Number of files to process. 
+	public int numFilesTotal = 0;
+	public int numFilesProcessed = 0;
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -210,10 +215,19 @@ public class DirectoryWindow extends JFrameW
 		
 		// 2. Create the lookup method selector
 		methodChooser = new MethodChooser();
+		
+		// 3. Progress bar.
+		pb = new JProgressBar();
+		pb.setStringPainted(true);
+		
+		// Create the bottom panel.
+		bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.add(methodChooser, BorderLayout.CENTER);
+		bottomPanel.add(pb, BorderLayout.SOUTH);
 
-		// 3. Main panel
-		mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, methodChooser);
-		//mainPanel.setResizeWeight(0.3);
+		// 4. Main panel
+		mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, bottomPanel);
 		add(mainPanel);
 	}
 	
@@ -223,6 +237,8 @@ public class DirectoryWindow extends JFrameW
 	JTextArea directoryPane;
 	JPanel topPanel;
 	MethodChooser methodChooser;
+	JProgressBar pb;
+	JPanel bottomPanel;
 	
 
 	public void setSizeAndLocation() {
@@ -236,51 +252,6 @@ public class DirectoryWindow extends JFrameW
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
 
-	public static void saveAnnotations(File chosenFile, AnnotationSet annSet) {
-		FileOutputStream fos = null;
-		OutputStreamWriter osw = null;
-		try {
-			fos = new FileOutputStream(chosenFile);
-			try {
-				osw = new OutputStreamWriter(fos, "UTF-8");
-				if (osw != null) {
-					for (Annotation ann: annSet) {
-						for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
-							String preferredText = i.str;
-							if (preferredText == null) {
-								preferredText = "null";
-							}
-							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(preferredText) + "\"," + i.type + "\n");
-						}
-					}
-				}
-				osw.close();
-				fos.close();
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	static String fixq(String str) {
-		return str.replaceAll("\"", "\"\"");
-	}
-	
-	static String summarize(List<String> strings) {
-		StringBuilder sb = new StringBuilder();
-		String sep = "";
-		for (String s: strings) {
-			sb.append(sep);
-			sb.append(s);
-			sep = ", ";
-		}
-		return sb.toString();
-	}
 	
 	public void setAnnotateButtonState(int state) {
 		methodChooser.setAnnotateButtonState(state);
@@ -293,7 +264,7 @@ public class DirectoryWindow extends JFrameW
 	
 	// Default parameters of the window
 	public static final int width = 500;
-	public static final int height = 200;
+	public static final int height = 250;
 	public static final int originX = 20;
 	public static final int originY = 50;
 	//public static final String title = "UMLS Lookup";
@@ -306,11 +277,30 @@ public class DirectoryWindow extends JFrameW
 	JMenuItem faqMenuItem;
 	JMenuItem copyMenuItem, pasteMenuItem, cutMenuItem;
 	int accelMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-
 	
-	public void setProgress(String annotatorName, int percent) {
-		methodChooser.setProgress(annotatorName, percent);
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// This file should be equal to the file name. 
+		// TODO(mwc): Check to see if the file is one that hasn't been flagged yet.
+		String prop = evt.getPropertyName();
+		
+		if (evt.getNewValue().equals("done")) {
+			updateProgress();
+		}
+		
+		// Allow for next batch processing to be done if we are done with the previous set.
+		if (numFilesProcessed == numFilesTotal) {
+			setAnnotateButtonState(ANN_STOPPED);
+		}
 	}
+	
+	public void updateProgress() {
+		numFilesProcessed ++; 
+		System.out.println("Done processing " + numFilesProcessed+ "/" + numFilesTotal);
+		int percentage = (int)Math.round(new Double(numFilesProcessed) / numFilesTotal * 100.0);
+		pb.setValue(percentage);
+	}
+
 	
 	/**
 	 * MethodChoose implements a JPanel interface that permits selection of
@@ -322,7 +312,7 @@ public class DirectoryWindow extends JFrameW
 	 * @author psz
 	 *
 	 */
-	protected class MethodChooser extends JPanel implements PropertyChangeListener{
+	protected class MethodChooser extends JPanel{
 		
 		private static final long serialVersionUID = 1L;
 		static final int numberOfSelectorColumns = 2;
@@ -359,25 +349,30 @@ public class DirectoryWindow extends JFrameW
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// Check to see if a directory has been selected.
-					//TODO(mwc): Check to see if a directory has been selected.
+					setAnnotateButtonState(ANN_RUNNING);
 					
 					// Run annotations.
 					File folder = new File(fileDirectory.getPath());
 					File[] listOfFiles = folder.listFiles();
-
+					
+					// Reset the count of files processed to 0.
+					numFilesTotal = 0; 
+					numFilesProcessed = 0; 
+					
 				    for (int i = 0; i < listOfFiles.length; i++) {
 						if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
 							String fileName = listOfFiles[i].getPath();
 							U.log("Currently processing: " + fileName );
-							SwingUtilities.invokeLater(new UmlsDocument(new File(fileName), chosenAnnotators, doneBits));
+							UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits);
+							numFilesTotal++; 
+							currentDocument.addPropertyChangeListener(thisWindow);
+							currentDocument.execute();
 						}
 				    }
 				}
 			});
 			add(doit, BorderLayout.SOUTH);
 		}
-
 
 		public void setAnnotateButtonState(int state) {
 			if (state == ANN_RUNNING) {
@@ -389,6 +384,7 @@ public class DirectoryWindow extends JFrameW
 			}
 		}
 		
+		
 		public ArrayList<String> getSelectedMethods() {
 			ArrayList<String> ans = new ArrayList<String>();
 			for (SelectPanel p: panels) {
@@ -397,18 +393,6 @@ public class DirectoryWindow extends JFrameW
 			return ans.size() > 0 ? ans : null;
 		}
 
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			String prop = evt.getPropertyName();
-			// Only pay attention if property matches one of the annotatorTypes
-			int index = getPanelIndex(prop);
-			if (index >= 0) {
-				int percent = (int)evt.getNewValue();
-				if (percent < 0) setIndeterminateProgress(prop, true);
-				else setProgress(prop, percent);	
-			}
-		}
-		
 		/**
 		 * Returns the index of the panel whose button label is annotatorType
 		 * @param annotatorType The desired Button label
@@ -417,26 +401,6 @@ public class DirectoryWindow extends JFrameW
 		public int getPanelIndex(String annotatorType) {
 			Integer ans = Annotator.getIndex(annotatorType);
 			return (ans == null) ? -1 : (int)ans;
-		}
-		
-		public void setProgress(int annotatorIndex, int percent) {
-			JProgressBar pb = panels[annotatorIndex].pb;
-			if (pb.isIndeterminate()) pb.setIndeterminate(false);
-			pb.setValue(percent);
-		}
-		
-		public void setProgress(String annotatorType, int percent) {
-			int index = getPanelIndex(annotatorType);
-			if (index >= 0) setProgress(index, percent);
-		}
-		
-		public void setIndeterminateProgress(int index, boolean val) {
-			panels[index].pb.setIndeterminate(val);
-		}
-		
-		public void setIndeterminateProgress(String annotatorType, boolean val) {
-			int index = getPanelIndex(annotatorType);
-			if (index >= 0) setIndeterminateProgress(index, val);
 		}
 
 		protected class SelectPanel extends JPanel {
