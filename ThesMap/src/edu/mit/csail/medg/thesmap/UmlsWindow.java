@@ -660,6 +660,7 @@ public class UmlsWindow extends JFrameW
 			U.log("Saved " + inputFile + " to file");
 			((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
 			U.log("Saved " + inputFile + " to database");
+			firePropertyChange(defaultTitle, "processing", "complete");
 		}
 		if (methodChooser != null ) {
 			methodChooser.annotatorDone(annotatorName);
