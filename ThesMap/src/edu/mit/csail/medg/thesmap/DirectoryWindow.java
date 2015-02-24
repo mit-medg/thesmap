@@ -47,17 +47,20 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
 /**
  * This class is similar to UMLSWindow but instead of having everything be interactive. 
  * The point of the DirectoryWindow will be to simply run the annotators over the files
- * in a particular directory. 
+ * in a particular directory or set of files given by a SQL command. 
  * 
  * @author mwc
  *
@@ -91,6 +94,11 @@ public class DirectoryWindow extends JFrameW
 	// Number of files to process. 
 	public int numFilesTotal = 0;
 	public int numFilesProcessed = 0;
+	
+	// Keep track of what the selected index is for the tabbed pane.
+	public int currentMode = 0;
+	public static final int BROWSE_MODE = 0;
+	public static final int CMD_MODE = 1;
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -166,6 +174,20 @@ public class DirectoryWindow extends JFrameW
 		setJMenuBar(menuBar);
 	}
 
+	// Components of the interface
+	JTabbedPane mainTabbedPane;
+	JPanel mainPanel;
+	JSplitPane browsePane;
+	JFileChooser directoryChooser;
+	JTextArea directoryPane;
+	JPanel topPanel;
+	MethodChooser methodChooser;
+	JProgressBar pb;
+	JPanel bottomPanel;
+	
+	JSplitPane sqlTabPane;
+	JTextArea sqlText;
+	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
 	 * a SplitPane so it's user-adjustable.  On the left is the SemanticTree to allow selection of
@@ -173,7 +195,37 @@ public class DirectoryWindow extends JFrameW
 	 * annotation methods to use.  On the right is a title
 	 */
 	public void initializeContent() {
+		mainPanel = new JPanel();
+		mainPanel.setLayout( new BorderLayout() );
+		getContentPane().add( mainPanel );
+		
 		// Create the various components of the interface:
+		createBrowseTab();
+		createCommandTab();
+		
+		// Add tabbed panes to the main one. 
+		mainTabbedPane = new JTabbedPane();
+		mainTabbedPane.add("Browse", browsePane);
+		mainTabbedPane.add("SQL Command", sqlTabPane);
+		mainPanel.add(mainTabbedPane, BorderLayout.CENTER);
+		
+		mainTabbedPane.addChangeListener(new ChangeListener()
+	    {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (mainTabbedPane.getSelectedIndex() == BROWSE_MODE) {
+					currentMode = 0; 
+				} else if (mainTabbedPane.getSelectedIndex() == CMD_MODE) {
+					currentMode = 1;
+				}
+			}
+	    });
+	}
+	
+	/** 
+	 * Create a tabbed pane for the use case of batch processing a particular directory.
+	 */
+	public void createBrowseTab() {
 
 		// 1. Select the directory to annotate.
 		directoryPane = new JTextArea(1,30);
@@ -228,19 +280,30 @@ public class DirectoryWindow extends JFrameW
 		bottomPanel.add(pb, BorderLayout.SOUTH);
 
 		// 4. Main panel
-		mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, bottomPanel);
-		add(mainPanel);
+		browsePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, bottomPanel);
 	}
 	
-	// Components of the interface
-	JSplitPane mainPanel;
-	JFileChooser directoryChooser;
-	JTextArea directoryPane;
-	JPanel topPanel;
-	MethodChooser methodChooser;
-	JProgressBar pb;
-	JPanel bottomPanel;
-	
+	private void createCommandTab() {
+		sqlText = new JTextArea(1,30);
+		sqlText.setEditable(true);
+		// Set an empty SQL command as default.
+		sqlText.setText("");
+		
+		// 2. Create the annotator selector.
+		methodChooser = new MethodChooser();
+		
+		// 3. Progress bar.
+		pb = new JProgressBar();
+		pb.setStringPainted(true);
+		
+		// Create the bottom panel.
+		bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.add(methodChooser, BorderLayout.CENTER);
+		bottomPanel.add(pb, BorderLayout.SOUTH);
+		
+		sqlTabPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, directoryPane, bottomPanel);
+	}
 
 	public void setSizeAndLocation() {
 		setDefaultLookAndFeelDecorated(true);
@@ -345,31 +408,35 @@ public class DirectoryWindow extends JFrameW
 				selectors.add(new SelectPanel(Annotator.getName(i), i));
 			}
 			add(selectors, BorderLayout.CENTER);
-			doit = new JButton("Annotate directory");
+			doit = new JButton("Batch Annotate");
 			doit.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					setAnnotateButtonState(ANN_RUNNING);
-					
-					// Run annotations.
-					File folder = new File(fileDirectory.getPath());
-					File[] listOfFiles = folder.listFiles();
-					
 					// Reset the count of files processed to 0.
 					numFilesTotal = 0; 
 					numFilesProcessed = 0; 
 					
-				    for (int i = 0; i < listOfFiles.length; i++) {
-						if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
-							String fileName = listOfFiles[i].getPath();
-							U.log("Currently processing: " + fileName );
-							UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits);
-							numFilesTotal++; 
-							currentDocument.addPropertyChangeListener(thisWindow);
-							currentDocument.execute();
-						}
-				    }
+					if (currentMode == BROWSE_MODE) {
+						// Run annotations.
+						File folder = new File(fileDirectory.getPath());
+						File[] listOfFiles = folder.listFiles();
+						
+					    for (int i = 0; i < listOfFiles.length; i++) {
+							if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
+								String fileName = listOfFiles[i].getPath();
+								U.log("Currently processing: " + fileName );
+								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits);
+								numFilesTotal++; 
+								currentDocument.addPropertyChangeListener(thisWindow);
+								currentDocument.execute();
+							}
+					    }
+					} else if (currentMode == CMD_MODE) {
+						//TODO(mwc): Process the sql command to make the proper connections.
+					}
+
 				}
 			});
 			add(doit, BorderLayout.SOUTH);
