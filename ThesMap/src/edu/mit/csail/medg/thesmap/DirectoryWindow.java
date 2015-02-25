@@ -3,17 +3,12 @@ package edu.mit.csail.medg.thesmap;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -21,23 +16,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -45,7 +29,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -54,8 +37,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 
 /**
  * This class is similar to UMLSWindow but instead of having everything be interactive. 
@@ -123,8 +104,6 @@ public class DirectoryWindow extends JFrameW
 	public void run() {
 		thisWindow = this;
 		super.run();
-		Dimension frameDim = getContentPane().getSize();
-		Dimension desired = new Dimension(2 * frameDim.width / 3, 2 * frameDim.height / 3);
 	}
 
 	public void initializeMenus() {
@@ -346,7 +325,7 @@ public class DirectoryWindow extends JFrameW
 	public void propertyChange(PropertyChangeEvent evt) {
 		// This file should be equal to the file name. 
 		// TODO(mwc): Check to see if the file is one that hasn't been flagged yet.
-		String prop = evt.getPropertyName();
+		//String prop = evt.getPropertyName();
 		
 		if (evt.getNewValue().equals("done")) {
 			updateProgress();

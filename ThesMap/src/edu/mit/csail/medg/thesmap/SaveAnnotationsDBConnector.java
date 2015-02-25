@@ -10,7 +10,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -55,7 +54,7 @@ public class SaveAnnotationsDBConnector {
 	public void saveCSVToDB(File csvFile) {
 		try {
 			query.setString(1, csvFile.getAbsolutePath());
-			ResultSet rs = query.executeQuery();
+			query.executeQuery();
 		} catch (SQLException e) {
 			System.err.println("SQL Error loading file: \""
 					+ csvFile.getAbsolutePath() + "\": " + e.getMessage());
