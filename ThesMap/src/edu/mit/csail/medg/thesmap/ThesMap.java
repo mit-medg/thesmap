@@ -1,5 +1,4 @@
 package edu.mit.csail.medg.thesmap;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;

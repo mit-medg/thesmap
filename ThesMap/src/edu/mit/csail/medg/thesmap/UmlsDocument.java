@@ -1,6 +1,5 @@
 package edu.mit.csail.medg.thesmap;
 
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -23,7 +22,8 @@ import javax.swing.SwingWorker;
  *
  */
 
-public class UmlsDocument extends SwingWorker<Void, String> implements PropertyChangeListener {
+public class UmlsDocument extends SwingWorker<Void, String> implements
+		PropertyChangeListener {
 
 	String text = null;
 	File inFile;
@@ -35,14 +35,15 @@ public class UmlsDocument extends SwingWorker<Void, String> implements PropertyC
 
 	// private static final Pattern spaces = Pattern.compile("\\s+|$");
 
-	UmlsDocument(DirectoryWindow dirWindow, File inFile, BitSet chosenAnnotators, BitSet doneBits) {
+	UmlsDocument(DirectoryWindow dirWindow, File inFile,
+			BitSet chosenAnnotators, BitSet doneBits) {
 		this.dirWindow = dirWindow;
 		this.inFile = inFile;
 		this.chosenAnnotators = chosenAnnotators;
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
 		window = new UmlsWindow(inFile, true);
-		
+
 		// Listen for when annotations are done for this particular file.
 		window.addPropertyChangeListener(this);
 	}
@@ -88,7 +89,8 @@ public class UmlsDocument extends SwingWorker<Void, String> implements PropertyC
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (prop.equals("Thesaurus Map") && evt.getNewValue().equals("complete")) {
+		if (prop.equals("Thesaurus Map")
+				&& evt.getNewValue().equals("complete")) {
 			firePropertyChange(inFile.getName(), "processing", "done");
 		}
 	}
