@@ -14,14 +14,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class SaveAnnotationsDBConnector {
+public class ResourceConnectorDB {
 
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement query = null;
 	static final String insertStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
 	
-	public SaveAnnotationsDBConnector() {
+	public ResourceConnectorDB() {
 		ThesProps prop = ThesMap.prop;
 		String resultHost =  prop.getProperty(ThesProps.resultHostName);
 		String resultDb =  prop.getProperty(ThesProps.resultDbName);
@@ -34,6 +34,7 @@ public class SaveAnnotationsDBConnector {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, resultUser, resultPassword);
 			query = conn.prepareStatement(insertStmt);
+			SemanticEntity.init(this);
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);

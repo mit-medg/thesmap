@@ -37,6 +37,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -102,8 +103,10 @@ public class UmlsWindow extends JFrameW
 	
 	// Boolean to directly save to file when done. If true, then save to file.
 	protected boolean saveFileFlag = false;
-	protected static SaveAnnotationsDBConnector dbConnector = null;
+	protected static ResourceConnectorDB dbConnector = null;
 
+	// List of files with sublists of TUIs
+	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -112,12 +115,14 @@ public class UmlsWindow extends JFrameW
 	public UmlsWindow() {
 		super(defaultTitle);
 		thisWindow = this;
+		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(File file) {
 		super(file.getName());
 		inputFile = file;
 		thisWindow = this;
+		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(File file, boolean saveFile) {
@@ -125,13 +130,14 @@ public class UmlsWindow extends JFrameW
 		thisWindow = this;
 		inputFile = file;
 		saveFileFlag = saveFile;
-		dbConnector = new SaveAnnotationsDBConnector();
+		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
 		thisWindow = this;
+		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(Subject subj) {
@@ -374,10 +380,29 @@ public class UmlsWindow extends JFrameW
 //		// 4. Assemble the right panel
 //		rightMainPanel = textAreaScroll;
 //		rightMainPanel.setResizeWeight(0.8d);
-		// 5. Create the tree display
+		// 5. Create the tree display		
 		semanticTypes = new SemanticTree(SemanticEntity.top);
 		semanticTypes.setRootVisible(true);
 		semanticTypes.addTreeSelectionListener(this);
+		
+		// Allow for the option to select a different TUI list.
+		tuiSelector = new JComboBox<String>(tuiLists);
+		tuiSelector.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Options: {"All", "WJL", "ASD"}
+				// All - keep all semantic types; WJL - use Bill's options. 
+				// ASD - shortened list for ASD application.
+				JComboBox cb = (JComboBox)e.getSource();
+		        String selectedList = (String)cb.getSelectedItem();
+		        if (selectedList.equals("All")) {
+		        	//semanticTypes.
+		        }
+				
+			}
+		});
+		
 		treeScroll = new JScrollPane(semanticTypes,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		treeScroll.setFont(treeScroll.getFont().deriveFont(fontSize));
@@ -386,6 +411,7 @@ public class UmlsWindow extends JFrameW
 		// 7. Assemble the left panel
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
+		leftPanel.add(tuiSelector, BorderLayout.NORTH);
 		leftPanel.add(treeScroll, BorderLayout.CENTER);
 		leftPanel.add(methodChooser, BorderLayout.SOUTH);
 		// 8. Combine left and right via a JSplitPane and add that to the JFrame's content
@@ -463,6 +489,7 @@ public class UmlsWindow extends JFrameW
 	JScrollPane textAreaScroll;
 //	JScrollPane explScroll;
 	JScrollPane treeScroll;
+	JComboBox tuiSelector;
 
 
 
@@ -520,7 +547,7 @@ public class UmlsWindow extends JFrameW
 	}
 	
 	public static void saveAnnotationsToDB(File csvFileOutput) {
-		((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
+		((ResourceConnectorDB) dbConnector).saveCSVToDB(csvFileOutput);
 		U.log("Saved " + csvFileOutput.getName() + " to database");
 	}
 
