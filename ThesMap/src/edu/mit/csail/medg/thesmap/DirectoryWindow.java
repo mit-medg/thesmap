@@ -302,7 +302,7 @@ public class DirectoryWindow extends JFrameW
 		bottomPanel.add(methodChooser, BorderLayout.CENTER);
 		bottomPanel.add(pb, BorderLayout.SOUTH);
 		
-		sqlTabPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, directoryPane, bottomPanel);
+		sqlTabPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, sqlText, bottomPanel);
 	}
 
 	public void setSizeAndLocation() {
