@@ -65,6 +65,12 @@ public class ThesProps {
 	static final String resultUserName = "resultUser";
 	static final String resultPasswordName = "resultPassword";
 	
+	// For getting sources to run batch SQL command
+	static final String sourceHostName = "sourceHost";
+	static final String sourceDbName = "sourceDb";
+	static final String sourceUserName = "sourceUser";
+	static final String sourcePasswordName = "sourcePassword";
+	
 	public Properties thesMapDefaults = null;
 	public Properties thesMapProps = null;
 

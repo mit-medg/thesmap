@@ -31,11 +31,11 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 	BitSet chosenAnnotators = null;
 	BitSet doneBits = null;
 	UmlsWindow window = null;
-	DirectoryWindow dirWindow = null;
+	BatchWindow dirWindow = null;
 
 	// private static final Pattern spaces = Pattern.compile("\\s+|$");
 
-	UmlsDocument(DirectoryWindow dirWindow, File inFile,
+	UmlsDocument(BatchWindow dirWindow, File inFile,
 			BitSet chosenAnnotators, BitSet doneBits) {
 		this.dirWindow = dirWindow;
 		this.inFile = inFile;
