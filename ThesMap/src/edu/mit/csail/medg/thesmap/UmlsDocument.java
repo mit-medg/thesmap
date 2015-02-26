@@ -66,7 +66,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		this.chosenAnnotators = chosenAnnotators;
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
-		window = new UmlsWindow(inFile, true);
+		window = new UmlsWindow(docID, true);
 
 		// Listen for when annotations are done for this particular file.
 		window.addPropertyChangeListener(this);
@@ -115,7 +115,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		String prop = evt.getPropertyName();
 		if (prop.equals("Thesaurus Map")
 				&& evt.getNewValue().equals("complete")) {
-			firePropertyChange(inFile.getName(), "processing", "done");
+			firePropertyChange(docID, "processing", "done");
 		}
 	}
 
