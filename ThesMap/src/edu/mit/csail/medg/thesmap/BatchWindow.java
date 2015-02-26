@@ -18,6 +18,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -356,9 +358,6 @@ public class BatchWindow extends JFrameW
                   .addComponent(sqlText))
               .addComponent(bottomPanel)
 		);
-
-		
-		//sqlTabPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, sqlText, bottomPanel);
 	}
 
 	private void loadDefaultDB() {
@@ -498,9 +497,21 @@ public class BatchWindow extends JFrameW
 							}
 					    }
 					} else if (currentMode == CMD_MODE) {
-						//TODO(mwc): Process the sql command to make the proper connections.
 						dbConnector = new DBConnectorOpen(dbHostText.getText(), dbText.getText(), dbUserText.getText(), dbPwdText.getText());
-						dbConnector.processSQL(sqlText.getText());
+						ResultSet rs = dbConnector.processSQL(sqlText.getText());
+						try {						
+							// Process the files accordingly.
+							while (rs.next()) {
+								String docId = rs.getString("DOCID");
+								String text = rs.getString("TEXT");
+								UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits);
+								numFilesTotal++; 
+								currentDocument.addPropertyChangeListener(thisWindow);
+								currentDocument.execute();
+							}
+						} catch (SQLException except) {
+							U.log("Incorrect SQL command" + except.getMessage());
+						}
 					}
 
 				}

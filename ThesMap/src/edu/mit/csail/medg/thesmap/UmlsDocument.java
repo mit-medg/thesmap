@@ -26,12 +26,13 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		PropertyChangeListener {
 
 	String text = null;
-	File inFile;
+	File inFile = null;
 	AnnotationSet annSet = null;
 	BitSet chosenAnnotators = null;
 	BitSet doneBits = null;
 	UmlsWindow window = null;
 	BatchWindow dirWindow = null;
+	String docID = null;
 
 	// private static final Pattern spaces = Pattern.compile("\\s+|$");
 
@@ -39,6 +40,29 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 			BitSet chosenAnnotators, BitSet doneBits) {
 		this.dirWindow = dirWindow;
 		this.inFile = inFile;
+		this.chosenAnnotators = chosenAnnotators;
+		this.doneBits = doneBits;
+		annSet = new AnnotationSet();
+		window = new UmlsWindow(inFile, true);
+		docID = inFile.getName();
+
+		// Listen for when annotations are done for this particular file.
+		window.addPropertyChangeListener(this);
+	}
+	
+	/** 
+	 * Allows you to directly process text in a String format
+	 * instead of reading from a file. 
+	 * @param dirWindow
+	 * @param text
+	 * @param chosenAnnotators
+	 * @param doneBits
+	 */
+	UmlsDocument(BatchWindow dirWindow, String text, String id,
+			BitSet chosenAnnotators, BitSet doneBits) {
+		this.dirWindow = dirWindow;
+		this.text = text;
+		docID = id;
 		this.chosenAnnotators = chosenAnnotators;
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
@@ -78,7 +102,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 			int i = -1;
 			while ((i = needToAnnotate.nextSetBit(i + 1)) >= 0) {
 				U.log("Try to run Annotator " + Annotator.getName(i) + "for "
-						+ inFile.getName());
+						+ docID);
 				Annotator ann = Annotator.makeAnnotator(Annotator.getName(i),
 						window);
 				ann.execute();
@@ -97,25 +121,28 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		FileInputStream is = null;
-		try {
-			is = new FileInputStream(inFile);
-			text = getContent(is);
-			if (window.textArea == null) {
-				window.textArea = new JTextAreaU(25, 80, window);
+		if (inFile != null) {
+			FileInputStream is = null;
+			try {
+				is = new FileInputStream(inFile);
+				text = getContent(is);
+			} catch (FileNotFoundException e) {
+				System.err.println("File " + inFile + " not found: "
+						+ e.getMessage());
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("Error reading " + is + ": " + e.getMessage());
+				e.printStackTrace(System.err);
 			}
-			window.textArea.setText(text);
-			window.annSet = annSet;
-			window.needToAnnotate = chosenAnnotators;
-			doAnnotations();
-		} catch (FileNotFoundException e) {
-			System.err.println("File " + inFile + " not found: "
-					+ e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Error reading " + is + ": " + e.getMessage());
-			e.printStackTrace(System.err);
 		}
+		if (window.textArea == null) {
+			window.textArea = new JTextAreaU(25, 80, window);
+		}
+		window.textArea.setText(text);
+		window.annSet = annSet;
+		window.needToAnnotate = chosenAnnotators;
+		doAnnotations();
+		
 		return null;
 
 	}

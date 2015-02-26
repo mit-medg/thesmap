@@ -23,6 +23,7 @@ public class DBConnectorOpen {
 	String db;
 	String user;
 	String pwd;
+	static final String countStmt = "SELECT COUNT(*) AS rowcount FROM ?"; 
 	
 	public DBConnectorOpen() {
 		ThesProps prop = ThesMap.prop;
@@ -60,7 +61,6 @@ public class DBConnectorOpen {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, user, pwd);
-			
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);
@@ -71,6 +71,22 @@ public class DBConnectorOpen {
 		}
 	}
 	
+	public int countFiles(String table) {
+		int count = 0;
+		try {
+			query = conn.prepareStatement(countStmt);
+			query.setString(1, table);
+
+			ResultSet r = query.executeQuery();
+			r.next();
+			count = r.getInt("rowcount");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+
+		return count;
+	}
 	
 	/**
 	 * Run the specified SQL command.
@@ -80,8 +96,10 @@ public class DBConnectorOpen {
 	 */
 	public ResultSet processSQL(String stmt) {
 		try {
+			// TODO: Should probably validate the SQL command to prevent SQL table drops and other malicious things.
 			query = conn.prepareStatement(stmt);
 			ResultSet rs = query.executeQuery();
+			U.log("Processing SQL Command: " + stmt);
 			return rs;
 		} catch (SQLException e) {
 			System.err.println("SQL Error running command: \""
