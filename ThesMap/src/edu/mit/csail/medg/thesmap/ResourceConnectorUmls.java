@@ -26,8 +26,7 @@ public class ResourceConnectorUmls extends ResourceConnector {
 	
 	Connection conn = null;
 	Statement stmt = null;
-	PreparedStatement query = null;
-	PreparedStatement cui2tui = null;
+
 	ResultSet rs = null;
 	static final String nstr2cuiStmt = 
 			"select y.cui, y.str, s.tui, s.sty from (select c.cui, c.str from (select distinct cui from mrxns_eng where nstr=?) as x join mrconso c on c.cui=x.cui where  c.ts='P' and c.stt='PF' and c.ispref='Y' and c.cvf is not null and c.LAT='ENG') as y join mrsty s on y.cui=s.cui;";
@@ -58,8 +57,7 @@ public class ResourceConnectorUmls extends ResourceConnector {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, dbuser, dbpassword);
-			query = conn.prepareStatement(nstr2cuiStmt);
-			cui2tui = conn.prepareStatement(cui2tuiStmt);
+
 			SemanticEntity.init(this);
 			initialized = true;
 		}
@@ -105,36 +103,58 @@ public class ResourceConnectorUmls extends ResourceConnector {
 	 */
 	public synchronized InterpretationSet lookupNormalized(String normalizedPhrase, String annType) {
 //		U.log("LookupNorm: " + normalizedPhrase);
+		
 		InterpretationSet value = interpretationCache.get(normalizedPhrase);
-			if (value != null) {
+		PreparedStatement query = null;
+		if (value != null) {
 //				U.log("...found in cache: " + value.toString());
-				return value;	// Includes case of nullInterpretationSet
-			}
-			value = new InterpretationSet();
-			try {
-				query.setString(1,  normalizedPhrase);
-				rs = query.executeQuery();
-				while (rs.next()) value.add(Interpretation.makeInterpretation(annType, rs));
-			} catch (SQLException e) {
-				System.err.println("SQL Error looking up normalized phrase \""
-						+ normalizedPhrase + "\": " + e.getMessage());
-				value = InterpretationSet.nullInterpretationSet;
-			}
-			if (value.size() == 0) value = InterpretationSet.nullInterpretationSet;
-			interpretationCache.put(normalizedPhrase, value);
+			return value;	// Includes case of nullInterpretationSet
+		}
+		value = new InterpretationSet();
+		try {
+			query = conn.prepareStatement(nstr2cuiStmt);
+			query.setString(1,  normalizedPhrase);
+			rs = query.executeQuery();
+			while (rs.next()) value.add(Interpretation.makeInterpretation(annType, rs));
+		} catch (SQLException e) {
+			System.err.println("SQL Error looking up normalized phrase \""
+					+ normalizedPhrase + "\": " + e.getMessage());
+			value = InterpretationSet.nullInterpretationSet;
+		} finally {
+	        if (query != null) {
+	        	try {
+	        		query.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }
+		}
+		if (value.size() == 0) value = InterpretationSet.nullInterpretationSet;
+		interpretationCache.put(normalizedPhrase, value);
 //			U.log("lookupNorm returns " + value.toString());
-			return value;
+		
+		return value;
 	}
 	
 	public ArrayList<String> cui2tui(String cui) {
 		ArrayList<String> ans = new ArrayList<String>();
+		PreparedStatement cui2tui = null;
 		try {
+			cui2tui = conn.prepareStatement(cui2tuiStmt);
 			cui2tui.setString(1,  cui);
 			ResultSet rs = cui2tui.executeQuery();
 			while (rs.next()) ans.add(rs.getString(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} finally { // Close the connection if done.
+	        if (cui2tui != null) {
+	        	try {
+					cui2tui.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }
+	    }
 		return ans;
 		
 	}
@@ -145,9 +165,7 @@ public class ResourceConnectorUmls extends ResourceConnector {
 				U.p("Closing MySQL Connection.");
 				if (rs!=null) rs.close();
 			} catch (SQLException e) {}
-			try{
-				if (query!=null) query.close();
-			} catch (SQLException e) {}
+
 			try{
 				if (conn!=null) conn.close();
 			} catch (SQLException e) {}
