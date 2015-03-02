@@ -32,10 +32,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -173,11 +175,11 @@ public class BatchWindow extends JFrameW
 	JLabel dbUserLabel;
 	JLabel dbPwdLabel;
 	JPanel sqlTabPane;
-	JTextArea sqlText;
-	JTextArea dbHostText;
-	JTextArea dbText;
-	JTextArea dbUserText;
-	JTextArea dbPwdText;
+	JTextField sqlText;
+	JTextField dbHostText;
+	JTextField dbText;
+	JTextField dbUserText;
+	JPasswordField dbPwdText;
 	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
@@ -219,7 +221,7 @@ public class BatchWindow extends JFrameW
 	public void createBrowseTab() {
 
 		// 1. Select the directory to annotate.
-		directoryPane = new JTextArea(1,30);
+		directoryPane = new JTextArea();
 		directoryPane.setEditable(false);
 		directoryPane.setText(new File("").getAbsoluteFile().getAbsolutePath());
  
@@ -279,26 +281,26 @@ public class BatchWindow extends JFrameW
 	 */
 	private void createCommandTab() {
 		dbHostLabel = new JLabel("Host Name: ");
-		dbHostText = new JTextArea(1,30);
+		dbHostText = new JTextField();
 		dbHostText.setEditable(true);
 		
 		dbLabel = new JLabel("DB Name: ");
-		dbText = new JTextArea(1,30);
+		dbText = new JTextField();
 		dbText.setEditable(true);
 
 		dbUserLabel = new JLabel("User Name: ");
-		dbUserText = new JTextArea(1,30);
+		dbUserText = new JTextField();
 		dbUserText.setEditable(true);
 		
 		dbPwdLabel = new JLabel("Password: ");
-		dbPwdText = new JTextArea(1,30);
+		dbPwdText = new JPasswordField();
 		dbPwdText.setEditable(true);
 		
 		// Load the default properties for the database to use.
 		loadDefaultDB();
 		
 		sqlCmdLabel = new JLabel("SQL Command:");
-		sqlText = new JTextArea(1,30);
+		sqlText = new JTextField();
 		sqlText.setEditable(true);
 		// Set an empty SQL command as default.
 		sqlText.setText("");
@@ -391,7 +393,7 @@ public class BatchWindow extends JFrameW
 	
 	// Default parameters of the window
 	public static final int width = 500;
-	public static final int height = 350;
+	public static final int height = 400;
 	public static final int originX = 20;
 	public static final int originY = 50;
 	//public static final String title = "UMLS Lookup";
@@ -497,17 +499,22 @@ public class BatchWindow extends JFrameW
 							}
 					    }
 					} else if (currentMode == CMD_MODE) {
-						dbConnector = new DBConnectorOpen(dbHostText.getText(), dbText.getText(), dbUserText.getText(), dbPwdText.getText());
+						dbConnector = new DBConnectorOpen(dbHostText.getText(), dbText.getText(), dbUserText.getText(), new String(dbPwdText.getPassword()));
 						ResultSet rs = dbConnector.processSQL(sqlText.getText());
-						try {						
-							// Process the files accordingly.
-							while (rs.next()) {
-								String docId = rs.getString("DOCID");
-								String text = rs.getString("TEXT");
-								UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits);
-								numFilesTotal++; 
-								currentDocument.addPropertyChangeListener(thisWindow);
-								currentDocument.execute();
+						try {	
+							if (rs == null) {
+								U.log("Wrong SQL command. Please try again.");
+								setAnnotateButtonState(ANN_STOPPED);
+							} else {
+								// Process the files accordingly.
+								while (rs.next()) {
+									String docId = rs.getString("DOCID");
+									String text = rs.getString("TEXT");
+									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits);
+									numFilesTotal++; 
+									currentDocument.addPropertyChangeListener(thisWindow);
+									currentDocument.execute();
+								}
 							}
 						} catch (SQLException except) {
 							U.log("Incorrect SQL command" + except.getMessage());
