@@ -160,6 +160,9 @@ public class BatchWindow extends JFrameW
 	// Components of the interface
 	JTabbedPane mainTabbedPane;
 	JPanel mainPanel;
+	
+	// Browse Directory pane
+	JLabel browseInstructionLabel;
 	JSplitPane browsePane;
 	JFileChooser directoryChooser;
 	JTextArea directoryPane;
@@ -180,6 +183,7 @@ public class BatchWindow extends JFrameW
 	JTextField dbText;
 	JTextField dbUserText;
 	JPasswordField dbPwdText;
+	JLabel sqlInstructionLabel;
 	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
@@ -221,6 +225,8 @@ public class BatchWindow extends JFrameW
 	public void createBrowseTab() {
 
 		// 1. Select the directory to annotate.
+		browseInstructionLabel = new JLabel("Select the directory containing .txt files to run annotators.");
+		
 		directoryPane = new JTextArea();
 		directoryPane.setEditable(false);
 		directoryPane.setText(new File("").getAbsoluteFile().getAbsolutePath());
@@ -256,8 +262,10 @@ public class BatchWindow extends JFrameW
         
         // Create the panel to browse for the directory of choice.
         topPanel = new JPanel();
+        topPanel.add(browseInstructionLabel);
         topPanel.add(directoryPane);
         topPanel.add(browseButton);
+        
 		
 		// 2. Create the lookup method selector
 		methodChooser = new MethodChooser();
@@ -274,6 +282,7 @@ public class BatchWindow extends JFrameW
 
 		// 4. Main panel
 		browsePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, bottomPanel);
+		browsePane.setResizeWeight(0.4f);
 	}
 	
 	/**
@@ -304,6 +313,7 @@ public class BatchWindow extends JFrameW
 		sqlText.setEditable(true);
 		// Set an empty SQL command as default.
 		sqlText.setText("");
+		sqlInstructionLabel = new JLabel("DB need doc ids and text (e.g. 'select noteid, text from notes').");
 		
 		// 2. Create the annotator selector.
 		methodChooser = new MethodChooser();
@@ -315,6 +325,7 @@ public class BatchWindow extends JFrameW
 		// Create the bottom panel.
 		bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.add(sqlInstructionLabel, BorderLayout.NORTH);
 		bottomPanel.add(methodChooser, BorderLayout.CENTER);
 		bottomPanel.add(pb, BorderLayout.SOUTH);
 		
