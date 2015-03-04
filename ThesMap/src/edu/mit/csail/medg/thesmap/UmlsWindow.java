@@ -402,10 +402,8 @@ public class UmlsWindow extends JFrameW
 				// ASD - shortened list for ASD application.
 				JComboBox cb = (JComboBox)e.getSource();
 		        String selectedList = (String)cb.getSelectedItem();
-		        if (selectedList.equals("All")) {
-		        	//semanticTypes.
-		        }
-				
+		        semanticTypes.setCurrentTuiSelection(selectedList);
+		        semanticTypes.updateCurrentTuiSelection();
 			}
 		});
 		
