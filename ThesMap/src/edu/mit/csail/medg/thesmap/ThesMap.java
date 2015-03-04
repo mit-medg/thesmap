@@ -98,7 +98,7 @@ public class ThesMap {
 			}
 		}
 		else {
-			SwingUtilities.invokeLater(new DirectoryWindow());
+			SwingUtilities.invokeLater(new BatchWindow());
 		}
 	}
 

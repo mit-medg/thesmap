@@ -18,20 +18,26 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -46,7 +52,7 @@ import javax.swing.event.ChangeListener;
  * @author mwc
  *
  */
-public class DirectoryWindow extends JFrameW 
+public class BatchWindow extends JFrameW 
 	implements Runnable
 	, ClipboardOwner
 	, PropertyChangeListener
@@ -65,7 +71,7 @@ public class DirectoryWindow extends JFrameW
 	// The data source:
 	private File fileDirectory = null;
 	private URI inputUri = null;
-	private DirectoryWindow thisWindow = null;		// self-reference
+	private BatchWindow thisWindow = null;		// self-reference
 	
 	// The interpretations:
 	public AnnotationSet annSet = null;	
@@ -80,11 +86,10 @@ public class DirectoryWindow extends JFrameW
 	public static final int BROWSE_MODE = 0;
 	public static final int CMD_MODE = 1;
 	
-	// Creating a UmlsWindow doesn't start running it;
-	// We invokeLater to do so, as it is Runnable.
-	// Thus, the loading of the source happens in the new thread.
+	// Source for database.
+	private DBConnectorOpen dbConnector;
 
-	public DirectoryWindow() {
+	public BatchWindow() {
 		super(defaultTitle);
 		thisWindow = this;
 		
@@ -92,7 +97,7 @@ public class DirectoryWindow extends JFrameW
 		fileDirectory = new File("").getAbsoluteFile();
 	}
 	
-	public DirectoryWindow(URI uri) {
+	public BatchWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
 		thisWindow = this;
@@ -122,7 +127,7 @@ public class DirectoryWindow extends JFrameW
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new DirectoryWindow());
+				SwingUtilities.invokeLater(new BatchWindow());
 			}
 		});
 		fileMenu.add(newMI);
@@ -155,6 +160,9 @@ public class DirectoryWindow extends JFrameW
 	// Components of the interface
 	JTabbedPane mainTabbedPane;
 	JPanel mainPanel;
+	
+	// Browse Directory pane
+	JLabel browseInstructionLabel;
 	JSplitPane browsePane;
 	JFileChooser directoryChooser;
 	JTextArea directoryPane;
@@ -163,8 +171,19 @@ public class DirectoryWindow extends JFrameW
 	JProgressBar pb;
 	JPanel bottomPanel;
 	
-	JSplitPane sqlTabPane;
-	JTextArea sqlText;
+	// Contents for the panel with sql command.
+	JLabel sqlCmdLabel;
+	JLabel dbLabel;
+	JLabel dbHostLabel;
+	JLabel dbUserLabel;
+	JLabel dbPwdLabel;
+	JPanel sqlTabPane;
+	JTextField sqlText;
+	JTextField dbHostText;
+	JTextField dbText;
+	JTextField dbUserText;
+	JPasswordField dbPwdText;
+	JLabel sqlInstructionLabel;
 	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
@@ -206,7 +225,9 @@ public class DirectoryWindow extends JFrameW
 	public void createBrowseTab() {
 
 		// 1. Select the directory to annotate.
-		directoryPane = new JTextArea(1,30);
+		browseInstructionLabel = new JLabel("Select the directory containing .txt files to run annotators.");
+		
+		directoryPane = new JTextArea();
 		directoryPane.setEditable(false);
 		directoryPane.setText(new File("").getAbsoluteFile().getAbsolutePath());
  
@@ -222,7 +243,7 @@ public class DirectoryWindow extends JFrameW
 		        		directoryChooser.setAcceptAllFileFilterUsed(false);
 	            	}
 
-	        		int returnVal = directoryChooser.showDialog(DirectoryWindow.this,
+	        		int returnVal = directoryChooser.showDialog(BatchWindow.this,
                              "Open");
 	        		
 	        		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -241,8 +262,10 @@ public class DirectoryWindow extends JFrameW
         
         // Create the panel to browse for the directory of choice.
         topPanel = new JPanel();
+        topPanel.add(browseInstructionLabel);
         topPanel.add(directoryPane);
         topPanel.add(browseButton);
+        
 		
 		// 2. Create the lookup method selector
 		methodChooser = new MethodChooser();
@@ -259,13 +282,38 @@ public class DirectoryWindow extends JFrameW
 
 		// 4. Main panel
 		browsePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, topPanel, bottomPanel);
+		browsePane.setResizeWeight(0.4f);
 	}
 	
+	/**
+	 * Create a tabbed pane for the use case of batch processing using a SQL command on a particular db.
+	 */
 	private void createCommandTab() {
-		sqlText = new JTextArea(1,30);
+		dbHostLabel = new JLabel("Host Name: ");
+		dbHostText = new JTextField();
+		dbHostText.setEditable(true);
+		
+		dbLabel = new JLabel("DB Name: ");
+		dbText = new JTextField();
+		dbText.setEditable(true);
+
+		dbUserLabel = new JLabel("User Name: ");
+		dbUserText = new JTextField();
+		dbUserText.setEditable(true);
+		
+		dbPwdLabel = new JLabel("Password: ");
+		dbPwdText = new JPasswordField();
+		dbPwdText.setEditable(true);
+		
+		// Load the default properties for the database to use.
+		loadDefaultDB();
+		
+		sqlCmdLabel = new JLabel("SQL Command:");
+		sqlText = new JTextField();
 		sqlText.setEditable(true);
 		// Set an empty SQL command as default.
 		sqlText.setText("");
+		sqlInstructionLabel = new JLabel("DB need doc ids and text (e.g. 'select noteid, text from notes').");
 		
 		// 2. Create the annotator selector.
 		methodChooser = new MethodChooser();
@@ -277,12 +325,62 @@ public class DirectoryWindow extends JFrameW
 		// Create the bottom panel.
 		bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.add(sqlInstructionLabel, BorderLayout.NORTH);
 		bottomPanel.add(methodChooser, BorderLayout.CENTER);
 		bottomPanel.add(pb, BorderLayout.SOUTH);
 		
-		sqlTabPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, sqlText, bottomPanel);
+		sqlTabPane = new JPanel();
+		GroupLayout layout = new GroupLayout(sqlTabPane);
+		sqlTabPane.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		layout.setHorizontalGroup(layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(dbHostLabel)
+						.addComponent(dbLabel)
+						.addComponent(dbUserLabel)
+						.addComponent(dbPwdLabel)
+						.addComponent(sqlCmdLabel))
+					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(dbHostText)
+						.addComponent(dbText)
+						.addComponent(dbUserText)
+						.addComponent(dbPwdText)
+						.addComponent(sqlText)))
+				.addComponent(bottomPanel))
+		);
+		layout.setVerticalGroup(
+		   layout.createSequentialGroup()
+		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+		        .addComponent(dbHostLabel)
+		        .addComponent(dbHostText))
+		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(dbLabel)
+                  .addComponent(dbText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(dbUserLabel)
+                  .addComponent(dbUserText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(dbPwdLabel)
+                  .addComponent(dbPwdText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(sqlCmdLabel)
+                  .addComponent(sqlText))
+              .addComponent(bottomPanel)
+		);
 	}
 
+	private void loadDefaultDB() {
+		ThesProps prop = ThesMap.prop;
+		dbHostText.setText(prop.getProperty(ThesProps.sourceHostName));
+		dbText.setText(prop.getProperty(ThesProps.sourceDbName));
+		dbUserText.setText(prop.getProperty(ThesProps.sourceUserName));
+		dbPwdText.setText(prop.getProperty(ThesProps.sourcePasswordName));
+	}
+	
 	public void setSizeAndLocation() {
 		setDefaultLookAndFeelDecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -306,7 +404,7 @@ public class DirectoryWindow extends JFrameW
 	
 	// Default parameters of the window
 	public static final int width = 500;
-	public static final int height = 250;
+	public static final int height = 400;
 	public static final int originX = 20;
 	public static final int originY = 50;
 	//public static final String title = "UMLS Lookup";
@@ -361,7 +459,7 @@ public class DirectoryWindow extends JFrameW
 //		private static final int gridSpace = 6;
 		private static final int spPrefW = 100;
 		private static final int spMinW = 50;
-		private static final int spPrefH = 20;
+		private static final int spPrefH = 30;
 		protected SelectPanel[] panels;
 		BitSet needToAnnotate;
 		protected BitSet doneBits;
@@ -412,7 +510,26 @@ public class DirectoryWindow extends JFrameW
 							}
 					    }
 					} else if (currentMode == CMD_MODE) {
-						//TODO(mwc): Process the sql command to make the proper connections.
+						dbConnector = new DBConnectorOpen(dbHostText.getText(), dbText.getText(), dbUserText.getText(), new String(dbPwdText.getPassword()));
+						ResultSet rs = dbConnector.processSQL(sqlText.getText());
+						try {	
+							if (rs == null) {
+								U.log("Wrong SQL command. Please try again.");
+								setAnnotateButtonState(ANN_STOPPED);
+							} else {
+								// Process the files accordingly.
+								while (rs.next()) {
+									String docId = rs.getString("DOCID");
+									String text = rs.getString("TEXT");
+									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits);
+									numFilesTotal++; 
+									currentDocument.addPropertyChangeListener(thisWindow);
+									currentDocument.execute();
+								}
+							}
+						} catch (SQLException except) {
+							U.log("Incorrect SQL command" + except.getMessage());
+						}
 					}
 
 				}

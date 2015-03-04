@@ -14,14 +14,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class ResourceConnectorDB {
+public class SaveAnnotationsDBConnector {
 
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement query = null;
-	static final String insertStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
+	static final String loadDBStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
+	static final String insertDBStmt = "INSERT INTO ANNOTATIONS (start, end, cui, tui, preferredText, annotatorName, fileName) values (?, ?, ?, ?, ?, ?, ?);";
 	
-	public ResourceConnectorDB() {
+	public SaveAnnotationsDBConnector() {
 		ThesProps prop = ThesMap.prop;
 		String resultHost =  prop.getProperty(ThesProps.resultHostName);
 		String resultDb =  prop.getProperty(ThesProps.resultDbName);
@@ -33,8 +34,6 @@ public class ResourceConnectorDB {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, resultUser, resultPassword);
-			query = conn.prepareStatement(insertStmt);
-			SemanticEntity.init(this);
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);
@@ -45,6 +44,28 @@ public class ResourceConnectorDB {
 		}
 	}
 	
+	/** 
+	 * Insert into the database for each annotation.
+	 * osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
+						+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + docID + "\n");
+	 */
+	public void insertEntry(int start, int end, String cui, String tui, String preferredText, String type, String docID) {
+		try {
+			query = conn.prepareStatement(insertDBStmt);
+			query.setInt(1, start);
+			query.setInt(2, end);
+			query.setString(3, cui);
+			query.setString(4, tui);
+			query.setString(5, preferredText);
+			query.setString(6, type);
+			query.setString(7, docID);
+			query.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("SQL Error saving for doc: \"" + docID + "\": " + e.getMessage());
+		}
+	}
+	
+	
 	
 	/**
 	 * Save the csv file to the MySQL database.
@@ -54,6 +75,7 @@ public class ResourceConnectorDB {
 	 */
 	public void saveCSVToDB(File csvFile) {
 		try {
+			query = conn.prepareStatement(loadDBStmt);
 			query.setString(1, csvFile.getAbsolutePath());
 			query.executeQuery();
 		} catch (SQLException e) {

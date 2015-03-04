@@ -90,6 +90,7 @@ public class UmlsWindow extends JFrameW
 	private File inputFile = null;
 	private URI inputUri = null;
 	private Subject subject = null;
+	private String docID = null;
 	private UmlsWindow thisWindow = null;		// self-reference
 	private AnnotationsWindow annWindow = null; // Reference to the Annotations Window.
 	
@@ -103,7 +104,7 @@ public class UmlsWindow extends JFrameW
 	
 	// Boolean to directly save to file when done. If true, then save to file.
 	protected boolean saveFileFlag = false;
-	protected static ResourceConnectorDB dbConnector = null;
+	protected static SaveAnnotationsDBConnector dbConnector = null;
 
 	// List of files with sublists of TUIs
 	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
@@ -115,29 +116,34 @@ public class UmlsWindow extends JFrameW
 	public UmlsWindow() {
 		super(defaultTitle);
 		thisWindow = this;
-		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(File file) {
 		super(file.getName());
 		inputFile = file;
 		thisWindow = this;
-		dbConnector = new ResourceConnectorDB();
 	}
 	
-	public UmlsWindow(File file, boolean saveFile) {
+	public UmlsWindow(File inFile, boolean saveFile) {
 		super(defaultTitle);
 		thisWindow = this;
-		inputFile = file;
+		docID = inFile.getName();
 		saveFileFlag = saveFile;
-		dbConnector = new ResourceConnectorDB();
+		dbConnector = new SaveAnnotationsDBConnector();
+	}
+	
+	public UmlsWindow(String id, boolean saveFile) {
+		super(defaultTitle);
+		thisWindow = this;
+		docID = id;
+		saveFileFlag = saveFile;
+		dbConnector = new SaveAnnotationsDBConnector();
 	}
 	
 	public UmlsWindow(URI uri) {
 		super(uri.getPath());
 		inputUri = uri;
 		thisWindow = this;
-		dbConnector = new ResourceConnectorDB();
 	}
 	
 	public UmlsWindow(Subject subj) {
@@ -424,10 +430,7 @@ public class UmlsWindow extends JFrameW
 			try {
 				FileInputStream is = new FileInputStream(inputFile);
 				setContent(is);
-//				byte [] content = new byte[(int) inputFile.length()];
-//				is.read(content);
 				is.close();
-//				textArea.setText(content.toString());
 			} catch (IOException e) {
 				System.err.println("Error reading file " + inputFile + ": " + e.getMessage());
 				e.printStackTrace(System.err);
@@ -546,9 +549,26 @@ public class UmlsWindow extends JFrameW
 		return str.replaceAll("\"", "\"\"");
 	}
 	
-	public static void saveAnnotationsToDB(File csvFileOutput) {
-		((ResourceConnectorDB) dbConnector).saveCSVToDB(csvFileOutput);
+	public static void saveCSVAnnotationsToDB(File csvFileOutput) {
+		((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
 		U.log("Saved " + csvFileOutput.getName() + " to database");
+	}
+	
+	/** 
+	 * Insert annotations directly to database without saving to csv first.
+	 * @param annSet
+	 */
+	public static void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
+		for (Annotation ann: annSet) {
+			for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
+				String preferredText = i.str;
+				if (preferredText == null) {
+					preferredText = "null";
+				}
+				((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+			}
+		}
+		U.log("Saved " + currentDoc + " to database");
 	}
 
 	/**
@@ -734,9 +754,12 @@ public class UmlsWindow extends JFrameW
 		doneBits.set(Annotator.getIndex(annotatorName));
 		if (doneBits.equals(needToAnnotate) && saveFileFlag) {
 			// If this is called from UmlsDocument, then we can save to file.
-			File csvFileOutput = csvFile(inputFile);
-			saveAnnotations(csvFileOutput, annSet);
-			saveAnnotationsToDB(csvFileOutput);
+			//File csvFileOutput = csvFile(inputFile);
+			//saveAnnotations(csvFileOutput, annSet);
+			//saveCSVAnnotationsToDB(csvFileOutput);
+			
+			// Directly save to the database without saving to file
+			saveAnnotationsToDB(docID, annSet);
 			firePropertyChange(defaultTitle, "processing", "complete");
 		}
 		if (methodChooser != null ) {

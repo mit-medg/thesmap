@@ -97,7 +97,7 @@ public class AnnotatorUmlsBase extends Annotator{
 			}
 		}
 		long diff = System.nanoTime() - startTime;
-		U.log("AnnotatorUmls elapsed time (ms): " + diff/1000000);
+		U.log("AnnotatorUmlsBase elapsed time (ms): " + diff/1000000);
 //		U.debug(myWindow.annSet.toShow());
 		return null;
 	}
