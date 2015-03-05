@@ -65,7 +65,7 @@ public class AnnotatorUmlsBase extends Annotator{
 	protected Void doInBackground() throws Exception {
 		int progress = 0;
 		int oldProgress = 0;
-		U.log("Starting to run AnnotatorUmls.doInBackground()");
+		U.log("Starting to run AnnotatorUmlsBase.doInBackground()");
 		long startTime = System.nanoTime();
 		SpaceRecord sr = new SpaceRecord(myWindow.annSet.phraseLength);
 		String text = myWindow.textArea.getText();

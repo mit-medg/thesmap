@@ -547,6 +547,7 @@ public class BatchWindow extends JFrameW
 					// Reset the count of files processed to 0.
 					numFilesTotal = 0; 
 					numFilesProcessed = 0; 
+					pb.setValue(0);
 					
 					if (currentMode == BROWSE_MODE) {
 						// Run annotations.
