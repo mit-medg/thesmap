@@ -25,6 +25,7 @@ import java.util.BitSet;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -88,6 +89,10 @@ public class BatchWindow extends JFrameW
 	
 	// Source for database.
 	private DBConnectorOpen dbConnector;
+	
+	// Select which TUI list to use.
+	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
+	protected String currentTuiSelection = "All";
 
 	public BatchWindow() {
 		super(defaultTitle);
@@ -171,6 +176,11 @@ public class BatchWindow extends JFrameW
 	JProgressBar pb;
 	JPanel bottomPanel;
 	
+	// Tui Selector Panel.
+	JPanel middlePanel;
+	JComboBox<String> tuiSelector;
+	JLabel tuiSelectorLabel;
+	
 	// Contents for the panel with sql command.
 	JLabel sqlCmdLabel;
 	JLabel dbLabel;
@@ -184,6 +194,7 @@ public class BatchWindow extends JFrameW
 	JTextField dbUserText;
 	JPasswordField dbPwdText;
 	JLabel sqlInstructionLabel;
+	
 	
 	/**
 	 * Create and lay out the content of the window.  The content is in two columns separated by
@@ -225,7 +236,7 @@ public class BatchWindow extends JFrameW
 	public void createBrowseTab() {
 
 		// 1. Select the directory to annotate.
-		browseInstructionLabel = new JLabel("Select the directory containing .txt files to run annotators.");
+		browseInstructionLabel = new JLabel("Select the directory containing .txt files to run annotators:");
 		
 		directoryPane = new JTextArea();
 		directoryPane.setEditable(false);
@@ -260,12 +271,34 @@ public class BatchWindow extends JFrameW
 	         }
 		});
         
+		// Allow for the option to select a different TUI list.
+        tuiSelectorLabel = new JLabel("Select TUI sublist ('All' uses all TUIS):");
+		tuiSelector = new JComboBox<String>(tuiLists);
+		tuiSelector.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Options: {"All", "WJL", "ASD"}
+				// All - keep all semantic types; WJL - use Bill's options. 
+				// ASD - shortened list for ASD application.
+				JComboBox cb = (JComboBox)e.getSource();
+		        String selectedList = (String)cb.getSelectedItem();
+		        currentTuiSelection = selectedList;
+			}
+		});
+        
         // Create the panel to browse for the directory of choice.
         topPanel = new JPanel();
         topPanel.add(browseInstructionLabel);
         topPanel.add(directoryPane);
         topPanel.add(browseButton);
         
+        // Panel for selecting TUI subset.
+        middlePanel = new JPanel();
+        middlePanel.add(tuiSelectorLabel);
+        middlePanel.add(tuiSelector);
+        
+        topPanel.add(middlePanel);
 		
 		// 2. Create the lookup method selector
 		methodChooser = new MethodChooser();
@@ -313,7 +346,23 @@ public class BatchWindow extends JFrameW
 		sqlText.setEditable(true);
 		// Set an empty SQL command as default.
 		sqlText.setText("");
-		sqlInstructionLabel = new JLabel("DB need doc ids and text (e.g. 'select noteid, text from notes').");
+		sqlInstructionLabel = new JLabel("Note: Database needs doc ids + text (e.g. 'select noteid, text from notes').");
+		
+		// Allow for the option to select a different TUI list.
+        tuiSelectorLabel = new JLabel("Select TUI sublist ('All' uses all TUIS):");
+		tuiSelector = new JComboBox<String>(tuiLists);
+		tuiSelector.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Options: {"All", "WJL", "ASD"}
+				// All - keep all semantic types; WJL - use Bill's options. 
+				// ASD - shortened list for ASD application.
+				JComboBox cb = (JComboBox)e.getSource();
+		        String selectedList = (String)cb.getSelectedItem();
+		        currentTuiSelection = selectedList;
+			}
+		});
 		
 		// 2. Create the annotator selector.
 		methodChooser = new MethodChooser();
@@ -343,13 +392,15 @@ public class BatchWindow extends JFrameW
 						.addComponent(dbLabel)
 						.addComponent(dbUserLabel)
 						.addComponent(dbPwdLabel)
-						.addComponent(sqlCmdLabel))
+						.addComponent(sqlCmdLabel)
+						.addComponent(tuiSelectorLabel))
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(dbHostText)
 						.addComponent(dbText)
 						.addComponent(dbUserText)
 						.addComponent(dbPwdText)
-						.addComponent(sqlText)))
+						.addComponent(sqlText)
+						.addComponent(tuiSelector)))
 				.addComponent(bottomPanel))
 		);
 		layout.setVerticalGroup(
@@ -369,6 +420,9 @@ public class BatchWindow extends JFrameW
               .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                   .addComponent(sqlCmdLabel)
                   .addComponent(sqlText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(tuiSelectorLabel)
+                  .addComponent(tuiSelector))
               .addComponent(bottomPanel)
 		);
 	}
@@ -404,7 +458,7 @@ public class BatchWindow extends JFrameW
 	
 	// Default parameters of the window
 	public static final int width = 500;
-	public static final int height = 400;
+	public static final int height = 450;
 	public static final int originX = 20;
 	public static final int originY = 50;
 	//public static final String title = "UMLS Lookup";
@@ -503,7 +557,7 @@ public class BatchWindow extends JFrameW
 							if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
 								String fileName = listOfFiles[i].getPath();
 								U.log("Currently processing: " + fileName );
-								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits);
+								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
 								numFilesTotal++; 
 								currentDocument.addPropertyChangeListener(thisWindow);
 								currentDocument.execute();
@@ -521,7 +575,7 @@ public class BatchWindow extends JFrameW
 								while (rs.next()) {
 									String docId = rs.getString("DOCID");
 									String text = rs.getString("TEXT");
-									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits);
+									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
 									numFilesTotal++; 
 									currentDocument.addPropertyChangeListener(thisWindow);
 									currentDocument.execute();

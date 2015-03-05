@@ -108,7 +108,7 @@ public class UmlsWindow extends JFrameW
 
 	// List of files with sublists of TUIs
 	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
-	protected String currentTuiSelection = "All";
+	protected String currentTuiSelection = "All"; // Default is ASD.
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -553,6 +553,10 @@ public class UmlsWindow extends JFrameW
 		return str.replaceAll("\"", "\"\"");
 	}
 	
+	/**
+	 * Save a CSV file to the database.
+	 * @param csvFileOutput
+	 */
 	public static void saveCSVAnnotationsToDB(File csvFileOutput) {
 		((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
 		U.log("Saved " + csvFileOutput.getName() + " to database");
@@ -563,7 +567,7 @@ public class UmlsWindow extends JFrameW
 	 * @param annSet
 	 */
 	public void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
-		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis();
+		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis(currentTuiSelection);
 		for (Annotation ann: annSet) {
 			for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
 				String preferredText = i.str;

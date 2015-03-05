@@ -75,6 +75,18 @@ public class SemanticTree extends JTreeU {
 		}
 		return selectedTuis;
 	}
+	
+	/** 
+	 * Return a stored list of TUIs.
+	 * @param selection
+	 * @return an arraylist of String TUIs or nothing.
+	 */
+	public ArrayList<String> getSelectedTuis(String selection) {
+		if (selectFileTuis.containsKey(selection)) {
+			return selectFileTuis.get(selection);
+		}
+		return null;
+	}
 
 	/** 
 	 * Find the Treepath of the particular TUI string.
