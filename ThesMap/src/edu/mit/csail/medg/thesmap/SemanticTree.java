@@ -1,45 +1,50 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 
-import javax.swing.text.Position;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 public class SemanticTree extends JTreeU {
 
 	private static final long serialVersionUID = 1L;
-	private HashMap<String, ArrayList<String>> selectFileTuis;
-	private String currentTUISelection;
+	private HashMap<String, ArrayList<String>> selectFileTuis = new HashMap<String, ArrayList<String>>();
+	private String currentTUISelection = "All"; // By default, it selects all.
 	private ArrayList<String> deselectedTUIs;
 	
 	
 	public SemanticTree(SemanticEntity top) {
 		super(top);
-		selectFileTuis = new HashMap<String, ArrayList<String>>();
 		loadFile("ASD");
+		loadFile("WJL");
 	}
 	
 	/**
 	 * Loads a file that tells you what TUIs should be selected.
 	 * @param inFile
 	 */
-	private void loadFile(String inFile) {
+	protected void loadFile(String inFile) {
 		// Opens the file 
-		
-		// Loads the tuis in the file
-		
-		// Currently test with a forced one.
-		//String[] arr = {"T079", "T064", "T066"};
+		String filePath = "src/tuiSelections/"+inFile+".txt";
 		ArrayList<String> currTuis = new ArrayList<String>();
-		currTuis.add("T079");
-		currTuis.add("T064");
-		currTuis.add("T066");
-		selectFileTuis.put(inFile, currTuis);
+		try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath),
+                    Charset.defaultCharset());
+            for (String line : lines) {
+            	currTuis.add(line);
+            }
+        	selectFileTuis.put(inFile, currTuis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	/** 
@@ -53,7 +58,7 @@ public class SemanticTree extends JTreeU {
 			deselectedTUIs = selectFileTuis.get(listSelection);
 		} else {
 			currentTUISelection = "All";
-			deselectedTUIs.clear();
+			deselectedTUIs = new ArrayList<String>();
 		}
 	}
 	
@@ -94,6 +99,7 @@ public class SemanticTree extends JTreeU {
 	 */
 	public void updateCurrentTuiSelection() {
 		this.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+		this.deselectAll();
 		TreePath[] paths = new TreePath[deselectedTUIs.size()];
 		int count = 0;
 		for (String tui: deselectedTUIs) {
