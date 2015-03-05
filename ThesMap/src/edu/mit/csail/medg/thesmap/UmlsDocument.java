@@ -1,5 +1,7 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -11,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.BitSet;
 
+import javax.swing.JComboBox;
 import javax.swing.SwingWorker;
 
 /**
@@ -33,11 +36,14 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 	UmlsWindow window = null;
 	BatchWindow dirWindow = null;
 	String docID = null;
+	
+	SemanticTree semanticTypes;
+	String currentTuiSelection;
 
 	// private static final Pattern spaces = Pattern.compile("\\s+|$");
 
 	UmlsDocument(BatchWindow dirWindow, File inFile,
-			BitSet chosenAnnotators, BitSet doneBits) {
+			BitSet chosenAnnotators, BitSet doneBits, String tuiSelection) {
 		this.dirWindow = dirWindow;
 		this.inFile = inFile;
 		this.chosenAnnotators = chosenAnnotators;
@@ -45,6 +51,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		annSet = new AnnotationSet();
 		window = new UmlsWindow(inFile, true);
 		docID = inFile.getName();
+		this.currentTuiSelection = tuiSelection;
 
 		// Listen for when annotations are done for this particular file.
 		window.addPropertyChangeListener(this);
@@ -59,7 +66,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 	 * @param doneBits
 	 */
 	UmlsDocument(BatchWindow dirWindow, String text, String id,
-			BitSet chosenAnnotators, BitSet doneBits) {
+			BitSet chosenAnnotators, BitSet doneBits, String tuiSelection) {
 		this.dirWindow = dirWindow;
 		this.text = text;
 		docID = id;
@@ -67,6 +74,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		this.doneBits = doneBits;
 		annSet = new AnnotationSet();
 		window = new UmlsWindow(docID, true);
+		this.currentTuiSelection = tuiSelection;
 
 		// Listen for when annotations are done for this particular file.
 		window.addPropertyChangeListener(this);
@@ -141,6 +149,14 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		window.textArea.setText(text);
 		window.annSet = annSet;
 		window.needToAnnotate = chosenAnnotators;
+		
+		// Set which TUIs to annotate.
+		semanticTypes = new SemanticTree(SemanticEntity.top);
+		semanticTypes.setRootVisible(true);
+
+		window.semanticTypes = semanticTypes;
+		window.currentTuiSelection = currentTuiSelection;
+
 		doAnnotations();
 		
 		return null;

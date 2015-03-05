@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -20,7 +21,7 @@ import javax.swing.tree.TreePath;
  * @author psz
  *
  */
-public class SemanticEntity implements TreeNode {
+public class SemanticEntity extends DefaultMutableTreeNode implements TreeNode {
 	
 	public static HashMap<String, SemanticEntity> sems = 
 			new HashMap<String, SemanticEntity>();
@@ -127,6 +128,10 @@ public class SemanticEntity implements TreeNode {
 	
 	public String toString() {
 		return "<" + tui + ":" + name + ">";
+	}
+	
+	public String getTuiString() {
+		return tui;
 	}
 	
 	@Override

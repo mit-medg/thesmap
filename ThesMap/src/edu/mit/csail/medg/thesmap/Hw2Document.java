@@ -42,7 +42,7 @@ public class Hw2Document implements Runnable {
 			is = new FileInputStream(inFile);
 			text = getContent(is);
 //			annotate(ThesMap.getInteger("phraseLength"));
-			UmlsWindow.saveAnnotations(csvFile(inFile), annSet);
+			//UmlsWindow.saveAnnotations(csvFile(inFile), annSet);
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + inFile + " not found: " + e.getMessage());
 			e.printStackTrace();

@@ -34,7 +34,6 @@ public class SaveAnnotationsDBConnector {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, resultUser, resultPassword);
-
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);

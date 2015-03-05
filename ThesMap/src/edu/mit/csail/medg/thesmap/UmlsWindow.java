@@ -37,6 +37,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -105,6 +106,9 @@ public class UmlsWindow extends JFrameW
 	protected boolean saveFileFlag = false;
 	protected static SaveAnnotationsDBConnector dbConnector = null;
 
+	// List of files with sublists of TUIs
+	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
+	protected String currentTuiSelection = "All"; // Default is ASD.
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -383,10 +387,28 @@ public class UmlsWindow extends JFrameW
 //		// 4. Assemble the right panel
 //		rightMainPanel = textAreaScroll;
 //		rightMainPanel.setResizeWeight(0.8d);
-		// 5. Create the tree display
+		// 5. Create the tree display		
 		semanticTypes = new SemanticTree(SemanticEntity.top);
 		semanticTypes.setRootVisible(true);
 		semanticTypes.addTreeSelectionListener(this);
+		
+		// Allow for the option to select a different TUI list.
+		tuiSelector = new JComboBox<String>(tuiLists);
+		tuiSelector.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Options: {"All", "WJL", "ASD"}
+				// All - keep all semantic types; WJL - use Bill's options. 
+				// ASD - shortened list for ASD application.
+				JComboBox cb = (JComboBox)e.getSource();
+		        String selectedList = (String)cb.getSelectedItem();
+		        semanticTypes.setCurrentTuiSelection(selectedList);
+		        semanticTypes.updateCurrentTuiSelection();
+		        currentTuiSelection = selectedList;
+			}
+		});
+		
 		treeScroll = new JScrollPane(semanticTypes,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		treeScroll.setFont(treeScroll.getFont().deriveFont(fontSize));
@@ -395,6 +417,7 @@ public class UmlsWindow extends JFrameW
 		// 7. Assemble the left panel
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
+		leftPanel.add(tuiSelector, BorderLayout.NORTH);
 		leftPanel.add(treeScroll, BorderLayout.CENTER);
 		leftPanel.add(methodChooser, BorderLayout.SOUTH);
 		// 8. Combine left and right via a JSplitPane and add that to the JFrame's content
@@ -469,6 +492,7 @@ public class UmlsWindow extends JFrameW
 	JScrollPane textAreaScroll;
 //	JScrollPane explScroll;
 	JScrollPane treeScroll;
+	JComboBox tuiSelector;
 
 
 
@@ -489,7 +513,8 @@ public class UmlsWindow extends JFrameW
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
 
-	public static void saveAnnotations(File chosenFile, AnnotationSet annSet) {
+	public void saveAnnotations(File chosenFile, AnnotationSet annSet) {
+		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis();
 		FileOutputStream fos = null;
 		OutputStreamWriter osw = null;
 		try {
@@ -503,8 +528,11 @@ public class UmlsWindow extends JFrameW
 							if (preferredText == null) {
 								preferredText = "null";
 							}
-							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
+							// If all, then all TUIs should be saved. If a specific TUI list is selected, only those should be shown.
+							if (currentTuiSelection.equals("All") || selectedTuis.contains(i.tui)) {
+								osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
+										+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
+							}
 						}
 					}
 				}
@@ -525,6 +553,10 @@ public class UmlsWindow extends JFrameW
 		return str.replaceAll("\"", "\"\"");
 	}
 	
+	/**
+	 * Save a CSV file to the database.
+	 * @param csvFileOutput
+	 */
 	public static void saveCSVAnnotationsToDB(File csvFileOutput) {
 		((SaveAnnotationsDBConnector) dbConnector).saveCSVToDB(csvFileOutput);
 		U.log("Saved " + csvFileOutput.getName() + " to database");
@@ -534,14 +566,17 @@ public class UmlsWindow extends JFrameW
 	 * Insert annotations directly to database without saving to csv first.
 	 * @param annSet
 	 */
-	public static void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
+	public void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
+		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis(currentTuiSelection);
 		for (Annotation ann: annSet) {
 			for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
 				String preferredText = i.str;
 				if (preferredText == null) {
 					preferredText = "null";
 				}
-				((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+				if (currentTuiSelection.equals("All") || selectedTuis.contains(i.tui)) {
+					((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+				}
 			}
 		}
 		U.log("Saved " + currentDoc + " to database");
