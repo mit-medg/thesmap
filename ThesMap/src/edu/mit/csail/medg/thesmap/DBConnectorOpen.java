@@ -63,10 +63,10 @@ public class DBConnectorOpen {
 			conn = DriverManager.getConnection(dbUrl, user, pwd);
 		}
 		catch (ClassNotFoundException e) {
-			System.err.println("Unable to load MySQL driver: " + e);
+			U.log("Unable to load MySQL driver: " + e);
 		}
 		catch (SQLException e) {
-			System.err.println("Unable to connect to database \"" + db + "\" on " 
+			U.log("Unable to connect to database \"" + db + "\" on " 
 								+ host + " as \"" + user + "\": " + e.getMessage());
 		}
 	}
@@ -97,15 +97,40 @@ public class DBConnectorOpen {
 	public ResultSet processSQL(String stmt) {
 		try {
 			// TODO: Should probably validate the SQL command to prevent SQL table drops and other malicious things.
-			query = conn.prepareStatement(stmt);
-			ResultSet rs = query.executeQuery();
-			U.log("Processing SQL Command: " + stmt);
-			return rs;
+			if (validStatement(stmt)) {
+				query = conn.prepareStatement(stmt);
+				ResultSet rs = query.executeQuery();
+				U.log("Processing SQL Command: " + stmt);
+				return rs;
+			}
+			else { 
+				U.log("Not a 'select' SQL command. Please try again.");
+			}
+
 		} catch (SQLException e) {
-			System.err.println("SQL Error running command: \""
+			U.log("SQL Error running command: \""
 					+ stmt + "\": " + e.getMessage());
 		}
+		
 		return null;
+	}
+
+	/**
+	 * Validate the SQL command by checking to see if it is a 'select' statement.
+	 * Should enhance to make sure that there aren't other ways of deleting from database.
+	 * 
+	 * @param stmt - pass in the statement given by user
+	 * @return true - if valid; false - this statement could cause harm in database. 
+	 */
+	protected boolean validStatement(String stmt) {
+		int i = stmt.indexOf(" ");
+		if (i >= 0) {
+			String word = stmt.substring(0, i);
+			if (word.equalsIgnoreCase("select")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void close() {
