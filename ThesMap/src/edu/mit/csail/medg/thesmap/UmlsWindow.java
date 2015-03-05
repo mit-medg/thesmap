@@ -108,6 +108,7 @@ public class UmlsWindow extends JFrameW
 
 	// List of files with sublists of TUIs
 	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
+	protected String currentTuiSelection = "All";
 	
 	// Creating a UmlsWindow doesn't start running it;
 	// We invokeLater to do so, as it is Runnable.
@@ -404,6 +405,7 @@ public class UmlsWindow extends JFrameW
 		        String selectedList = (String)cb.getSelectedItem();
 		        semanticTypes.setCurrentTuiSelection(selectedList);
 		        semanticTypes.updateCurrentTuiSelection();
+		        currentTuiSelection = selectedList;
 			}
 		});
 		
@@ -511,7 +513,8 @@ public class UmlsWindow extends JFrameW
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
 
-	public static void saveAnnotations(File chosenFile, AnnotationSet annSet) {
+	public void saveAnnotations(File chosenFile, AnnotationSet annSet) {
+		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis();
 		FileOutputStream fos = null;
 		OutputStreamWriter osw = null;
 		try {
@@ -525,8 +528,11 @@ public class UmlsWindow extends JFrameW
 							if (preferredText == null) {
 								preferredText = "null";
 							}
-							osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-									+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
+							// If all, then all TUIs should be saved. If a specific TUI list is selected, only those should be shown.
+							if (currentTuiSelection.equals("All") || selectedTuis.contains(i.tui)) {
+								osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
+										+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + chosenFile.getName() + "\n");
+							}
 						}
 					}
 				}
@@ -556,14 +562,17 @@ public class UmlsWindow extends JFrameW
 	 * Insert annotations directly to database without saving to csv first.
 	 * @param annSet
 	 */
-	public static void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
+	public void saveAnnotationsToDB(String currentDoc, AnnotationSet annSet) {
+		ArrayList<String> selectedTuis = semanticTypes.getSelectedTuis();
 		for (Annotation ann: annSet) {
 			for (Interpretation i: ann.getInterpretationSet().getInterpretations()) {
 				String preferredText = i.str;
 				if (preferredText == null) {
 					preferredText = "null";
 				}
-				((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+				if (currentTuiSelection.equals("All") || selectedTuis.contains(i.tui)) {
+					((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+				}
 			}
 		}
 		U.log("Saved " + currentDoc + " to database");

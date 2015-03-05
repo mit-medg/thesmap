@@ -18,7 +18,7 @@ public class SemanticTree extends JTreeU {
 	private static final long serialVersionUID = 1L;
 	private HashMap<String, ArrayList<String>> selectFileTuis = new HashMap<String, ArrayList<String>>();
 	private String currentTUISelection = "All"; // By default, it selects all.
-	private ArrayList<String> deselectedTUIs;
+	private ArrayList<String> selectedTUIs;
 	
 	
 	public SemanticTree(SemanticEntity top) {
@@ -55,10 +55,10 @@ public class SemanticTree extends JTreeU {
 	public void setCurrentTuiSelection(String listSelection) {
 		if (selectFileTuis.containsKey(listSelection)) {
 			currentTUISelection = listSelection;
-			deselectedTUIs = selectFileTuis.get(listSelection);
+			selectedTUIs = selectFileTuis.get(listSelection);
 		} else {
 			currentTUISelection = "All";
-			deselectedTUIs = new ArrayList<String>();
+			selectedTUIs = new ArrayList<String>();
 		}
 	}
 	
@@ -100,9 +100,9 @@ public class SemanticTree extends JTreeU {
 	public void updateCurrentTuiSelection() {
 		this.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		this.deselectAll();
-		TreePath[] paths = new TreePath[deselectedTUIs.size()];
+		TreePath[] paths = new TreePath[selectedTUIs.size()];
 		int count = 0;
-		for (String tui: deselectedTUIs) {
+		for (String tui: selectedTUIs) {
 			TreePath path = find((SemanticEntity) this.treeModel.getRoot(), tui);
 			paths[count++] = path;
 		}
