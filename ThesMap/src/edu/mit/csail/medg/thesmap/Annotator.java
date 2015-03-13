@@ -78,7 +78,7 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 		return bs;
 	}
 	
-	public ArrayList<String> getNames(BitSet bits) {
+	public static ArrayList<String> getNames(BitSet bits) {
 		ArrayList<String> ans = new ArrayList<String>();
 		int i = -1;
 		while ((i = bits.nextSetBit(i + 1)) >= 0) {
