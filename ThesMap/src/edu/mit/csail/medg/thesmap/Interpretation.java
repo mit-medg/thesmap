@@ -15,13 +15,14 @@ public class Interpretation {
 	
 	String cui, str, tui, sty;
 	String type = null;
+	BitSet currentTypes = null;
 	
 	// A singleton indicating no Interpretation.  There is only one, independent 
 	// of the type.
 	public static Interpretation nullInterpretation = new Interpretation();
 	
 	public Interpretation() {
-		
+		currentTypes = new BitSet();
 	}
 	
 	public static Interpretation makeInterpretation(ResultSet rs) {
@@ -40,6 +41,7 @@ public class Interpretation {
 	public static Interpretation makeInterpretation(String type, ResultSet rs) {
 		Interpretation i = makeInterpretation(rs);
 		i.type = type;
+		i.updateTypeBits(type);
 		return i;
 	}
 	
@@ -78,12 +80,26 @@ public class Interpretation {
 		StringBuilder sbs = new StringBuilder();
 		for (int i = 0; i < indent; i++) sbs.append(" ");
 		String leadingSpaces = sbs.toString();
-		return leadingSpaces + (type == null ? "" :  type) +
+		
+		// When showing the result, show it with the different annotator types.
+		ArrayList<String> names = Annotator.getNames(currentTypes);
+		String annotatorNames = "[";
+		for (String ann: names) {
+			annotatorNames += ann +", ";
+		}
+		// substring to get rid of the last ', '
+		annotatorNames = annotatorNames.substring(0, annotatorNames.length()-2) + "]";
+		return leadingSpaces + annotatorNames +
 				" [" + cui + "," + tui + "] " + str + " (" + sty + ")";
 	}
 	
 	public boolean matchesTui(String tui) {
 		return tui.equals(this.tui);
+	}
+	
+	// Return true if the CUI and TUI matches.
+	public boolean matchesCuiTui(String cui, String tui) {
+		return cui.equals(this.cui) && tui.equals(this.tui);
 	}
 	
 	public boolean matchesTui(ArrayList<String> tuis) {
@@ -97,6 +113,16 @@ public class Interpretation {
 	public boolean matchesTuiAndType(ArrayList<String> tuis, ArrayList<String> types) {
 		return ((tuis == null) || tuis.contains(tui)) && ((types == null) || types.contains(type));
 	}
+	
+	/** 
+	 * Keeps track of the types are associated with this interpretation.
+	 * @return
+	 */
+	public BitSet updateTypeBits(String type) {
+		currentTypes.or(Annotator.getBitSet(type));
+		return currentTypes;
+	}
+	
 	
 	public BitSet typeBits() {
 //		Annotator.checkStatic("Checking in Interpretation " + this);	

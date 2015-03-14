@@ -34,8 +34,12 @@ public class InterpretationSet {
 		
 		if (this == nullInterpretationSet)
 			System.err.println("Error adding Interpretation "+i+" to nullInterpretationSet!");
-		else if (i != Interpretation.nullInterpretation && !contains(i))
-			interpretations.add(i);
+		else if (i != Interpretation.nullInterpretation && !contains(i)) {
+			// If the same CUI and TUI, just update the interpretation.
+			if (!matchesCuiTui(i)) {
+				interpretations.add(i);
+			}
+		}
 //		U.log("Result is (" + this.size() + ")<" + this.toString() + ">" );
 		
 	}
@@ -50,6 +54,21 @@ public class InterpretationSet {
 	
 	public void remove(InterpretationSet is) {
 		for (Interpretation i: is.interpretations) remove(i);
+	}
+	
+	/**
+	 * Update an existing Interpretation with the new type if it has the same TUI and CUI.
+	 * @param i
+	 * @return
+	 */
+	public boolean matchesCuiTui(Interpretation i) {
+		for (Interpretation existing: interpretations) {
+			if (existing.matchesCuiTui(i.cui, i.tui)) {
+				existing.updateTypeBits(i.type);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public boolean contains(Interpretation i) {

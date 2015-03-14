@@ -32,6 +32,7 @@ public class InterpretationNumeric extends Interpretation {
 		this.str = text;
 		this.tui = tui;
 		this.sty = sty;
+		this.updateTypeBits(type);
 	}
 	
 	public String toShow() {
