@@ -43,7 +43,6 @@ public class Interpretation {
 		Interpretation i = makeInterpretation(rs);
 		i.type = type;
 		i.updateTypeBits(type);
-		i.updateAnnotatorValue(type);
 		return i;
 	}
 	
@@ -118,10 +117,12 @@ public class Interpretation {
 	
 	/** 
 	 * Keeps track of the types are associated with this interpretation.
+	 * Update the annotator Value
 	 * @return
 	 */
 	public BitSet updateTypeBits(String type) {
 		currentTypes.or(Annotator.getBitSet(type));
+		updateAnnotatorValue();
 		return currentTypes;
 	}
 	
@@ -134,9 +135,13 @@ public class Interpretation {
 	 * @param type
 	 * @return
 	 */
-	public int updateAnnotatorValue(String type) {
-		annotatorValue += Annotator.getAnnotatorFlagValue(type);
-		return annotatorValue;
+	public void updateAnnotatorValue() {
+		ArrayList<String> annotatorNames = Annotator.getNames(currentTypes);
+		int currentTotal = 0;
+		for (String annotator: annotatorNames) {
+			currentTotal += Annotator.getAnnotatorFlagValue(annotator);
+		}
+		annotatorValue = currentTotal;
 	}
 	
 	public BitSet typeBits() {
