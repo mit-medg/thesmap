@@ -65,6 +65,7 @@ public class InterpretationSet {
 		for (Interpretation existing: interpretations) {
 			if (existing.matchesCuiTui(i.cui, i.tui)) {
 				existing.updateTypeBits(i.type);
+				existing.updateAnnotatorValue(i.type);
 				return true;
 			}
 		}

@@ -71,6 +71,13 @@ public class ThesProps {
 	static final String sourceUserName = "sourceUser";
 	static final String sourcePasswordName = "sourcePassword";
 	
+	// Annotator Flag correspondences in SQL database 
+	static final String UMLSFlag = "UmlsFlag";
+	static final String UMLSBaseFlag = "UmlsBaseFlag";
+	static final String MetaMapFlag = "MetaMapFlag";
+	static final String cTakesFlag = "cTakesFlag";
+	static final String NumericFlag = "NumericFlag";
+	
 	public Properties thesMapDefaults = null;
 	public Properties thesMapProps = null;
 

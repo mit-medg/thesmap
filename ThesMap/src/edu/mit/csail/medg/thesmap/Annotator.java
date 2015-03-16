@@ -28,6 +28,7 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 	public static HashMap<String, Integer> annotationTypes = new HashMap<String, Integer>();
 	public static ArrayList<String> annotationIndex = new ArrayList<String>();
 	public static HashMap<String, String> annotationClasses = new HashMap<String, String>();
+	public static HashMap<String, Integer> annotationFlagValues = new HashMap<String, Integer>();
 	
 	public UmlsWindow myWindow = null;
 	
@@ -55,6 +56,7 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 			annotationTypes.put(type, index);
 			annotationIndex.add(type);
 			annotationClasses.put(type, className);
+			annotationFlagValues.put(type, getAnnotatorFlagValue(type));
 			U.log(" ... assigned index " + index);
 		}
 		else U.log(" ... already at index " + existing);
@@ -100,6 +102,27 @@ public abstract class Annotator extends SwingWorker<Void, String> {
 //		showStatic();
 		Integer ans = annotationTypes.get(type);
 		return ans;
+	}
+	
+	/** 
+	 * Determine the value for the annotator flag
+	 * @param type
+	 * @return
+	 */
+	public static Integer getAnnotatorFlagValue(String type) {
+		// If it is already cached, just return the value. 
+		if (annotationFlagValues.containsKey(type)) {
+			return annotationFlagValues.get(type);
+		}
+		ThesProps prop = ThesMap.prop;
+		String annotatorFlag = type + "Flag";
+		String flagValue = prop.getProperty(annotatorFlag);
+		int annotatorValue = 0; 
+		if (flagValue != null) {
+			annotatorValue = Integer.parseInt(flagValue);
+			annotationFlagValues.put(type, annotatorValue);
+		}
+		return annotatorValue;
 	}
 	
 	/**

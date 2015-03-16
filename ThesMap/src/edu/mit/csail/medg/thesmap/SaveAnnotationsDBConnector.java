@@ -20,7 +20,7 @@ public class SaveAnnotationsDBConnector {
 	Statement stmt = null;
 	PreparedStatement query = null;
 	static final String loadDBStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
-	static final String insertDBStmt = "INSERT INTO ANNOTATIONS (start, end, cui, tui, preferredText, annotatorName, fileName) values (?, ?, ?, ?, ?, ?, ?);";
+	static final String insertDBStmt = "INSERT INTO ANNOTATIONS (start, end, cui, tui, preferredText, annotatorFlag, fileName) values (?, ?, ?, ?, ?, ?, ?);";
 	
 	public SaveAnnotationsDBConnector() {
 		ThesProps prop = ThesMap.prop;
@@ -47,9 +47,9 @@ public class SaveAnnotationsDBConnector {
 	/** 
 	 * Insert into the database for each annotation.
 	 * osw.write(ann.begin + "," + ann.end + "," + i.cui + "," + i.tui 
-						+ ",\"" + fixq(preferredText) + "\"," + i.type + "," + docID + "\n");
+						+ ",\"" + fixq(preferredText) + "\"," + i.annotatorValue + "," + docID + "\n");
 	 */
-	public void insertEntry(int start, int end, String cui, String tui, String preferredText, String type, String docID) {
+	public void insertEntry(int start, int end, String cui, String tui, String preferredText, int annotatorValue, String docID) {
 		try {
 			query = conn.prepareStatement(insertDBStmt);
 			query.setInt(1, start);
@@ -57,7 +57,7 @@ public class SaveAnnotationsDBConnector {
 			query.setString(3, cui);
 			query.setString(4, tui);
 			query.setString(5, preferredText);
-			query.setString(6, type);
+			query.setInt(6, annotatorValue);
 			query.setString(7, docID);
 			query.executeUpdate();
 		} catch (SQLException e) {

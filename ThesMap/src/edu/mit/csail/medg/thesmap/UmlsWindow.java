@@ -575,7 +575,7 @@ public class UmlsWindow extends JFrameW
 					preferredText = "null";
 				}
 				if (currentTuiSelection.equals("All") || selectedTuis.contains(i.tui)) {
-					((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.type, currentDoc);
+					((SaveAnnotationsDBConnector) dbConnector).insertEntry(ann.begin, ann.end, i.cui, i.tui, fixq(preferredText), i.annotatorValue, currentDoc);
 				}
 			}
 		}
@@ -583,10 +583,10 @@ public class UmlsWindow extends JFrameW
 	}
 
 	/**
-         * Shows the annotations in the Annotation Window.
-         * This will not be called if using the batch version.
-         * @param pos
-         */
+     * Shows the annotations in the Annotation Window.
+     * This will not be called if using the batch version.
+     * @param pos
+     */
 	public void showContextAnnotations(int pos) {		
 		String text = textArea.getText();
 //		U.debug("showContextAnnotations at " + pos + ": \"" + text.substring(pos, (int)Math.min(pos+8, text.length())) + "\"");
@@ -600,9 +600,9 @@ public class UmlsWindow extends JFrameW
 				for (Annotation ann: relevantAnnotations) {
 					String relevantText = ann.interpSet.toShow(selectedTuis, selectedTypes, 0);
 					if (relevantText != null && relevantText.length() > 0) {
-					sb.append(text.subSequence(ann.begin, ann.end));
-					sb.append("\n");
-					sb.append(relevantText);
+						sb.append(text.subSequence(ann.begin, ann.end));
+						sb.append("\n");
+						sb.append(relevantText);
 					}
 				}
 			}

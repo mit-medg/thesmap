@@ -16,6 +16,7 @@ public class Interpretation {
 	String cui, str, tui, sty;
 	String type = null;
 	BitSet currentTypes = null;
+	int annotatorValue = 0; // Value for which annotators have been flagged.
 	
 	// A singleton indicating no Interpretation.  There is only one, independent 
 	// of the type.
@@ -42,6 +43,7 @@ public class Interpretation {
 		Interpretation i = makeInterpretation(rs);
 		i.type = type;
 		i.updateTypeBits(type);
+		i.updateAnnotatorValue(type);
 		return i;
 	}
 	
@@ -123,6 +125,19 @@ public class Interpretation {
 		return currentTypes;
 	}
 	
+	public int getAnnotatorValues() {
+		return annotatorValue;
+	}
+	
+	/** 
+	 * Update the annotator view flag (AVF) value with the new annotator value.
+	 * @param type
+	 * @return
+	 */
+	public int updateAnnotatorValue(String type) {
+		annotatorValue += Annotator.getAnnotatorFlagValue(type);
+		return annotatorValue;
+	}
 	
 	public BitSet typeBits() {
 //		Annotator.checkStatic("Checking in Interpretation " + this);	
