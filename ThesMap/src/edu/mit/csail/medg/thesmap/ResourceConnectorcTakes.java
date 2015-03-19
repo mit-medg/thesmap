@@ -40,19 +40,7 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 
 	static ResourceConnectorPool<ResourceConnectorcTakes> pool = 
 			new ResourceConnectorPool<ResourceConnectorcTakes>();
-	
-	
-	Connection conn = null;
-	Statement stmt = null;
-	PreparedStatement query = null;
-	PreparedStatement cui2tui = null;
-	ResultSet rs = null;
-	static final String nstr2cuiStmt = 
-			"select y.cui, y.str, s.tui, s.sty from (select c.cui, c.str from (select distinct cui from mrxns_eng where nstr=?) as x join mrconso c on c.cui=x.cui where  c.ts='P' and c.stt='PF' and c.ispref='Y' and c.cvf is not null and c.LAT='ENG') as y join mrsty s on y.cui=s.cui;";
-	static final String cui2tuiStmt = 
-			"select tui from mrsty where cui=?";
-	static ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> ctakesInterpretations =
-			new ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet>();
+
 	
 	public AnalysisEngineDescription cTakesAED = null;
 	
@@ -64,55 +52,54 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 		
 	public ResourceConnectorcTakes() {
 		super("cTakes");
-		initialized = true;
-		if (initialized) pool.add(this);
 
 		try {
-			//cTakesAED = ClinicalPipelineFactory.getDefaultPipeline();
 			cTakesAED = ClinicalPipelineFactory.getFastPipeline();
+			initialized = true;
 		} catch (ResourceInitializationException e) {
 			e.printStackTrace();
+			initialized = false;
 		}
+		//if (initialized) pool.add(this);
 	}
 	
 	public static ResourceConnectorcTakes get() {
 		if (broken) return null;
 		ResourceConnectorcTakes ans = pool.getNext();
+		System.out.println(pool.size());
 		if (ans == null) {
 			pool.add(new ResourceConnectorcTakes());
+			U.log("new ctakes created");
 			ans = pool.getNext();
-		}
-		if (!ans.initialized) {
-			broken = true;
-			ans = null;
+			System.out.println(ans);
+			System.out.println(ans.initialized);
+			if (!ans.initialized) {
+				broken = true;
+				ans = null;
+			}
 		}
 		return ans;
 	}
 	
 	public static void assurePoolSize(int n) {
+		System.out.println(pool.size());
 		for (; n < pool.size(); n++) {
 			pool.add(new ResourceConnectorcTakes());
+			System.out.println("new ctakes added ??" + Integer.toString(n) + pool.size());
 		}
 	}
-	
-	@Override
-	public void close() {
-		
-	}
-	
-	public void process(String text) throws UIMAException, SAXException, IOException {
+
+	public ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> process(String text) throws UIMAException, SAXException, IOException {
 		if (broken || cTakesAED == null) {
 			U.pe("Cannot process by cTakes because there is no connection.");
 		}
 
+	  ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> ctakesInterpretations =
+				new ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet>();
 	  JCas jcas = JCasFactory.createJCas();
 	  jcas.setDocumentText(text);
 	  SimplePipeline.runPipeline(jcas, cTakesAED);
 	  for(IdentifiedAnnotation entity : JCasUtil.select(jcas, IdentifiedAnnotation.class)){
-//	      System.out.println("Entity: " + entity.getCoveredText() + " === Polarity: " + entity.getPolarity() +
-//	    		  													" === Type ID? " + entity.getTypeID() +
-//	    		  													" === extracted " + extractInformation(entity)
-//	    		  );    
 	      InterpretationSet is = makeInterpretationSet(entity);
 	      if (is != null && is != InterpretationSet.nullInterpretationSet) {
 	    	  ctakesInterpretations.put(entity, is);
@@ -120,6 +107,7 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	   }
 	  System.out.println("Finished cTakes processing");
 	  
+	  return ctakesInterpretations;
 	  //return 
 	  
 	  	// Write results to an XML File.
@@ -173,6 +161,11 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 
 		if (ans.size() == 0) ans = InterpretationSet.nullInterpretationSet;
 		return ans;
+	}
+
+	@Override
+	public void close() {
+		System.out.println("closing the ResourceConnector thread");
 	}
 }
 

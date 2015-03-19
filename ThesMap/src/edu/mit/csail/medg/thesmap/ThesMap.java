@@ -31,7 +31,7 @@ public class ThesMap {
 
 	// The global Properties are shared by all components of ThesMap.
 	public static ThesProps prop = null; 
-	public static boolean interactive = true;
+	public static boolean interactive = false;
 	public static boolean debug = true;
 	static final String exampleFileName = "Example.txt";
 //	static final Pattern basicPattern = Pattern.compile(
@@ -135,6 +135,9 @@ public class ThesMap {
 	 * 
 	 */
 	private static void setUpResourceConnectors() {
+		int cores = Runtime.getRuntime().availableProcessors();
+		System.out.println(cores);
+		
 		String errUmls = AnnotatorUmls.errInit();
 		if (errUmls == null) {
 			U.log("Created UMLS and LVG/norm connectors. UMLS Annotations are feasible.");
@@ -160,6 +163,7 @@ public class ThesMap {
 		if (errcTakes == null) {
 			U.log("Created cTakes connector. cTakes Annotations are feasible.");
 			Annotator.registerType(AnnotatorcTakes.name, "AnnotatorcTakes");
+			//ResourceConnectorcTakes.assurePoolSize(1);
 		} else {
 			U.pe(errcTakes);
 		}

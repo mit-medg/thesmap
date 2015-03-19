@@ -81,6 +81,11 @@ public class BatchWindow extends JFrameW
 	// Number of files to process. 
 	public int numFilesTotal = 0;
 	public int numFilesProcessed = 0;
+	boolean processingFlag = true; // process one file at a time.
+	
+	// Keep track of files to process. 
+	protected ArrayList<String> listOfIDs = new ArrayList<String>(); // Keeps track of the current list of ids to process.
+	protected ArrayList<String> listOfTexts = new ArrayList<String>();
 	
 	// Keep track of what the selected index is for the tabbed pane.
 	public int currentMode = 0;
@@ -493,6 +498,8 @@ public class BatchWindow extends JFrameW
 		System.out.println("Done processing " + numFilesProcessed+ "/" + numFilesTotal);
 		int percentage = (int)Math.round(new Double(numFilesProcessed) / numFilesTotal * 100.0);
 		pb.setValue(percentage);
+		processingFlag = true;
+		System.out.println("updated flag");
 	}
 
 	
@@ -516,8 +523,9 @@ public class BatchWindow extends JFrameW
 		private static final int spPrefH = 30;
 		protected SelectPanel[] panels;
 		BitSet needToAnnotate;
-		protected BitSet doneBits;
+		protected BitSet doneBits = new BitSet();
 		JButton doit;
+
 		
 
 		MethodChooser() {
@@ -558,10 +566,11 @@ public class BatchWindow extends JFrameW
 							if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
 								String fileName = listOfFiles[i].getPath();
 								U.log("Currently processing: " + fileName );
-								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
-								numFilesTotal++; 
-								currentDocument.addPropertyChangeListener(thisWindow);
-								currentDocument.execute();
+//								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
+//								numFilesTotal++; 
+//								currentDocument.addPropertyChangeListener(thisWindow);
+//								currentDocument.execute();
+								runNewDocument(fileName);
 							}
 					    }
 					} else if (currentMode == CMD_MODE) {
@@ -576,10 +585,7 @@ public class BatchWindow extends JFrameW
 								while (rs.next()) {
 									String docId = rs.getString("DOCID");
 									String text = rs.getString("TEXT");
-									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
-									numFilesTotal++; 
-									currentDocument.addPropertyChangeListener(thisWindow);
-									currentDocument.execute();
+									runNewDocument(docId, text);
 								}
 							}
 						} catch (SQLException except) {
@@ -590,6 +596,30 @@ public class BatchWindow extends JFrameW
 				}
 			});
 			add(doit, BorderLayout.SOUTH);
+		}
+		
+		/**
+		 * Separately run a new UMLSDocument for a particular docID.
+		 * @param docId - id of the particular document to process
+		 * @param text  - the text to process. 
+		 */
+		protected void runNewDocument(String fileName) {
+			UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
+			numFilesTotal++; 
+			currentDocument.addPropertyChangeListener(thisWindow);
+			currentDocument.execute();
+		}
+		
+		/**
+		 * Separately run a new UMLSDocument for a particular docID.
+		 * @param docId - id of the particular document to process
+		 * @param text  - the text to process. 
+		 */
+		protected void runNewDocument(String docId, String text) {
+			UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
+			numFilesTotal++; 
+			currentDocument.addPropertyChangeListener(thisWindow);
+			currentDocument.execute();
 		}
 
 		public void setAnnotateButtonState(int state) {

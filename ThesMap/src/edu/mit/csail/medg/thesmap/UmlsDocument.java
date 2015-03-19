@@ -32,7 +32,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 	File inFile = null;
 	AnnotationSet annSet = null;
 	BitSet chosenAnnotators = null;
-	BitSet doneBits = null;
+	private BitSet doneBits = null;
 	UmlsWindow window = null;
 	BatchWindow dirWindow = null;
 	String docID = null;
@@ -105,7 +105,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		BitSet needToAnnotate = new BitSet();
 		needToAnnotate.or(chosenAnnotators);
 		needToAnnotate.andNot(annSet.typeBits());
-		doneBits = new BitSet();
+		this.doneBits = new BitSet();
 		if (!needToAnnotate.isEmpty()) {
 			int i = -1;
 			while ((i = needToAnnotate.nextSetBit(i + 1)) >= 0) {
@@ -149,6 +149,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 		window.textArea.setText(text);
 		window.annSet = annSet;
 		window.needToAnnotate = chosenAnnotators;
+		window.doneBits = this.doneBits;
 		
 		// Set which TUIs to annotate.
 		semanticTypes = new SemanticTree(SemanticEntity.top);
