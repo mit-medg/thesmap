@@ -1,9 +1,14 @@
 package edu.mit.csail.medg.thesmap;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.ctakes.typesystem.type.textsem.IdentifiedAnnotation;
+import org.apache.uima.UIMAException;
+import org.xml.sax.SAXException;
 
 
 public class AnnotatorcTakes extends Annotator{
@@ -42,25 +47,50 @@ public class AnnotatorcTakes extends Annotator{
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		U.log("Starting to run AnnotatorCTakes.doInBackground()");
-		long startTime = System.nanoTime();
-		
-		firePropertyChange(name, 0, -1);
-		ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> result = cTakes.process(myWindow.textArea.getText());
-        
-        addAnnotationSet(result);
-		
-		long diff = System.nanoTime() - startTime;
-		U.log("AnnotatorcTakes elapsed time (ms): " + diff/1000000);
+		SwingUtilities.invokeAndWait(new Runnable() {
+			@Override
+			public void run() {
+				U.log("Starting to run AnnotatorCTakes.doInBackground()");
+				long startTime = System.nanoTime();
+				
+				firePropertyChange(name, 0, -1);
+				String currentText = myWindow.textArea.getText();
+				ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> result;
+				try {
+					result = cTakes.process(currentText);
+			        addAnnotationSet(result);
+				} catch (UIMAException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SAXException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+				long diff = System.nanoTime() - startTime;
+				U.log("AnnotatorcTakes elapsed time (ms): " + diff/1000000);
+			}
+		});
 		
         return null;
+	}
+	
+	@Override
+	public void done() {
+		if (myWindow != null) {
+			myWindow.annotatorDone(name);
+		}
 	}
     
     /** 
      * Get the Annotation set
      */
     protected void addAnnotationSet(ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> result) {
-    	System.out.println("adding to the annotation set");
+    	//System.out.println("adding to the annotation set");
     	ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> ans = result;
     	Iterator<IdentifiedAnnotation> iter = ans.keySet().iterator();
     	 

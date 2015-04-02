@@ -121,8 +121,7 @@ public class UmlsDocument extends SwingWorker<Void, String> implements
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (prop.equals("Thesaurus Map")
-				&& evt.getNewValue().equals("complete")) {
+		if (prop.equals(docID) && evt.getNewValue().equals("complete")) {
 			firePropertyChange(docID, "processing", "done");
 		}
 	}

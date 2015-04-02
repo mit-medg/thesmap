@@ -90,7 +90,7 @@ public class UmlsWindow extends JFrameW
 	private File inputFile = null;
 	private URI inputUri = null;
 	private Subject subject = null;
-	private String docID = null;
+	private String docID = defaultTitle;
 	private UmlsWindow thisWindow = null;		// self-reference
 	private AnnotationsWindow annWindow = null; // Reference to the Annotations Window.
 	
@@ -771,7 +771,8 @@ public class UmlsWindow extends JFrameW
 			
 			// Directly save to the database without saving to file
 			saveAnnotationsToDB(docID, annSet);
-			firePropertyChange(defaultTitle, "processing", "complete");
+			//firePropertyChange(defaultTitle, "processing", "complete");
+			firePropertyChange(docID, "processing", "complete");
 		}
 		if (methodChooser != null ) {
 			methodChooser.annotatorDone(annotatorName);

@@ -351,7 +351,7 @@ public class BatchWindow extends JFrameW
 		sqlText.setEditable(true);
 		// Set an empty SQL command as default.
 		sqlText.setText("");
-		sqlInstructionLabel = new JLabel("Note: Database needs doc ids + text (e.g. 'select noteid, text from notes').");
+		sqlInstructionLabel = new JLabel("Note: Database needs doc ids + text (e.g. 'select docid, text from notes').");
 		
 		// Allow for the option to select a different TUI list.
         tuiSelectorLabel = new JLabel("Select TUI sublist ('All' uses all TUIS):");
@@ -498,8 +498,6 @@ public class BatchWindow extends JFrameW
 		System.out.println("Done processing " + numFilesProcessed+ "/" + numFilesTotal);
 		int percentage = (int)Math.round(new Double(numFilesProcessed) / numFilesTotal * 100.0);
 		pb.setValue(percentage);
-		processingFlag = true;
-		System.out.println("updated flag");
 	}
 
 	
@@ -566,11 +564,10 @@ public class BatchWindow extends JFrameW
 							if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".txt")) {
 								String fileName = listOfFiles[i].getPath();
 								U.log("Currently processing: " + fileName );
-//								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
-//								numFilesTotal++; 
-//								currentDocument.addPropertyChangeListener(thisWindow);
-//								currentDocument.execute();
-								runNewDocument(fileName);
+								UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
+								numFilesTotal++; 
+								currentDocument.addPropertyChangeListener(thisWindow);
+								currentDocument.execute();
 							}
 					    }
 					} else if (currentMode == CMD_MODE) {
@@ -583,43 +580,23 @@ public class BatchWindow extends JFrameW
 							} else {
 								// Process the files accordingly.
 								while (rs.next()) {
-									String docId = rs.getString("DOCID");
-									String text = rs.getString("TEXT");
-									runNewDocument(docId, text);
+									String docId = rs.getString(1);
+									String text = rs.getString(2);
+									System.out.println(docId + " text:" + text);
+									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
+									numFilesTotal++; 
+									currentDocument.addPropertyChangeListener(thisWindow);
+									currentDocument.execute();
 								}
 							}
 						} catch (SQLException except) {
-							U.log("Incorrect SQL command" + except.getMessage());
+							U.log("Incorrect SQL command " + except.getMessage());
 						}
 					}
 
 				}
 			});
 			add(doit, BorderLayout.SOUTH);
-		}
-		
-		/**
-		 * Separately run a new UMLSDocument for a particular docID.
-		 * @param docId - id of the particular document to process
-		 * @param text  - the text to process. 
-		 */
-		protected void runNewDocument(String fileName) {
-			UmlsDocument currentDocument = new UmlsDocument(thisWindow, new File(fileName), chosenAnnotators, doneBits, currentTuiSelection);
-			numFilesTotal++; 
-			currentDocument.addPropertyChangeListener(thisWindow);
-			currentDocument.execute();
-		}
-		
-		/**
-		 * Separately run a new UMLSDocument for a particular docID.
-		 * @param docId - id of the particular document to process
-		 * @param text  - the text to process. 
-		 */
-		protected void runNewDocument(String docId, String text) {
-			UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
-			numFilesTotal++; 
-			currentDocument.addPropertyChangeListener(thisWindow);
-			currentDocument.execute();
 		}
 
 		public void setAnnotateButtonState(int state) {

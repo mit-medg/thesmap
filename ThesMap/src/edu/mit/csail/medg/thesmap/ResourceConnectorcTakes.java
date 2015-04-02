@@ -40,8 +40,6 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 
 	static ResourceConnectorPool<ResourceConnectorcTakes> pool = 
 			new ResourceConnectorPool<ResourceConnectorcTakes>();
-
-	
 	public AnalysisEngineDescription cTakesAED = null;
 	
 	/*
@@ -66,13 +64,10 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	public static ResourceConnectorcTakes get() {
 		if (broken) return null;
 		ResourceConnectorcTakes ans = pool.getNext();
-		System.out.println(pool.size());
 		if (ans == null) {
 			pool.add(new ResourceConnectorcTakes());
 			U.log("new ctakes created");
 			ans = pool.getNext();
-			System.out.println(ans);
-			System.out.println(ans.initialized);
 			if (!ans.initialized) {
 				broken = true;
 				ans = null;
@@ -82,10 +77,8 @@ public class ResourceConnectorcTakes extends ResourceConnector {
 	}
 	
 	public static void assurePoolSize(int n) {
-		System.out.println(pool.size());
 		for (; n < pool.size(); n++) {
 			pool.add(new ResourceConnectorcTakes());
-			System.out.println("new ctakes added ??" + Integer.toString(n) + pool.size());
 		}
 	}
 

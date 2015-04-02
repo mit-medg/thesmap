@@ -32,9 +32,6 @@ public abstract class ResourceConnector {
 		return (ResourceConnector)pool.getNext();
 	}
 	
-	public static void assurePoolSize(int n) {
-	}
-	
 	public abstract void close();
 	
 }
