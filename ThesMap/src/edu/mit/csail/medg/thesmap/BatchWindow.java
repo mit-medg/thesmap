@@ -582,7 +582,7 @@ public class BatchWindow extends JFrameW
 								while (rs.next()) {
 									String docId = rs.getString(1);
 									String text = rs.getString(2);
-									System.out.println(docId + " text:" + text);
+									//System.out.println(docId + " text:" + text);
 									UmlsDocument currentDocument = new UmlsDocument(thisWindow, text, docId, chosenAnnotators, doneBits, currentTuiSelection);
 									numFilesTotal++; 
 									currentDocument.addPropertyChangeListener(thisWindow);

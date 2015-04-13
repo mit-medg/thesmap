@@ -3,17 +3,16 @@ package edu.mit.csail.medg.thesmap;
 public class InterpretationcTakes extends Interpretation {
 	boolean negated = false;
 	double score = 0.0;
+	static String type = AnnotatorcTakes.name;
 
 	public InterpretationcTakes(String cui, String str, String tui, String sty, boolean neg, double score) {
-		super();
-		type = AnnotatorcTakes.name;
+		super(type);
 		this.cui = cui;
 		this.str = str;
 		this.tui = tui;
 		this.sty = sty;
 		this.negated = neg;
 		this.score = score;
-		this.updateTypeBits(type);
 	}
 	
 	public String toShow(int indent) {

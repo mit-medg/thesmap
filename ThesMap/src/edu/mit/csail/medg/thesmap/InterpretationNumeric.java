@@ -13,6 +13,8 @@ public class InterpretationNumeric extends Interpretation {
 	static final String tuiForNumber = "T081";
 	static final String styForNumber = "Quantitative Concept";
 	
+	static String type = AnnotatorNumeric.name;
+
 	/*
 	 * A general number can be a complex entity, defined by the patterns in AnnotatorNumeric.
 	 * A basic number is represented by the above default CUI, TUI and STY.
@@ -26,8 +28,7 @@ public class InterpretationNumeric extends Interpretation {
 	}
 
 	public InterpretationNumeric(String cui, String text, String tui, String sty) {
-		super();
-		type = AnnotatorNumeric.name;
+		super(type);
 		this.cui = cui;
 		this.str = text;
 		this.tui = tui;

@@ -26,6 +26,12 @@ public class Interpretation {
 		currentTypes = new BitSet();
 	}
 	
+	public Interpretation(String type) {
+		currentTypes = new BitSet();
+		this.type = type;
+		this.updateTypeBits(type);
+	}
+	
 	public static Interpretation makeInterpretation(ResultSet rs) {
 		Interpretation i = new Interpretation();
 		try {

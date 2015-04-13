@@ -4,10 +4,10 @@ public class InterpretationMM extends Interpretation {
 	
 	boolean negated = false;
 	int score = 0;
+	static String type = AnnotatorMetaMap.name;
 
 	public InterpretationMM(String cui, String str, String tui, String sty, int neg, int score) {
-		super();
-		type = AnnotatorMetaMap.name;
+		super(type);
 		this.cui = cui;
 		this.str = str;
 		this.tui = tui;
