@@ -13,6 +13,7 @@ public class InterpretationcTakes extends Interpretation {
 		this.sty = sty;
 		this.negated = neg;
 		this.score = score;
+		this.updateTypeBits(type);
 	}
 	
 	public String toShow(int indent) {
