@@ -488,14 +488,14 @@ public class BatchWindow extends JFrameW
 		}
 		
 		// Allow for next batch processing to be done if we are done with the previous set.
-		if (numFilesProcessed == numFilesTotal) {
+		if (numFilesProcessed >= numFilesTotal) {
 			setAnnotateButtonState(ANN_STOPPED);
 		}
 	}
 	
 	public void updateProgress() {
 		numFilesProcessed ++; 
-		System.out.println("Done processing " + numFilesProcessed+ "/" + numFilesTotal);
+		//System.out.println("Done processing " + numFilesProcessed+ "/" + numFilesTotal);
 		int percentage = (int)Math.round(new Double(numFilesProcessed) / numFilesTotal * 100.0);
 		pb.setValue(percentage);
 	}

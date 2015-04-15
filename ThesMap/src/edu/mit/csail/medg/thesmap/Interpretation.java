@@ -61,9 +61,14 @@ public class Interpretation {
 	 * @return
 	 */
 	public boolean equals(Interpretation other) {
+		ArrayList<String> annotatorNames = Annotator.getNames(currentTypes);
+		// if they have the same CUI and TUIs, we want to make sure that the type is updated.
+		if (cui.equals(other.cui) && tui.equals(other.tui)) {
+			updateTypeBits(other.type);
+		}
 		return (cui.equals(other.cui)
 				&& tui.equals(other.tui)
-				&& type.equals(other.type)
+				&& annotatorNames.contains(other.type)
 //				&& str.equals(other.str)
 //				&& sty.equals(other.sty)
 				);
