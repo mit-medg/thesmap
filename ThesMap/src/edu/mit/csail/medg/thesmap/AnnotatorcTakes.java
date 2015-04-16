@@ -47,36 +47,47 @@ public class AnnotatorcTakes extends Annotator{
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		SwingUtilities.invokeAndWait(new Runnable() {
-			@Override
-			public void run() {
-				U.log("Starting to run AnnotatorCTakes.doInBackground()");
-				long startTime = System.nanoTime();
-				
-				firePropertyChange(name, 0, -1);
-				String currentText = myWindow.textArea.getText();
-				ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> result;
-				try {
-					result = cTakes.process(currentText);
-			        addAnnotationSet(result);
-				} catch (UIMAException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SAXException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		/** 
+		 * If there is a GUI open, we don't want to interrupt the GUI for cTAKES.
+		 * If it is being done in the batch process, we want to make sure that we wait the proper amount of time.
+		 */
+		if (ThesMap.interactive) {
+			runProcess();
+		} else {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					runProcess();
 				}
-
-				
-				long diff = System.nanoTime() - startTime;
-				U.log("AnnotatorcTakes elapsed time (ms): " + diff/1000000);
-			}
-		});
-		
+			});
+		}
         return null;
+	}
+	
+	private void runProcess() {
+		U.log("Starting to run AnnotatorCTakes.doInBackground()");
+		long startTime = System.nanoTime();
+		
+		firePropertyChange(name, 0, -1);
+		String currentText = myWindow.textArea.getText();
+		ConcurrentHashMap<IdentifiedAnnotation, InterpretationSet> result;
+		try {
+			result = cTakes.process(currentText);
+	        addAnnotationSet(result);
+		} catch (UIMAException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		long diff = System.nanoTime() - startTime;
+		U.log("AnnotatorcTakes elapsed time (ms): " + diff/1000000);
 	}
 	
 	@Override

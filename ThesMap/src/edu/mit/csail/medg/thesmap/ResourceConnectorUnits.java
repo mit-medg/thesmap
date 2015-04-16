@@ -42,6 +42,7 @@ public class ResourceConnectorUnits extends ResourceConnector {
 					while ((inputLine = in.readLine()) != null)
 						unitsWords.add(inputLine.trim().toLowerCase());
 					in.close();
+					broken = false;
 				} catch (IOException e) {
 					unitsWords = null;
 				}
