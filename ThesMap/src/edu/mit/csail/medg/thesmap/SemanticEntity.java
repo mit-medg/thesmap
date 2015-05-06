@@ -23,6 +23,7 @@ import javax.swing.tree.TreePath;
  */
 public class SemanticEntity extends DefaultMutableTreeNode implements TreeNode {
 	
+	private static final long serialVersionUID = 1L;
 	public static HashMap<String, SemanticEntity> sems = 
 			new HashMap<String, SemanticEntity>();
 	public static HashMap<String, SemanticEntity> semsByName = 

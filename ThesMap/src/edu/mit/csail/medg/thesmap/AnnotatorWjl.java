@@ -70,10 +70,10 @@ public class AnnotatorWjl extends Annotator{
 			 * Concept or top-level ambigs just create interpretations
 			 * Clauses are more complex because they may contain ambigs
 			 */
-			NodeList nList = doc.getElementsByTagName("B");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-//				System.out.println("\nCurr Elt: " + nNode.getNodeName());
+			NodeList nListConcepts = doc.getElementsByTagName("concept");
+			for (int temp = 0; temp < nListConcepts.getLength(); temp++) {
+				Node nNode = nListConcepts.item(temp);
+				U.log("\nCurr Elt: " + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element e = (Element) nNode;
 					// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>

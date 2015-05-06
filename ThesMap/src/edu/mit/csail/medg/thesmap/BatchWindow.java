@@ -576,7 +576,6 @@ public class BatchWindow extends JFrameW
 						try {	
 							if (rs == null) {
 								U.log("Wrong SQL command. Please try again.");
-								setAnnotateButtonState(ANN_STOPPED);
 							} else {
 								// Process the files accordingly.
 								while (rs.next()) {
@@ -593,7 +592,7 @@ public class BatchWindow extends JFrameW
 							U.log("Incorrect SQL command " + except.getMessage());
 						}
 					}
-
+				    setAnnotateButtonState(ANN_STOPPED);
 				}
 			});
 			add(doit, BorderLayout.SOUTH);

@@ -1,0 +1,688 @@
+<html>
+<p>Admission Date<br/>
+<concept title="Admission date" cui="C2598112" type="_finding" tui="T201" from="0" to="14" text="Admission Date">Admission date</concept></p>
+<p>Discharge Date<br/>
+<concept title="Discharge date" cui="C2361122" type="_finding" tui="T201" from="32" to="46" text="Discharge Date">Discharge date</concept></p>
+<p>Date of Birth<br/>
+<concept title="Patient date of birth" cui="C0421451" type="_finding" tui="T033" from="61" to="74" text="Date of Birth">Patient date of birth</concept></p>
+<p>CHIEF COMPLAINT<br/>
+<concept title="Complaint" cui="C0277786" type="_finding" tui="T033" from="122" to="137" text="CHIEF COMPLAINT">Complaint</concept></p>
+<p>Admitted from<br/>
+<concept title="Admitted from" cui="C2599640" type="_finding" tui="T033" from="140" to="153" text="Admitted from">Admitted from</concept></p>
+<p>rehabilitation<br/>
+<concept title="Rehabilitation therapy" cui="C0034991" type="_procedure" tui="T061" from="154" to="168" text="rehabilitation">Rehabilitation therapy</concept></p>
+<p>hypotension<br/>
+<concept title="Hypotension Adverse Event" cui="C3163620" type="_disease" tui="T046" from="173" to="184" text="hypotension">Hypotension Adverse Event</concept></p>
+<p>systolic blood pressure<br/>
+<concept title="Systolic blood pressure" cui="C0871470" type="_finding" tui="T201" from="186" to="209" text="systolic blood pressure">Systolic blood pressure</concept></p>
+<p>decreased urine output<br/>
+<concept title="Oliguria" cui="C0028961" type="_symptom" tui="T184" from="226" to="248" text="decreased urine output">Oliguria</concept></p>
+<p>hospitalized<br/>
+<concept title="Patient in hospital" cui="C0701159" type="_finding" tui="T033" from="327" to="339" text="hospitalized">Patient in hospital</concept></p>
+<p>left femoral<br/>
+<concept title="Femoral-left" cui="C3841507" type="_finding" tui="T033" from="418" to="430" text="left femoral">Femoral-left</concept></p>
+<p>bypass graft<br/>
+<concept title="Bypass graft" cui="C0185098" type="_procedure" tui="T061" from="434" to="446" text="bypass graft">Bypass graft</concept></p>
+<p>discharged to a rehabilitation facility<br/>
+<concept title="Discharge to rehabilitation facility" cui="C3536635" type="_procedure" tui="T058" from="468" to="507" text="discharged to a rehabilitation facility">Discharge to rehabilitation facility</concept></p>
+<p>systolic
+blood pressure<br/>
+<concept title="Systolic blood pressure" cui="C0871470" type="_finding" tui="T201" from="598" to="621" text="systolic
+blood pressure">Systolic blood pressure</concept></p>
+<p>no urine output<br/>
+<clause><concept title="urine output" cui="C2094175" type="_procedure" tui="T061" from="640" to="652" text="urine output">urine output</concept>: <concept title="no" type="_preneg" from="637" to="639" text="no">no</concept></clause></p>
+<p>Foley catheter<br/>
+<concept title="Foley catheter" cui="C0179804" type="_procedure" tui="T074" from="669" to="683" text="Foley catheter">Foley catheter</concept></p>
+<p>rehabilitation facility<br/>
+<concept title="Rehabilitation facility" cui="C3845566" type="_finding" tui="T033" from="698" to="721" text="rehabilitation facility">Rehabilitation facility</concept></p>
+<p>brown urine<br/>
+<concept title="urine brown" cui="C1142277" type="_finding" tui="T033" from="746" to="757" text="brown urine">urine brown</concept></p>
+<p>purulent discharge<br/>
+<concept title="Purulent discharge" cui="C0333274" type="_symptom" tui="T184" from="785" to="803" text="purulent discharge">Purulent discharge</concept></p>
+<p>without subjective<br/>
+<clause><concept title="subjective" cui="C2266644" type="_finding" tui="T033" from="909" to="919" text="subjective">subjective</concept>: <concept title="without" type="_preneg" from="901" to="908" text="without">without</concept></clause></p>
+<p>complaints<br/>
+<concept title="Complaint" cui="C0277786" type="_finding" tui="T033" from="920" to="930" text="complaints">Complaint</concept></p>
+<p>systolic blood pressure<br/>
+<concept title="Systolic blood pressure" cui="C0871470" type="_finding" tui="T201" from="983" to="1006" text="systolic blood pressure">Systolic blood pressure</concept></p>
+<p>dopamine<br/>
+<concept title="Dopamine" cui="C0013030" type="_medication" tui="T121,T124,T109" from="1086" to="1094" text="dopamine">Dopamine</concept></p>
+<p>systolic blood pressure<br/>
+<concept title="Systolic blood pressure" cui="C0871470" type="_finding" tui="T201" from="1101" to="1124" text="systolic blood pressure">Systolic blood pressure</concept></p>
+<p>Coronary artery disease with diffuse<br/>
+<concept title="Diffuse disease of coronary artery" cui="C1299384" type="_finding" tui="T033" from="1165" to="1201" text="Coronary artery disease with diffuse">Diffuse disease of coronary artery</concept></p>
+<p>proximal left circumflex stent<br/>
+<clause><concept title="Stent" cui="C1705817" type="_procedure" tui="T074" from="1273" to="1278" text="stent">Stent</concept>: <concept title="Proximal" cui="C0205107" type="_modifier" tui="T082" from="1248" to="1256" text="proximal">Proximal</concept>; <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="1257" to="1261" text="left">Left</concept>; <concept title="Circumflex" cui="C1880089" type="_modifier" tui="T082" from="1262" to="1272" text="circumflex">Circumflex</concept></clause></p>
+<p>right coronary artery stent<br/>
+<clause><concept title="Stented coronary artery" cui="C1272587" type="_finding" tui="T033" from="1357" to="1378" text="coronary artery stent">Stented coronary artery</concept>: <concept title="Right coronary artery structure" cui="C1261316" type="_bodyloc" tui="T023" from="1351" to="1372" text="right coronary artery">Right coronary artery structure</concept></clause></p>
+<p>no
+percutaneous coronary intervention<br/>
+<clause><concept title="Percutaneous coronary intervention" cui="C1532338" type="_procedure" tui="T061" from="1397" to="1431" text="percutaneous coronary intervention">Percutaneous coronary intervention</concept>: <concept title="no" type="_preneg" from="1394" to="1396" text="no">no</concept></clause></p>
+<p>Congestive heart failure<br/>
+<concept title="Congestive heart failure" cui="C0018802" type="_disease" tui="T047" from="1576" to="1600" text="Congestive heart failure">Congestive heart failure</concept></p>
+<p>ejection fraction<br/>
+<concept title="Ejection fraction" cui="C2700378" type="_finding" tui="T033" from="1610" to="1627" text="ejection fraction">Ejection fraction</concept></p>
+<p>Type 2 diabetes<br/>
+<concept title="Diabetes mellitus type 2" cui="C0011860" type="_disease" tui="T047" from="1649" to="1664" text="Type 2 diabetes">Diabetes mellitus type 2</concept></p>
+<p>neuropathy<br/>
+<concept title="Neuropathy" cui="C0442874" type="_disease" tui="T047" from="1670" to="1680" text="neuropathy">Neuropathy</concept></p>
+<p>Hypertension<br/>
+<concept title="Hyperpiesia" cui="C0020538" type="_disease" tui="T047" from="1687" to="1699" text="Hypertension">Hyperpiesia</concept></p>
+<p>Diverticulosis<br/>
+<concept title="Diverticulosis" cui="C1510475" type="_disease" tui="T190,T047" from="1706" to="1720" text="Diverticulosis">Diverticulosis</concept></p>
+<p>Alzheimer's dementia<br/>
+<concept title="Alzheimer disease" cui="C0002395" type="_disease" tui="T047" from="1764" to="1784" text="Alzheimer&apos;s dementia">Alzheimer disease</concept></p>
+<p>History of gastrointestinal bleed<br/>
+<concept title="H/O: GI Bleed" cui="C0559225" type="_finding" tui="T033" from="1791" to="1824" text="History of gastrointestinal bleed">H/O: GI Bleed</concept></p>
+<p>eptifibatide<br/>
+<concept title="Eptifibatide" cui="C0253563" type="_medication" tui="T121,T116" from="1855" to="1867" text="eptifibatide">Eptifibatide</concept></p>
+<p>Cardiac risk factors<br/>
+<concept title="cardiac risk factors" cui="C2024776" type="_finding" tui="T033" from="1875" to="1895" text="Cardiac risk factors">cardiac risk factors</concept></p>
+<p>Hypercholesterolemia<br/>
+<concept title="Hypercholesterolemia" cui="C0020443" type="_disease" tui="T047" from="1945" to="1965" text="Hypercholesterolemia">Hypercholesterolemia</concept></p>
+<p>Severe peripheral vascular disease<br/>
+<clause><concept title="Peripheral vascular disease" cui="C0085096" type="_disease" tui="T047" from="2081" to="2108" text="peripheral vascular disease">Peripheral vascular disease</concept>: <concept title="Severe" cui="C0205082" type="_state" tui="T080" from="2074" to="2080" text="Severe">Severe</concept></clause></p>
+<p>left
+femoral<br/>
+<concept title="Femoral-left" cui="C3841507" type="_finding" tui="T033" from="2122" to="2134" text="left
+femoral">Femoral-left</concept></p>
+<p>bypass graft<br/>
+<concept title="Bypass graft" cui="C0185098" type="_procedure" tui="T061" from="2138" to="2150" text="bypass graft">Bypass graft</concept></p>
+<p>Chronic nonhealing foot ulcers<br/>
+<clause><concept title="Foot ulcer" cui="C0085119" type="_disease" tui="T047,T020" from="2190" to="2201" text="foot ulcers">Foot ulcer</concept>: <concept title="Chronic" cui="C0205191" type="_event-time" tui="T079" from="2171" to="2178" text="Chronic">Chronic</concept></clause></p>
+<p>Recent right pedal cellulitis<br/>
+<clause><concept title="Cellulitis" cui="C0007642" type="_disease" tui="T046" from="2227" to="2237" text="cellulitis">Cellulitis</concept>: <concept title="Recent" cui="C0332185" type="_event-time" tui="T079" from="2208" to="2214" text="Recent">Recent</concept>; <concept title="Right" cui="C0205090" type="_modifier" tui="T082" from="2215" to="2220" text="right">Right</concept>; <concept title="Foot" cui="C0016504" type="_bodyloc" tui="T023" from="2221" to="2226" text="pedal">Foot</concept></clause></p>
+<p>no known drug<br/>
+<clause><concept title="Drug" cui="C1254351" type="_medication" tui="T121" from="2277" to="2281" text="drug">Drug</concept>: <concept title="no" type="_preneg" from="2268" to="2270" text="no">no</concept>; <concept title="Known" cui="C0205309" type="_modifier" tui="T080" from="2271" to="2276" text="known">Known</concept></clause></p>
+<p>Vancomycin<br/>
+<concept title="Vancomycin" cui="C0042313" type="_medication" tui="T195,T116" from="2325" to="2335" text="Vancomycin">Vancomycin</concept></p>
+<p>level<br/>
+<concept title="Level" cui="C2946261" type="_medication" tui="T121" from="2367" to="2372" text="level">Level</concept></p>
+<p>Levofloxacin<br/>
+<concept title="Levofloxacin" cui="C0282386" type="_medication" tui="T109,T195" from="2419" to="2431" text="Levofloxacin">Levofloxacin</concept></p>
+<p>Metronidazole<br/>
+<concept title="Metronidazole" cui="C0025872" type="_medication" tui="T121,T109" from="2479" to="2492" text="Metronidazole">Metronidazole</concept></p>
+<p>Heparin<br/>
+<concept title="Heparin" cui="C0019134" type="_medication" tui="T121,T123,T118" from="2541" to="2548" text="Heparin">Heparin</concept></p>
+<p>Simvastatin<br/>
+<concept title="Simvastatin" cui="C0074554" type="_medication" tui="T121,T109" from="2585" to="2596" text="Simvastatin">Simvastatin</concept></p>
+<p>Lisinopril 5 mg<br/>
+<concept title="Lisinopril 5 MG" cui="C0987222" type="_medication" tui="T200" from="2618" to="2633" text="Lisinopril 5 mg">Lisinopril 5 MG</concept></p>
+<p>Furosemide<br/>
+<concept title="Furosemide" cui="C0016860" type="_medication" tui="T121,T109" from="2649" to="2659" text="Furosemide">Furosemide</concept></p>
+<p>Vitamin E<br/>
+<concept title="Vitamin E" cui="C0042874" type="_medication" tui="T121,T119,T127" from="2681" to="2690" text="Vitamin E">Vitamin E</concept></p>
+<p>Atenolol<br/>
+<concept title="Atenolol" cui="C0004147" type="_medication" tui="T121,T109" from="2713" to="2721" text="Atenolol">Atenolol</concept></p>
+<p>Pantoprazole<br/>
+<concept title="Pantoprazole" cui="C0081876" type="_medication" tui="T121,T109" from="2743" to="2755" text="Pantoprazole">Pantoprazole</concept></p>
+<p>Ascorbic acid<br/>
+<concept title="Ascorbic acid" cui="C0003968" type="_medication" tui="T121,T127,T109" from="2777" to="2790" text="Ascorbic acid">Ascorbic acid</concept></p>
+<p>NPH<br/>
+<ambig><concept title="Postherpetic neuralgia" cui="C0032768" type="_disease" tui="T047" from="2815" to="2818" text="NPH">Postherpetic neuralgia</concept> or <concept title="Normal pressure hydrocephalus" cui="C0020258" type="_disease" tui="T047" from="2815" to="2818" text="NPH">Normal pressure hydrocephalus</concept></ambig></p>
+<p>Regular insulin<br/>
+<concept title="Insulin" cui="C0021641" type="_medication" tui="T121,T116,T125" from="2840" to="2855" text="Regular insulin">Insulin</concept></p>
+<p>sliding-scale<br/>
+<concept title="scale sliding" cui="C2937251" type="_procedure" tui="T061" from="2856" to="2869" text="sliding-scale">scale sliding</concept></p>
+<p>Bisacodyl<br/>
+<concept title="Bisacodyl" cui="C0005632" type="_medication" tui="T121,T109" from="2876" to="2885" text="Bisacodyl">Bisacodyl</concept></p>
+<p>Docusate<br/>
+<concept title="Docusate" cui="C1692318" type="_medication" tui="T109,T121" from="2918" to="2926" text="Docusate">Docusate</concept></p>
+<p>Percocet 5<br/>
+<concept title="percocet 5" cui="C0684189" type="_medication" tui="T121,T109" from="2951" to="2961" text="Percocet 5">percocet 5</concept></p>
+<p>as needed for
+pain<br/>
+<clause><concept title="Pain" cui="C0030193" type="_symptom" tui="T184" from="3007" to="3011" text="pain">Pain</concept>: <concept title="As needed for" cui="C1720688" type="_modifier" tui="T080" from="2993" to="3006" text="as needed for">As needed for</concept></clause></p>
+<p>Aspirin<br/>
+<concept title="Aspirin" cui="C0004057" type="_medication" tui="T121,T109" from="3018" to="3025" text="Aspirin">Aspirin</concept></p>
+<p>Metoprolol<br/>
+<concept title="Metoprolol" cui="C0025859" type="_medication" tui="T121,T109" from="3047" to="3057" text="Metoprolol">Metoprolol</concept></p>
+<p>retired<br/>
+<concept title="Retired" cui="C0035345" type="_finding" tui="T033" from="3109" to="3116" text="retired">Retired</concept></p>
+<p>admission to the hospital<br/>
+<concept title="Hospital admission" cui="C0184666" type="_procedure" tui="T058" from="3172" to="3197" text="admission to the hospital">Hospital admission</concept></p>
+<p>Rehab<br/>
+<concept title="Rehabilitation therapy" cui="C0034991" type="_procedure" tui="T061" from="3243" to="3248" text="Rehab">Rehabilitation therapy</concept></p>
+<p>prior to admission<br/>
+<clause><concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="3279" to="3288" text="admission">Admission</concept>: <concept title="Before" cui="C0332152" type="_event-time" tui="T079" from="3270" to="3278" text="prior to">Before</concept></clause></p>
+<p>a
+social drinker<br/>
+<concept title="social drinker" cui="C2220425" type="_finding" tui="T033" from="3297" to="3313" text="a
+social drinker">social drinker</concept></p>
+<p>smoking history<br/>
+<concept title="Smoking History" cui="C1519384" type="_finding" tui="T033" from="3337" to="3352" text="smoking history">Smoking History</concept></p>
+<p>smoking<br/>
+<concept title="Smoking" cui="C0037369" type="_disease" tui="T055" from="3372" to="3379" text="smoking">Smoking</concept></p>
+<p>heart rate<br/>
+<concept title="Heart rate" cui="C0018810" type="_finding" tui="T201" from="3514" to="3524" text="heart rate">Heart rate</concept></p>
+<p>normal saline<br/>
+<concept title="Normal saline" cui="C0445115" type="_medication" tui="T197,T121" from="3600" to="3613" text="normal saline">Normal saline</concept></p>
+<p>nasal
+cannula<br/>
+<concept title="cannula nasal" cui="C0179574" type="_procedure" tui="T074" from="3683" to="3696" text="nasal
+cannula">cannula nasal</concept></p>
+<p>rhythm<br/>
+<concept title="rhythm" cui="C0871269" type="_finding" tui="T033" from="3732" to="3738" text="rhythm">rhythm</concept></p>
+<p>second heart sounds<br/>
+<concept title="S2 heart sound" cui="C2219390" type="_finding" tui="T033" from="3769" to="3788" text="second heart sounds">S2 heart sound</concept></p>
+<p>a 2<br/>
+<concept title="AS 2" cui="C0104281" type="_medication" tui="T121,T109" from="3801" to="3804" text="a 2">AS 2</concept></p>
+<p>systolic ejection murmur<br/>
+<concept title="sem" cui="C0694547" type="_finding" tui="T033" from="3807" to="3831" text="systolic ejection murmur">sem</concept></p>
+<p>no rubs<br/>
+<clause><concept title="Rubs" cui="C3842105" type="_finding" tui="T033" from="3851" to="3855" text="rubs">Rubs</concept>: <concept title="no" type="_preneg" from="3848" to="3850" text="no">no</concept></clause></p>
+<p>hypoactive bowel sounds<br/>
+<concept title="Decreased bowel sounds" cui="C0232695" type="_symptom" tui="T184" from="3985" to="4008" text="hypoactive bowel sounds">Decreased bowel sounds</concept></p>
+<p>palpable bypass graft
+pulse, dopplerable dorsalis pedis and posterior tibialis<br/>
+<clause><concept title="Bypass graft" cui="C0185098" type="_procedure" tui="T061" from="4029" to="4041" text="bypass graft">Bypass graft</concept>: <concept title="Tibialis posterior muscle structure" cui="C0224463" type="_bodyloc" tui="T023" from="4080" to="4098" text="posterior tibialis">Tibialis posterior muscle structure</concept>; <concept title="Palpable" cui="C0522499" type="_modifier" tui="T080" from="4020" to="4028" text="palpable">Palpable</concept></clause></p>
+<p>surgical incision<br/>
+<concept title="surgical incision" cui="C2081230" type="_finding" tui="T033" from="4127" to="4144" text="surgical incision">surgical incision</concept></p>
+<p>Vascular Surgery<br/>
+<concept title="Operation on vessels" cui="C0042381" type="_procedure" tui="T061" from="4229" to="4245" text="Vascular Surgery">Operation on vessels</concept></p>
+<p>patient to the hospital<br/>
+<concept title="Hospital patient" cui="C0239966" type="_finding" tui="T033" from="4312" to="4335" text="patient to the hospital">Hospital patient</concept></p>
+<p>evaluation the patient<br/>
+<concept title="client assessment" cui="C0679830" type="_procedure" tui="T058" from="4404" to="4426" text="evaluation the patient">client assessment</concept></p>
+<p>platelets<br/>
+<concept title="Platelets Adverse Event" cui="C1963076" type="_finding" tui="T033" from="4490" to="4499" text="platelets">Platelets Adverse Event</concept></p>
+<p>PTT<br/>
+<concept title="Thrombotic thrombocytopenic purpura" cui="C0034155" type="_disease" tui="T047" from="4532" to="4535" text="PTT">Thrombotic thrombocytopenic purpura</concept></p>
+<p>INR<br/>
+<concept title="Integrated Neuromusculoskeletal Release" cui="C1704538" type="_procedure" tui="T061" from="4550" to="4553" text="INR">Integrated Neuromusculoskeletal Release</concept></p>
+<p>bicarbonate<br/>
+<concept title="Bicarbonate" cui="C0005367" type="_medication" tui="T197,T121" from="4647" to="4658" text="bicarbonate">Bicarbonate</concept></p>
+<p>calcium<br/>
+<concept title="Calcium" cui="C0006675" type="_medication" tui="T123,T196,T121" from="4746" to="4753" text="calcium">Calcium</concept></p>
+<p>phosphate<br/>
+<concept title="Phosphate" cui="C0031603" type="_medication" tui="T121,T197" from="4786" to="4795" text="phosphate">Phosphate</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="4830" to="4839" text="admission">Admission</concept></p>
+<p>but ultimately negative<br/>
+<clause><concept title="Negative" cui="C1513916" type="_finding" tui="T033" from="4869" to="4877" text="negative">Negative</concept>: <concept title="but" type="_conjneg" from="4854" to="4857" text="but">but</concept></clause></p>
+<p>taken<br/>
+<concept title="Take" cui="C1515187" type="_procedure" tui="T058" from="4896" to="4901" text="taken">Take</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="4905" to="4914" text="admission">Admission</concept></p>
+<p>but ultimately grew out
+yeast<br/>
+<clause><concept title="Yeast" cui="C0043393" type="_disease" tui="T004" from="4962" to="4967" text="yeast">Yeast</concept>: <concept title="but" type="_conjneg" from="4938" to="4941" text="but">but</concept>; <concept title="Out" cui="C0849355" type="_modifier" tui="T080" from="4958" to="4961" text="out">Out</concept></clause></p>
+<p>taken<br/>
+<concept title="Take" cui="C1515187" type="_procedure" tui="T058" from="4987" to="4992" text="taken">Take</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="4996" to="5005" text="admission">Admission</concept></p>
+<p>out yeast<br/>
+<clause><concept title="Yeast" cui="C0043393" type="_disease" tui="T004" from="5063" to="5068" text="yeast">Yeast</concept>: <concept title="Out" cui="C0849355" type="_modifier" tui="T080" from="5059" to="5062" text="out">Out</concept></clause></p>
+<p>RADIOLOGY/IMAGING<br/>
+<concept title="Radiology/imaging" cui="C3845856" type="_finding" tui="T033" from="5071" to="5088" text="RADIOLOGY/IMAGING">Radiology/imaging</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="5095" to="5104" text="admission">Admission</concept></p>
+<p>chest x-ray<br/>
+<concept title="Chest X-ray" cui="C1114557" type="_finding" tui="T201" from="5105" to="5116" text="chest x-ray">Chest X-ray</concept></p>
+<p>appearance of
+the chest<br/>
+<concept title="Form of thorax" cui="C0426786" type="_finding" tui="T033" from="5232" to="5255" text="appearance of
+the chest">Form of thorax</concept></p>
+<p>No
+radiographic evidence of congestive heart failure<br/>
+<clause><concept title="Congestive heart failure" cui="C0018802" type="_disease" tui="T047" from="5319" to="5343" text="congestive heart failure">Congestive heart failure</concept>: <concept title="no" type="_preneg" from="5291" to="5293" text="No">no</concept>; <concept title="Evidence of" cui="C0332120" type="_modifier" tui="T169" from="5307" to="5318" text="evidence of">Evidence of</concept></clause></p>
+<p>pneumonia<br/>
+<concept title="Pneumonia" cui="C0032285" type="_disease" tui="T047" from="5347" to="5356" text="pneumonia">Pneumonia</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="5363" to="5372" text="admission">Admission</concept></p>
+<p>electrocardiogram<br/>
+<concept title="Electrocardiogram" cui="C0013798" type="_finding" tui="T033" from="5373" to="5390" text="electrocardiogram">Electrocardiogram</concept></p>
+<p>sinus rhythm<br/>
+<concept title="Sinus rhythm" cui="C0232201" type="_finding" tui="T033" from="5406" to="5418" text="sinus rhythm">Sinus rhythm</concept></p>
+<p>inferior/lateral T wave<br/>
+<clause><concept title="T wave feature" cui="C0429103" type="_finding" tui="T033" from="5449" to="5455" text="T wave">T wave feature</concept>: <concept title="Lateral" cui="C0205093" type="_modifier" tui="T082" from="5441" to="5448" text="lateral">Lateral</concept>; <concept title="Inferior" cui="C0542339" type="_modifier" tui="T082" from="5432" to="5440" text="inferior">Inferior</concept></clause></p>
+<p>T wave<br/>
+<concept title="T wave feature" cui="C0429103" type="_finding" tui="T033" from="5505" to="5511" text="T wave">T wave feature</concept></p>
+<p>electrocardiogram<br/>
+<concept title="Electrocardiogram" cui="C0013798" type="_finding" tui="T033" from="5555" to="5572" text="electrocardiogram">Electrocardiogram</concept></p>
+<p>diffuse vascular calcifications<br/>
+<clause><concept title="Vascular calcification" cui="C0342649" type="_disease" tui="T046" from="5680" to="5703" text="vascular calcifications">Vascular calcification</concept>: <concept title="Diffuse" cui="C0205219" type="_modifier" tui="T080" from="5672" to="5679" text="diffuse">Diffuse</concept></clause></p>
+<p>abdominal aortic aneurysm<br/>
+<concept title="Abdominal aortic aneurysm" cui="C0162871" type="_disease" tui="T047" from="5724" to="5749" text="abdominal aortic aneurysm">Abdominal aortic aneurysm</concept></p>
+<p>free fluid<br/>
+<concept title="Effusion" cui="C0013687" type="_disease" tui="T046" from="5753" to="5763" text="free fluid">Effusion</concept></p>
+<p>coronary artery calcification<br/>
+<concept title="Calcification of coronary artery" cui="C1611184" type="_disease" tui="T046" from="5785" to="5814" text="coronary artery calcification">Calcification of coronary artery</concept></p>
+<p>simple
+left renal cyst<br/>
+<clause><concept title="Renal Cyst" cui="C2173677" type="_finding" tui="T033" from="5830" to="5840" text="renal cyst">Renal Cyst</concept>: <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="5825" to="5829" text="left">Left</concept>; <concept title="Simple" cui="C0205352" type="_modifier" tui="T080" from="5818" to="5824" text="simple">Simple</concept></clause></p>
+<p>sigmoid diverticulosis<br/>
+<concept title="Diverticulosis of sigmoid colon" cui="C0012818" type="_disease" tui="T047" from="5842" to="5864" text="sigmoid diverticulosis">Diverticulosis of sigmoid colon</concept></p>
+<p>SYSTEM<br/>
+<concept title="System" cui="C1704459" type="_procedure" tui="T074" from="5942" to="5948" text="SYSTEM">System</concept></p>
+<p>initially admitted<br/>
+<clause>
+<ambig><concept title="Hospital admission" cui="C0184666" type="_procedure" tui="T058" from="5998" to="6006" text="admitted">Hospital admission</concept> or <concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="5998" to="6006" text="admitted">Admission</concept></ambig>: <concept title="Initially" cui="C0205265" type="_event-time" tui="T079" from="5988" to="5997" text="initially">Initially</concept></clause></p>
+<p>hypotension<br/>
+<concept title="Hypotension Adverse Event" cui="C3163620" type="_disease" tui="T046" from="6048" to="6059" text="hypotension">Hypotension Adverse Event</concept></p>
+<p>decreased
+urine output<br/>
+<concept title="Oliguria" cui="C0028961" type="_symptom" tui="T184" from="6061" to="6083" text="decreased
+urine output">Oliguria</concept></p>
+<p>acute renal failure<br/>
+<concept title="Acute renal failure" cui="C0022660" type="_disease" tui="T047" from="6089" to="6108" text="acute renal failure">Acute renal failure</concept></p>
+<p>gram-negative urosepsis<br/>
+<clause><concept title="Urosepsis" cui="C0149801" type="_disease" tui="T047" from="6160" to="6169" text="urosepsis">Urosepsis</concept>: <concept title="gram negative" type="_pseudoneg" from="6146" to="6159" text="gram-negative">gram negative</concept></clause></p>
+<p>never any positive culture<br/>
+<clause><concept title="[D]Nonspecific positive culture findings" cui="C0159125" type="_finding" tui="T033" from="6201" to="6217" text="positive culture">[D]Nonspecific positive culture findings</concept>: <concept title="Never" cui="C2003901" type="_event-time" tui="T079" from="6191" to="6196" text="never">Never</concept>; <concept title="Any" cui="C1552551" type="_modifier" tui="T080" from="6197" to="6200" text="any">Any</concept></clause></p>
+<p>diagnosis<br/>
+<concept title="Diagnosis" cui="C0011900" type="_finding" tui="T033" from="6239" to="6248" text="diagnosis">Diagnosis</concept></p>
+<p>boarding<br/>
+<concept title="board" cui="C0972401" type="_procedure" tui="T074" from="6258" to="6266" text="boarding">board</concept></p>
+<p>night of admission, the patient<br/>
+<clause><concept title="Patient Admission" cui="C0030673" type="_procedure" tui="T058" from="6318" to="6340" text="admission, the patient">Patient Admission</concept>: <concept title="Night time" cui="C0240526" type="_event-time" tui="T079" from="6309" to="6314" text="night">Night time</concept></clause></p>
+<p>sudden
+cardiorespiratory arrest<br/>
+<clause><concept title="Cardiopulmonary arrest" cui="C0600228" type="_disease" tui="T046" from="6354" to="6378" text="cardiorespiratory arrest">Cardiopulmonary arrest</concept>: <concept title="Sudden" cui="C1276802" type="_modifier" tui="T080" from="6347" to="6353" text="sudden">Sudden</concept></clause></p>
+<p>resuscitated<br/>
+<concept title="Resuscitate" cui="C2587207" type="_finding" tui="T033" from="6388" to="6400" text="resuscitated">Resuscitate</concept></p>
+<p>epinephrine<br/>
+<concept title="Epinephrine" cui="C0014563" type="_medication" tui="T109,T125,T124,T121" from="6406" to="6417" text="epinephrine">Epinephrine</concept></p>
+<p>lidocaine<br/>
+<concept title="Lidocaine" cui="C0023660" type="_medication" tui="T121,T109" from="6419" to="6428" text="lidocaine">Lidocaine</concept></p>
+<p>direct current cardioversion
+times<br/>
+<clause><concept title="Direct current cardioversion" cui="C0542380" type="_procedure" tui="T061" from="6434" to="6462" text="direct current cardioversion">Direct current cardioversion</concept>: <concept title="Times" cui="C1632851" type="_modifier" tui="T081" from="6463" to="6468" text="times">Times</concept></clause></p>
+<p>airway<br/>
+<concept title="airway" cui="C2096027" type="_finding" tui="T033" from="6501" to="6507" text="airway">airway</concept></p>
+<p>protection<br/>
+<concept title="Protection" cui="C1545588" type="_finding" tui="T033" from="6508" to="6518" text="protection">Protection</concept></p>
+<p>sinus
+rhythm<br/>
+<concept title="Sinus rhythm" cui="C0232201" type="_finding" tui="T033" from="6573" to="6585" text="sinus
+rhythm">Sinus rhythm</concept></p>
+<p>systolic blood pressure<br/>
+<concept title="Systolic blood pressure" cui="C0871470" type="_finding" tui="T201" from="6593" to="6616" text="systolic blood pressure">Systolic blood pressure</concept></p>
+<p>required double pressors<br/>
+<clause><concept title="pressor" cui="C0237795" type="_medication" tui="T121" from="6783" to="6791" text="pressors">pressor</concept>: <concept title="Requisite" cui="C1514873" type="_modifier" tui="T169" from="6767" to="6775" text="required">Requisite</concept>; <concept title="Double" cui="C1705765" type="_modifier" tui="T080" from="6776" to="6782" text="double">Double</concept></clause></p>
+<p>maintain<br/>
+<concept title="Maintain brand of benzocaine" cui="C0721534" type="_medication" tui="T121,T109" from="6795" to="6803" text="maintain">Maintain brand of benzocaine</concept></p>
+<p>pericardial effusion<br/>
+<concept title="Pericardial effusion" cui="C0031039" type="_disease" tui="T047" from="6891" to="6911" text="pericardial effusion">Pericardial effusion</concept></p>
+<p>left ventricular ejection
+fraction of<br/>
+<clause>
+<ambig><concept title="Left ventricular Ejection fraction" cui="C0488728" type="_finding" tui="T201" from="6918" to="6952" text="left ventricular ejection
+fraction">Left ventricular Ejection fraction</concept> or <concept title="Left ventricular ejection fraction" cui="C0428772" type="_finding" tui="T201" from="6918" to="6952" text="left ventricular ejection
+fraction">Left ventricular ejection fraction</concept></ambig>: <concept title="Fractions" cui="C1264633" type="_modifier" tui="T081" from="6944" to="6955" text="fraction of">Fractions</concept></clause></p>
+<p>setting of tachycardia<br/>
+<clause><concept title="Tachycardia" cui="C0039231" type="_symptom" tui="T184" from="6985" to="6996" text="tachycardia">Tachycardia</concept>: <concept title="Context" cui="C0542559" type="_modifier" tui="T169" from="6974" to="6981" text="setting">Context</concept></clause></p>
+<p>hyperdynamic<br/>
+<concept title="Hyperdynamic Ventricular Ejection Fraction" cui="C3274779" type="_finding" tui="T033" from="7003" to="7015" text="hyperdynamic">Hyperdynamic Ventricular Ejection Fraction</concept></p>
+<p>elevated right-sided
+filling pressures<br/>
+<clause><concept title="Pressure" cui="C0460139" type="_finding" tui="T033" from="7073" to="7082" text="pressures">Pressure</concept>: <concept title="High" cui="C0205250" type="_state" tui="T080" from="7044" to="7052" text="elevated">High</concept>; <concept title="Right sided" cui="C0444532" type="_modifier" tui="T082" from="7053" to="7064" text="right-sided">Right sided</concept></clause></p>
+<p>non-Q-wave myocardial infarction<br/>
+<concept title="Non-Q wave myocardial infarction" cui="C0542269" type="_disease" tui="T047" from="7181" to="7213" text="non-Q-wave myocardial infarction">Non-Q wave myocardial infarction</concept></p>
+<p>mild left atrial dilation<br/>
+<clause><concept title="Atrial dilatation" cui="C0264734" type="_disease" tui="T047" from="7360" to="7375" text="atrial dilation">Atrial dilatation</concept>: <concept title="Slight" cui="C0547040" type="_state" tui="T080" from="7350" to="7354" text="mild">Slight</concept>; <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="7355" to="7359" text="left">Left</concept></clause></p>
+<p>ejection fraction<br/>
+<concept title="Ejection fraction" cui="C2700378" type="_finding" tui="T033" from="7380" to="7397" text="ejection fraction">Ejection fraction</concept></p>
+<p>resting regional<br/>
+<clause><concept title="Rest" cui="C0035253" type="_procedure" tui="T056" from="7413" to="7420" text="resting">Rest</concept>: <concept title="Regional" cui="C0205147" type="_modifier" tui="T082" from="7421" to="7429" text="regional">Regional</concept></clause></p>
+<p>wall motion abnormalities
+including inferior<br/>
+<clause><concept title="Wall motion" cui="C1980023" type="_finding" tui="T201" from="7430" to="7441" text="wall motion">Wall motion</concept>: <concept title="Inferior" cui="C0542339" type="_modifier" tui="T082" from="7466" to="7474" text="inferior">Inferior</concept>; <concept title="Includes" cui="C0332257" type="_modifier" tui="T169" from="7456" to="7465" text="including">Includes</concept>; <concept title="abnormality" type="_state" from="7442" to="7455" text="abnormalities">abnormality</concept></clause></p>
+<p>mid, and apical left ventricular
+akinesis, depressed right ventricular systolic function<br/>
+<clause>
+<ambig><concept title="Depressed mood" cui="C0344315" type="_finding" tui="T033" from="7519" to="7528" text="depressed">Depressed mood</concept> or <concept title="Consciousness, Level Depressed" cui="C0549249" type="_finding" tui="T033" from="7519" to="7528" text="depressed">Consciousness, Level Depressed</concept></ambig>: <concept title="Function" cui="C0542341" type="_modifier" tui="T169" from="7556" to="7564" text="function">Function</concept>; <concept title="Systole" cui="C0039155" type="_event-time" tui="T079" from="7547" to="7555" text="systolic">Systole</concept>; <concept title="Ventricular" cui="C1522565" type="_modifier" tui="T082" from="7535" to="7546" text="ventricular">Ventricular</concept>; <concept title="Right" cui="C0205090" type="_modifier" tui="T082" from="7529" to="7534" text="right">Right</concept>; <concept title="Ventricular" cui="C1522565" type="_modifier" tui="T082" from="7497" to="7508" text="ventricular">Ventricular</concept>; <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="7492" to="7496" text="left">Left</concept>; <concept title="Apical" cui="C0205111" type="_modifier" tui="T082" from="7485" to="7491" text="apical">Apical</concept>; <concept title="Middle" cui="C0444598" type="_modifier" tui="T082" from="7476" to="7479" text="mid">Middle</concept></clause></p>
+<p>moderate mitral regurgitation<br/>
+<clause><concept title="Mitral valve insufficiency" cui="C0026266" type="_disease" tui="T047" from="7579" to="7599" text="mitral regurgitation">Mitral valve insufficiency</concept>: <concept title="Moderate" cui="C0205081" type="_state" tui="T080" from="7570" to="7578" text="moderate">Moderate</concept></clause></p>
+<p>moderate mitral regurgitation<br/>
+<clause><concept title="Mitral valve insufficiency" cui="C0026266" type="_disease" tui="T047" from="7712" to="7732" text="mitral regurgitation">Mitral valve insufficiency</concept>: <concept title="Moderate" cui="C0205081" type="_state" tui="T080" from="7703" to="7711" text="moderate">Moderate</concept></clause></p>
+<p>amiodarone<br/>
+<concept title="Amiodarone" cui="C0002598" type="_medication" tui="T121,T109" from="7829" to="7839" text="amiodarone">Amiodarone</concept></p>
+<p>oral amiodarone<br/>
+<clause><concept title="Amiodarone" cui="C0002598" type="_medication" tui="T121,T109" from="7877" to="7887" text="amiodarone">Amiodarone</concept>: <concept title="Oral" cui="C0442027" type="_modifier" tui="T082" from="7872" to="7876" text="oral">Oral</concept></clause></p>
+<p>heparin<br/>
+<concept title="Heparin" cui="C0019134" type="_medication" tui="T121,T123,T118" from="7927" to="7934" text="heparin">Heparin</concept></p>
+<p>non-Q-wave myocardial infarction<br/>
+<concept title="Non-Q wave myocardial infarction" cui="C0542269" type="_disease" tui="T047" from="8081" to="8113" text="non-Q-wave myocardial infarction">Non-Q wave myocardial infarction</concept></p>
+<p>discussions between<br/>
+<clause><concept title="Discussion" cui="C0557061" type="_procedure" tui="T061" from="8179" to="8190" text="discussions">Discussion</concept>: <concept title="Intermediate" cui="C0205103" type="_modifier" tui="T082" from="8191" to="8198" text="between">Intermediate</concept></clause></p>
+<p>do not resuscitate<br/>
+<concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="8372" to="8390" text="do not resuscitate">do not resuscitate</concept></p>
+<p>not resuscitate/do<br/>
+<concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="8375" to="8393" text="not resuscitate/do">do not resuscitate</concept></p>
+<p>resuscitate/do not intubate<br/>
+<clause><concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="8379" to="8397" text="resuscitate/do not">do not resuscitate</concept>: <concept title="Not intubated" cui="C0445105" type="_modifier" tui="T169" from="8394" to="8406" text="not intubate">Not intubated</concept></clause></p>
+<p>resuscitation mentioned above<br/>
+<clause><concept title="Resuscitation" cui="C0035273" type="_procedure" tui="T061" from="8421" to="8434" text="resuscitation">Resuscitation</concept>: <concept title="Upper" cui="C1282910" type="_modifier" tui="T082" from="8445" to="8450" text="above">Upper</concept></clause></p>
+<p>family
+no longer<br/>
+<clause><concept title="No relatives" cui="C0557086" type="_finding" tui="T033" from="8460" to="8469" text="family
+no">No relatives</concept>: <concept title="Long" cui="C0205166" type="_modifier" tui="T080" from="8470" to="8476" text="longer">Long</concept></clause></p>
+<p>aggressive<br/>
+<concept title="Aggressive behavior" cui="C0001807" type="_disease" tui="T048" from="8488" to="8498" text="aggressive">Aggressive behavior</concept></p>
+<p>resuscitating measures<br/>
+<clause><concept title="Resuscitate" cui="C2587207" type="_finding" tui="T033" from="8499" to="8512" text="resuscitating">Resuscitate</concept>: <concept title="Measures" cui="C1879489" type="_modifier" tui="T169" from="8513" to="8521" text="measures">Measures</concept></clause></p>
+<p>pressors<br/>
+<concept title="pressor" cui="C0237795" type="_medication" tui="T121" from="8550" to="8558" text="pressors">pressor</concept></p>
+<p>beta blocker<br/>
+<concept title="Beta-blocker" cui="C0001645" type="_medication" tui="T121" from="8585" to="8597" text="beta blocker">Beta-blocker</concept></p>
+<p>ACE inhibitor<br/>
+<concept title="Angiotensin-converting enzyme inhibitor" cui="C0003015" type="_medication" tui="T121" from="8602" to="8615" text="ACE inhibitor">Angiotensin-converting enzyme inhibitor</concept></p>
+<p>substernal chest pain<br/>
+<concept title="Retrosternal pain" cui="C0151826" type="_symptom" tui="T184" from="8687" to="8708" text="substernal chest pain">Retrosternal pain</concept></p>
+<p>relieved by NPG SL<br/>
+<clause><concept title="GLAUCOMA, NORMAL TENSION, SUSCEPTIBILITY TO (finding)" cui="C1847730" type="_finding" tui="T033" from="8730" to="8733" text="NPG">GLAUCOMA, NORMAL TENSION, SUSCEPTIBILITY TO (finding)</concept>: <concept title="Sublingual use" cui="C0001565" type="_modifier" tui="T169" from="8734" to="8736" text="SL">Sublingual use</concept>; <concept title="Relieved by" cui="C0332303" type="_modifier" tui="T169" from="8718" to="8729" text="relieved by">Relieved by</concept></clause></p>
+<p>morphine<br/>
+<concept title="Morphine" cui="C0026549" type="_medication" tui="T121,T109" from="8741" to="8749" text="morphine">Morphine</concept></p>
+<p>ST segment depressions in V2<br/>
+<concept title="ECG ST segment depressed V2" cui="C2216115" type="_finding" tui="T033" from="8764" to="8792" text="ST segment depressions in V2">ECG ST segment depressed V2</concept></p>
+<p>pain<br/>
+<concept title="Pain" cui="C0030193" type="_symptom" tui="T184" from="8854" to="8858" text="pain">Pain</concept></p>
+<p>heparin<br/>
+<concept title="Heparin" cui="C0019134" type="_medication" tui="T121,T123,T118" from="8904" to="8911" text="heparin">Heparin</concept></p>
+<p>discontinued<br/>
+<concept title="Discontinued" cui="C1444662" type="_finding" tui="T033" from="8932" to="8944" text="discontinued">Discontinued</concept></p>
+<p>ruled out for a myocardial infarction<br/>
+<clause><concept title="Myocardial infarction" cui="C0027051" type="_disease" tui="T047" from="8992" to="9013" text="myocardial infarction">Myocardial infarction</concept>: <concept title="ruled out for" type="_preneg" from="8976" to="8989" text="ruled out for">ruled out for</concept></clause></p>
+<p>infarction by cardiac<br/>
+<concept title="Myocardial infarction" cui="C0027051" type="_disease" tui="T047" from="9003" to="9024" text="infarction by cardiac">Myocardial infarction</concept></p>
+<p>enzymes<br/>
+<ambig><concept title="Enzymes FOR DISORDERS OF THE MUSCULO-SKELETAL SYSTEM" cui="C3540772" type="_medication" tui="T121,T126" from="9025" to="9032" text="enzymes">Enzymes FOR DISORDERS OF THE MUSCULO-SKELETAL SYSTEM</concept> or <concept title="ENZYMES FOR TREATMENT OF WOUNDS AND ULCERS" cui="C3540048" type="_medication" tui="T126,T121" from="9025" to="9032" text="enzymes">ENZYMES FOR TREATMENT OF WOUNDS AND ULCERS</concept> or <concept title="Enzymes for ALIMENTARY TRACT AND METABOLISM" cui="C3542456" type="_medication" tui="T121,T126" from="9025" to="9032" text="enzymes">Enzymes for ALIMENTARY TRACT AND METABOLISM</concept> or <concept title="Enzymes, hematological" cui="C3540017" type="_medication" tui="T121,T126" from="9025" to="9032" text="enzymes">Enzymes, hematological</concept> or <concept title="Enzymes, peripheral vasodilators" cui="C3540790" type="_medication" tui="T126,T121" from="9025" to="9032" text="enzymes">Enzymes, peripheral vasodilators</concept> or <concept title="Enzymes, antithrombotic" cui="C3541394" type="_medication" tui="T126,T121" from="9025" to="9032" text="enzymes">Enzymes, antithrombotic</concept></ambig></p>
+<p>substernal chest pain<br/>
+<concept title="Retrosternal pain" cui="C0151826" type="_symptom" tui="T184" from="9048" to="9069" text="substernal chest pain">Retrosternal pain</concept></p>
+<p>no electrocardiogram changes<br/>
+<clause><concept title="Change in ECG" cui="C0855329" type="_finding" tui="T033" from="9105" to="9130" text="electrocardiogram changes">Change in ECG</concept>: <concept title="no" type="_preneg" from="9102" to="9104" text="no">no</concept></clause></p>
+<p>ruled out for a myocardial infarction<br/>
+<clause><concept title="Myocardial infarction" cui="C0027051" type="_disease" tui="T047" from="9161" to="9182" text="myocardial infarction">Myocardial infarction</concept>: <concept title="ruled out for" type="_preneg" from="9145" to="9158" text="ruled out for">ruled out for</concept></clause></p>
+<p>infarction by cardiac<br/>
+<concept title="Myocardial infarction" cui="C0027051" type="_disease" tui="T047" from="9172" to="9193" text="infarction by cardiac">Myocardial infarction</concept></p>
+<p>enzymes<br/>
+<ambig><concept title="Enzymes FOR DISORDERS OF THE MUSCULO-SKELETAL SYSTEM" cui="C3540772" type="_medication" tui="T121,T126" from="9194" to="9201" text="enzymes">Enzymes FOR DISORDERS OF THE MUSCULO-SKELETAL SYSTEM</concept> or <concept title="ENZYMES FOR TREATMENT OF WOUNDS AND ULCERS" cui="C3540048" type="_medication" tui="T126,T121" from="9194" to="9201" text="enzymes">ENZYMES FOR TREATMENT OF WOUNDS AND ULCERS</concept> or <concept title="Enzymes for ALIMENTARY TRACT AND METABOLISM" cui="C3542456" type="_medication" tui="T121,T126" from="9194" to="9201" text="enzymes">Enzymes for ALIMENTARY TRACT AND METABOLISM</concept> or <concept title="Enzymes, hematological" cui="C3540017" type="_medication" tui="T121,T126" from="9194" to="9201" text="enzymes">Enzymes, hematological</concept> or <concept title="Enzymes, peripheral vasodilators" cui="C3540790" type="_medication" tui="T126,T121" from="9194" to="9201" text="enzymes">Enzymes, peripheral vasodilators</concept> or <concept title="Enzymes, antithrombotic" cui="C3541394" type="_medication" tui="T126,T121" from="9194" to="9201" text="enzymes">Enzymes, antithrombotic</concept></ambig></p>
+<p>evidence
+of congestive heart failure<br/>
+<clause><concept title="Congestive heart failure" cui="C0018802" type="_disease" tui="T047" from="9267" to="9291" text="congestive heart failure">Congestive heart failure</concept>: <concept title="Evidence of" cui="C0332120" type="_modifier" tui="T169" from="9255" to="9263" text="evidence">Evidence of</concept></clause></p>
+<p>aggressive<br/>
+<concept title="Aggressive behavior" cui="C0001807" type="_disease" tui="T048" from="9302" to="9312" text="aggressive">Aggressive behavior</concept></p>
+<p>fluid
+resuscitation<br/>
+<concept title="Fluid resuscitation" cui="C0150238" type="_procedure" tui="T061" from="9313" to="9332" text="fluid
+resuscitation">Fluid resuscitation</concept></p>
+<p>gentle<br/>
+<concept title="Gentle" cui="C0720654" type="_medication" tui="T121,T109" from="9338" to="9344" text="gentle">Gentle</concept></p>
+<p>furosemide<br/>
+<concept title="Furosemide" cui="C0016860" type="_medication" tui="T121,T109" from="9359" to="9369" text="furosemide">Furosemide</concept></p>
+<p>still significantly
+volume overloaded<br/>
+<clause><concept title="Fluid overload" cui="C0546817" type="_disease" tui="T047" from="9492" to="9509" text="volume overloaded">Fluid overload</concept>: <concept title="still" type="_conjneg" from="9472" to="9477" text="still">still</concept></clause></p>
+<p>aggressive<br/>
+<concept title="Aggressive behavior" cui="C0001807" type="_disease" tui="T048" from="9524" to="9534" text="aggressive">Aggressive behavior</concept></p>
+<p>fluid
+resuscitation<br/>
+<concept title="Fluid resuscitation" cui="C0150238" type="_procedure" tui="T061" from="9535" to="9554" text="fluid
+resuscitation">Fluid resuscitation</concept></p>
+<p>gentle<br/>
+<concept title="Gentle" cui="C0720654" type="_medication" tui="T121,T109" from="9638" to="9644" text="gentle">Gentle</concept></p>
+<p>symptoms of right-sided congestive
+heart failure<br/>
+<clause><concept title="right sided CHF" cui="C0742755" type="_disease" tui="T047" from="9701" to="9737" text="right-sided congestive
+heart failure">right sided CHF</concept>: <concept title="symptoms" cui="C0683368" type="_modifier" tui="T169" from="9689" to="9697" text="symptoms">symptoms</concept></clause></p>
+<p>rehabilitation<br/>
+<concept title="Rehabilitation therapy" cui="C0034991" type="_procedure" tui="T061" from="9802" to="9816" text="rehabilitation">Rehabilitation therapy</concept></p>
+<p>nasal cannula<br/>
+<concept title="cannula nasal" cui="C0179574" type="_procedure" tui="T074" from="9876" to="9889" text="nasal cannula">cannula nasal</concept></p>
+<p>SEPSIS<br/>
+<concept title="Sepsis" cui="C0243026" type="_disease" tui="T047" from="9915" to="9921" text="SEPSIS">Sepsis</concept></p>
+<p>gentamicin<br/>
+<concept title="Gentamicin" cui="C0546866" type="_medication" tui="T195,T118" from="9951" to="9961" text="gentamicin">Gentamicin</concept></p>
+<p>piperacillin/tazobactam in addition<br/>
+<clause><concept title="Piperacillin+tazobactam" cui="C0250480" type="_medication" tui="T195,T109" from="9966" to="9989" text="piperacillin/tazobactam">Piperacillin+tazobactam</concept>: <concept title="In addition to" cui="C0332287" type="_modifier" tui="T080" from="9993" to="10001" text="addition">In addition to</concept></clause></p>
+<p>levofloxacin<br/>
+<concept title="Levofloxacin" cui="C0282386" type="_medication" tui="T109,T195" from="10009" to="10021" text="levofloxacin">Levofloxacin</concept></p>
+<p>metronidazole<br/>
+<concept title="Metronidazole" cui="C0025872" type="_medication" tui="T121,T109" from="10023" to="10036" text="metronidazole">Metronidazole</concept></p>
+<p>vancomycin<br/>
+<concept title="Vancomycin" cui="C0042313" type="_medication" tui="T195,T116" from="10042" to="10052" text="vancomycin">Vancomycin</concept></p>
+<p>right lower extremity cellulitis prior to<br/>
+<clause><concept title="cellulitis of right lower extremity" cui="C3509307" type="_disease" tui="T047" from="10079" to="10111" text="right lower extremity cellulitis">cellulitis of right lower extremity</concept>: <concept title="Before" cui="C0332152" type="_event-time" tui="T079" from="10112" to="10120" text="prior to">Before</concept></clause></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="10121" to="10130" text="admission">Admission</concept></p>
+<p>empiric coverage of a presumed gram-negative
+urosepsis<br/>
+<clause><concept title="Urosepsis" cui="C0149801" type="_disease" tui="T047" from="10180" to="10189" text="urosepsis">Urosepsis</concept>: <concept title="Empiric" cui="C1880496" type="_modifier" tui="T080" from="10135" to="10142" text="empiric">Empiric</concept>; <concept title="Cover" cui="C1999244" type="_modifier" tui="T169" from="10143" to="10151" text="coverage">Cover</concept>; <concept title="gram negative" type="_pseudoneg" from="10166" to="10179" text="gram-negative">gram negative</concept></clause></p>
+<p>hydrated<br/>
+<concept title="Hyrex Brand of Dimenhydrinate" cui="C0720930" type="_medication" tui="T121,T109" from="10215" to="10223" text="hydrated">Hyrex Brand of Dimenhydrinate</concept></p>
+<p>levofloxacin<br/>
+<concept title="Levofloxacin" cui="C0282386" type="_medication" tui="T109,T195" from="10269" to="10281" text="levofloxacin">Levofloxacin</concept></p>
+<p>metronidazole<br/>
+<concept title="Metronidazole" cui="C0025872" type="_medication" tui="T121,T109" from="10286" to="10299" text="metronidazole">Metronidazole</concept></p>
+<p>discontinued<br/>
+<concept title="Discontinued" cui="C1444662" type="_finding" tui="T033" from="10304" to="10316" text="discontinued">Discontinued</concept></p>
+<p>fluconazole<br/>
+<concept title="Fluconazole" cui="C0016277" type="_medication" tui="T121,T109" from="10340" to="10351" text="fluconazole">Fluconazole</concept></p>
+<p>taken<br/>
+<concept title="Take" cui="C1515187" type="_procedure" tui="T058" from="10404" to="10409" text="taken">Take</concept></p>
+<p>gentamicin<br/>
+<concept title="Gentamicin" cui="C0546866" type="_medication" tui="T195,T118" from="10417" to="10427" text="gentamicin">Gentamicin</concept></p>
+<p>fluconazole<br/>
+<concept title="Fluconazole" cui="C0016277" type="_medication" tui="T121,T109" from="10459" to="10470" text="fluconazole">Fluconazole</concept></p>
+<p>discontinued<br/>
+<concept title="Discontinued" cui="C1444662" type="_finding" tui="T033" from="10475" to="10487" text="discontinued">Discontinued</concept></p>
+<p>Infectious
+Disease Service<br/>
+<concept title="Infectious diseases service" cui="C0587589" type="_procedure" tui="T061" from="10521" to="10547" text="Infectious
+Disease Service">Infectious diseases service</concept></p>
+<p>taken<br/>
+<concept title="Take" cui="C1515187" type="_procedure" tui="T058" from="10558" to="10563" text="taken">Take</concept></p>
+<p>vancomycin<br/>
+<concept title="Vancomycin" cui="C0042313" type="_medication" tui="T195,T116" from="10571" to="10581" text="vancomycin">Vancomycin</concept></p>
+<p>piperacillin/tazobactam<br/>
+<concept title="Piperacillin+tazobactam" cui="C0250480" type="_medication" tui="T195,T109" from="10605" to="10628" text="piperacillin/tazobactam">Piperacillin+tazobactam</concept></p>
+<p>discontinued<br/>
+<concept title="Discontinued" cui="C1444662" type="_finding" tui="T033" from="10633" to="10645" text="discontinued">Discontinued</concept></p>
+<p>gram-negative urosepsis
+precipitating<br/>
+<clause><concept title="Urosepsis" cui="C0149801" type="_disease" tui="T047" from="10705" to="10714" text="urosepsis">Urosepsis</concept>: <concept title="Trigger" cui="C1444748" type="_modifier" tui="T080" from="10715" to="10728" text="precipitating">Trigger</concept>; <concept title="gram negative" type="_pseudoneg" from="10691" to="10704" text="gram-negative">gram negative</concept></clause></p>
+<p>admission, the patient<br/>
+<concept title="Patient Admission" cui="C0030673" type="_procedure" tui="T058" from="10734" to="10756" text="admission, the patient">Patient Admission</concept></p>
+<p>not have any
+positive<br/>
+<clause><concept title="Positive" cui="C1514241" type="_finding" tui="T033" from="10774" to="10782" text="positive">Positive</concept>: <concept title="not have" type="_preneg" from="10761" to="10769" text="not have">not have</concept>; <concept title="Any" cui="C1552551" type="_modifier" tui="T080" from="10770" to="10773" text="any">Any</concept></clause></p>
+<p>yeast<br/>
+<concept title="Yeast" cui="C0043393" type="_disease" tui="T004" from="10832" to="10837" text="yeast">Yeast</concept></p>
+<p>remained
+afebrile both before and after<br/>
+<clause><concept title="Apyrexial" cui="C0277797" type="_finding" tui="T033" from="10886" to="10894" text="afebrile">Apyrexial</concept>: <concept title="after" cui="C0231290" type="_relation" tui="T079" from="10911" to="10916" text="after">after</concept>; <concept title="Before" cui="C0332152" type="_event-time" tui="T079" from="10900" to="10906" text="before">Before</concept>; <concept title="Both" cui="C1706086" type="_modifier" tui="T080" from="10895" to="10899" text="both">Both</concept>; <concept title="Remaining" cui="C1527428" type="_modifier" tui="T080" from="10877" to="10885" text="remained">Remaining</concept></clause></p>
+<p>discontinuation<br/>
+<concept title="Discontinuation" cui="C0457454" type="_procedure" tui="T058" from="10917" to="10932" text="discontinuation">Discontinuation</concept></p>
+<p>antibiotics<br/>
+<ambig><concept title="Antibiotic" cui="C0003232" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotic</concept> or <concept title="antibiotics, intestinal" cui="C3540709" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">antibiotics, intestinal</concept> or <concept title="Antibiotic antituberculosis agent" cui="C0003237" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotic antituberculosis agent</concept> or <concept title="Antibiotics FOR TREATMENT OF HEMORRHOIDS AND ANAL FISSURES FOR TOPICAL USE" cui="C3540707" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotics FOR TREATMENT OF HEMORRHOIDS AND ANAL FISSURES FOR TOPICAL USE</concept> or <concept title="Antibiotics, ophthalmologic" cui="C3540710" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotics, ophthalmologic</concept> or <concept title="Antifungal Antibiotics, Topical" cui="C3540705" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antifungal Antibiotics, Topical</concept> or <concept title="Antibiotics, Gynecological" cui="C3540708" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotics, Gynecological</concept> or <concept title="Antibiotics for systemic use" cui="C3540704" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotics for systemic use</concept> or <concept title="Antibiotic throat preparations" cui="C3540706" type="_medication" tui="T195" from="10940" to="10951" text="antibiotics">Antibiotic throat preparations</concept></ambig></p>
+<p>Clostridium difficile
+negative<br/>
+<clause><concept title="Negative" cui="C1513916" type="_finding" tui="T033" from="10998" to="11006" text="negative">Negative</concept>: <concept title="Clostridium difficile" cui="C0079134" type="_modifier" tui="T007" from="10976" to="10997" text="Clostridium difficile">Clostridium difficile</concept></clause></p>
+<p>extubated<br/>
+<concept title="Tracheal extubation" cui="C0553891" type="_procedure" tui="T061" from="11092" to="11101" text="extubated">Tracheal extubation</concept></p>
+<p>wheezing and mild<br/>
+<clause><concept title="Wheeze" cui="C0043144" type="_symptom" tui="T184" from="11144" to="11152" text="wheezing">Wheeze</concept>: <concept title="Slight" cui="C0547040" type="_state" tui="T080" from="11157" to="11161" text="mild">Slight</concept></clause></p>
+<p>hypoxia<br/>
+<concept title="Hypoxia" cui="C0242184" type="_disease" tui="T046" from="11162" to="11169" text="hypoxia">Hypoxia</concept></p>
+<p>cardiac asthma<br/>
+<concept title="Cardiac asthma" cui="C1956414" type="_disease" tui="T046" from="11196" to="11210" text="cardiac asthma">Cardiac asthma</concept></p>
+<p>fluid overload<br/>
+<concept title="Fluid overload" cui="C0546817" type="_disease" tui="T047" from="11215" to="11229" text="fluid overload">Fluid overload</concept></p>
+<p>setting of his
+aggressive<br/>
+<clause><concept title="Aggressive behavior" cui="C0001807" type="_disease" tui="T048" from="11252" to="11262" text="aggressive">Aggressive behavior</concept>: <concept title="Context" cui="C0542559" type="_modifier" tui="T169" from="11237" to="11244" text="setting">Context</concept></clause></p>
+<p>fluid resuscitation<br/>
+<concept title="Fluid resuscitation" cui="C0150238" type="_procedure" tui="T061" from="11263" to="11282" text="fluid resuscitation">Fluid resuscitation</concept></p>
+<p>gently diuresed
+toward the end<br/>
+<clause><concept title="Diurese" cui="C0719972" type="_medication" tui="T121,T109" from="11299" to="11307" text="diuresed">Diurese</concept>: <concept title="End" cui="C0444930" type="_modifier" tui="T082" from="11319" to="11322" text="end">End</concept>; <concept title="Gently" cui="C1638411" type="_modifier" tui="T080" from="11292" to="11298" text="gently">Gently</concept></clause></p>
+<p>hospitalization<br/>
+<concept title="Inpatient care" cui="C0019993" type="_procedure" tui="T058" from="11330" to="11345" text="hospitalization">Inpatient care</concept></p>
+<p>maintaining<br/>
+<concept title="Maintain brand of benzocaine" cui="C0721534" type="_medication" tui="T121,T109" from="11377" to="11388" text="maintaining">Maintain brand of benzocaine</concept></p>
+<p>nasal cannula<br/>
+<concept title="cannula nasal" cui="C0179574" type="_procedure" tui="T074" from="11442" to="11455" text="nasal cannula">cannula nasal</concept></p>
+<p>intermittent ipratropium<br/>
+<clause><concept title="Ipratropium" cui="C0027235" type="_medication" tui="T121,T109" from="11470" to="11481" text="ipratropium">Ipratropium</concept>: <concept title="Intermittent" cui="C0205267" type="_event-time" tui="T079" from="11457" to="11469" text="intermittent">Intermittent</concept></clause></p>
+<p>nebulizers<br/>
+<concept title="nebulizers" cui="C2064916" type="_medication" tui="T121" from="11482" to="11492" text="nebulizers">nebulizers</concept></p>
+<p>chest physical therapy<br/>
+<concept title="chest physical therapy" cui="C2064714" type="_procedure" tui="T061" from="11498" to="11520" text="chest physical therapy">chest physical therapy</concept></p>
+<p>clearance of his
+respiratory<br/>
+<clause><concept title="Clearance" cui="C1382187" type="_finding" tui="T201" from="11525" to="11534" text="clearance">Clearance</concept>: <concept title="Respiratory" cui="C0521346" type="_modifier" tui="T169" from="11542" to="11553" text="respiratory">Respiratory</concept></clause></p>
+<p>acute renal failure<br/>
+<concept title="Acute renal failure" cui="C0022660" type="_disease" tui="T047" from="11606" to="11625" text="acute renal failure">Acute renal failure</concept></p>
+<p>prerenal azotemia that rapidly resolved<br/>
+<clause><concept title="Prerenal azotemia" cui="C0554309" type="_disease" tui="T047" from="11630" to="11647" text="prerenal azotemia">Prerenal azotemia</concept>: <concept title="resolved" type="_neg" from="11661" to="11669" text="resolved">resolved</concept>; <concept title="Rapid" cui="C0439831" type="_modifier" tui="T080" from="11653" to="11660" text="rapidly">Rapid</concept></clause></p>
+<p>fluid
+resuscitation<br/>
+<concept title="Fluid resuscitation" cui="C0150238" type="_procedure" tui="T061" from="11680" to="11699" text="fluid
+resuscitation">Fluid resuscitation</concept></p>
+<p>malnourished<br/>
+<concept title="Malnutrition" cui="C0162429" type="_disease" tui="T047" from="11850" to="11862" text="malnourished">Malnutrition</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="11894" to="11903" text="admission">Admission</concept></p>
+<p>extubated and taking orals<br/>
+<clause><concept title="Tracheal extubation" cui="C0553891" type="_procedure" tui="T061" from="11918" to="11927" text="extubated">Tracheal extubation</concept>: <concept title="Oral" cui="C0442027" type="_modifier" tui="T082" from="11939" to="11944" text="orals">Oral</concept></clause></p>
+<p>thin
+liquid<br/>
+<clause><concept title="Liquid" cui="C1697794" type="_medication" tui="T122" from="12030" to="12036" text="liquid">Liquid</concept>: <concept title="Thin" cui="C0205168" type="_modifier" tui="T080" from="12025" to="12029" text="thin">Thin</concept></clause></p>
+<p>whole medication tablets<br/>
+<clause><concept title="Tablet" cui="C0039225" type="_medication" tui="T122" from="12078" to="12085" text="tablets">Tablet</concept>: <concept title="Whole" cui="C0444667" type="_modifier" tui="T081" from="12061" to="12066" text="whole">Whole</concept>; <concept title="Medications" cui="C3244316" type="_modifier" tui="T169" from="12067" to="12077" text="medication">Medications</concept></clause></p>
+<p>small bites<br/>
+<clause><concept title="Bite" cui="C0005658" type="_disease" tui="T037" from="12093" to="12098" text="bites">Bite</concept>: <concept title="Small" cui="C0700321" type="_modifier" tui="T081" from="12087" to="12092" text="small">Small</concept></clause></p>
+<p>upright posture<br/>
+<clause><concept title="Posture brand of calcium phosphate, tribasic" cui="C0722716" type="_medication" tui="T121,T197" from="12117" to="12124" text="posture">Posture brand of calcium phosphate, tribasic</concept>: <concept title="Upright" cui="C0522015" type="_modifier" tui="T082" from="12109" to="12116" text="upright">Upright</concept></clause></p>
+<p>meals<br/>
+<concept title="Meals" cui="C1998602" type="_procedure" tui="T056" from="12130" to="12135" text="meals">Meals</concept></p>
+<p>aspiration precautions<br/>
+<concept title="Aspiration precautions" cui="C0150138" type="_procedure" tui="T061" from="12141" to="12163" text="aspiration precautions">Aspiration precautions</concept></p>
+<p>shakes<br/>
+<concept title="Shakes" cui="C0392703" type="_finding" tui="T033" from="12191" to="12197" text="shakes">Shakes</concept></p>
+<p>nutritional supplementation of his
+heart<br/>
+<clause><concept title="Dietary Supplementations" cui="C0242297" type="_procedure" tui="T061" from="12225" to="12252" text="nutritional supplementation">Dietary Supplementations</concept>: <concept title="Heart" cui="C0018787" type="_bodyloc" tui="T023" from="12260" to="12265" text="heart">Heart</concept></clause></p>
+<p>diabetic diet<br/>
+<concept title="Diabetic diet" cui="C0011878" type="_procedure" tui="T061" from="12274" to="12287" text="diabetic diet">Diabetic diet</concept></p>
+<p>operative incisions<br/>
+<ambig><concept title="Surgical incision" cui="C3543005" type="_disease" tui="T020" from="12319" to="12338" text="operative incisions">Surgical incision</concept> or <concept title="Surgical wound" cui="C0332803" type="_disease" tui="T037" from="12319" to="12338" text="operative incisions">Surgical wound</concept></ambig></p>
+<p>foot
+ulcers<br/>
+<concept title="Foot ulcer" cui="C0085119" type="_disease" tui="T047,T020" from="12343" to="12354" text="foot
+ulcers">Foot ulcer</concept></p>
+<p>admission<br/>
+<concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="12389" to="12398" text="admission">Admission</concept></p>
+<p>multivitamin, vitamin<br/>
+<concept title="Multivitamin preparation" cui="C0301532" type="_medication" tui="T121,T109,T127" from="12422" to="12443" text="multivitamin, vitamin">Multivitamin preparation</concept></p>
+<p>vitamin C<br/>
+<ambig><concept title="Ascorbic acid" cui="C0003968" type="_medication" tui="T121,T127,T109" from="12436" to="12445" text="vitamin C">Ascorbic acid</concept> or <concept title="Vitamin C Drug Class" cui="C3714687" type="_medication" tui="T121,T127" from="12436" to="12445" text="vitamin C">Vitamin C Drug Class</concept></ambig></p>
+<p>zinc<br/>
+<concept title="Zinc" cui="C0043481" type="_medication" tui="T196,T121" from="12451" to="12455" text="zinc">Zinc</concept></p>
+<p>packed red blood cells<br/>
+<concept title="Packed red blood cells" cui="C2316467" type="_medication" tui="T121" from="12541" to="12563" text="packed red blood cells">Packed red blood cells</concept></p>
+<p>maintain<br/>
+<concept title="Maintain brand of benzocaine" cui="C0721534" type="_medication" tui="T121,T109" from="12581" to="12589" text="maintain">Maintain brand of benzocaine</concept></p>
+<p>history of severe
+coronary artery disease<br/>
+<clause><concept title="Coronary artery disease" cui="C1956346" type="_disease" tui="T047" from="12650" to="12673" text="coronary artery disease">Coronary artery disease</concept>: <concept title="History of" cui="C0262926" type="_event-time" tui="T033" from="12632" to="12642" text="history of">History of</concept>; <concept title="Severe" cui="C0205082" type="_state" tui="T080" from="12643" to="12649" text="severe">Severe</concept></clause></p>
+<p>DISCHARGE STATUS<br/>
+<concept title="Discharge status" cui="C0586514" type="_finding" tui="T033" from="12783" to="12799" text="DISCHARGE STATUS">Discharge status</concept></p>
+<p>rehabilitation facility<br/>
+<concept title="Rehabilitation facility" cui="C3845566" type="_finding" tui="T033" from="12810" to="12833" text="rehabilitation facility">Rehabilitation facility</concept></p>
+<p>Cardiorespiratory arrest<br/>
+<concept title="Cardiopulmonary arrest" cui="C0600228" type="_disease" tui="T046" from="12862" to="12886" text="Cardiorespiratory arrest">Cardiopulmonary arrest</concept></p>
+<p>Non-Q-wave myocardial infarction<br/>
+<concept title="Non-Q wave myocardial infarction" cui="C0542269" type="_disease" tui="T047" from="12893" to="12925" text="Non-Q-wave myocardial infarction">Non-Q wave myocardial infarction</concept></p>
+<p>Acute renal failure<br/>
+<concept title="Acute renal failure" cui="C0022660" type="_disease" tui="T047" from="12932" to="12951" text="Acute renal failure">Acute renal failure</concept></p>
+<p>Coronary artery disease with diffuse<br/>
+<concept title="Diffuse disease of coronary artery" cui="C1299384" type="_finding" tui="T033" from="12958" to="12994" text="Coronary artery disease with diffuse">Diffuse disease of coronary artery</concept></p>
+<p>proximal left circumflex stent<br/>
+<clause><concept title="Stent" cui="C1705817" type="_procedure" tui="T074" from="13066" to="13071" text="stent">Stent</concept>: <concept title="Proximal" cui="C0205107" type="_modifier" tui="T082" from="13041" to="13049" text="proximal">Proximal</concept>; <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="13050" to="13054" text="left">Left</concept>; <concept title="Circumflex" cui="C1880089" type="_modifier" tui="T082" from="13055" to="13065" text="circumflex">Circumflex</concept></clause></p>
+<p>right coronary artery stent<br/>
+<clause><concept title="Stented coronary artery" cui="C1272587" type="_finding" tui="T033" from="13146" to="13167" text="coronary artery stent">Stented coronary artery</concept>: <concept title="Right coronary artery structure" cui="C1261316" type="_bodyloc" tui="T023" from="13140" to="13161" text="right coronary artery">Right coronary artery structure</concept></clause></p>
+<p>no
+percutaneous coronary intervention<br/>
+<clause><concept title="Percutaneous coronary intervention" cui="C1532338" type="_procedure" tui="T061" from="13186" to="13220" text="percutaneous coronary intervention">Percutaneous coronary intervention</concept>: <concept title="no" type="_preneg" from="13183" to="13185" text="no">no</concept></clause></p>
+<p>Congestive heart failure<br/>
+<concept title="Congestive heart failure" cui="C0018802" type="_disease" tui="T047" from="13361" to="13385" text="Congestive heart failure">Congestive heart failure</concept></p>
+<p>ejection fraction<br/>
+<concept title="Ejection fraction" cui="C2700378" type="_finding" tui="T033" from="13395" to="13412" text="ejection fraction">Ejection fraction</concept></p>
+<p>Type 2 diabetes<br/>
+<concept title="Diabetes mellitus type 2" cui="C0011860" type="_disease" tui="T047" from="13434" to="13449" text="Type 2 diabetes">Diabetes mellitus type 2</concept></p>
+<p>neuropathy<br/>
+<concept title="Neuropathy" cui="C0442874" type="_disease" tui="T047" from="13455" to="13465" text="neuropathy">Neuropathy</concept></p>
+<p>Hypertension<br/>
+<concept title="Hyperpiesia" cui="C0020538" type="_disease" tui="T047" from="13472" to="13484" text="Hypertension">Hyperpiesia</concept></p>
+<p>Diverticulosis<br/>
+<concept title="Diverticulosis" cui="C1510475" type="_disease" tui="T190,T047" from="13491" to="13505" text="Diverticulosis">Diverticulosis</concept></p>
+<p>Alzheimer's dementia<br/>
+<concept title="Alzheimer disease" cui="C0002395" type="_disease" tui="T047" from="13549" to="13569" text="Alzheimer&apos;s dementia">Alzheimer disease</concept></p>
+<p>History of gastrointestinal bleed<br/>
+<concept title="H/O: GI Bleed" cui="C0559225" type="_finding" tui="T033" from="13576" to="13609" text="History of gastrointestinal bleed">H/O: GI Bleed</concept></p>
+<p>eptifibatide<br/>
+<concept title="Eptifibatide" cui="C0253563" type="_medication" tui="T121,T116" from="13640" to="13652" text="eptifibatide">Eptifibatide</concept></p>
+<p>Cardiac risk factors<br/>
+<concept title="cardiac risk factors" cui="C2024776" type="_finding" tui="T033" from="13660" to="13680" text="Cardiac risk factors">cardiac risk factors</concept></p>
+<p>Severe peripheral vascular disease<br/>
+<clause><concept title="Peripheral vascular disease" cui="C0085096" type="_disease" tui="T047" from="13839" to="13866" text="peripheral vascular disease">Peripheral vascular disease</concept>: <concept title="Severe" cui="C0205082" type="_state" tui="T080" from="13832" to="13838" text="Severe">Severe</concept></clause></p>
+<p>left
+femoral<br/>
+<concept title="Femoral-left" cui="C3841507" type="_finding" tui="T033" from="13880" to="13892" text="left
+femoral">Femoral-left</concept></p>
+<p>bypass graft<br/>
+<concept title="Bypass graft" cui="C0185098" type="_procedure" tui="T061" from="13896" to="13908" text="bypass graft">Bypass graft</concept></p>
+<p>Chronic nonhealing foot ulcers<br/>
+<clause><concept title="Foot ulcer" cui="C0085119" type="_disease" tui="T047,T020" from="13948" to="13959" text="foot ulcers">Foot ulcer</concept>: <concept title="Chronic" cui="C0205191" type="_event-time" tui="T079" from="13929" to="13936" text="Chronic">Chronic</concept></clause></p>
+<p>Amiodarone<br/>
+<concept title="Amiodarone" cui="C0002598" type="_medication" tui="T121,T109" from="13993" to="14003" text="Amiodarone">Amiodarone</concept></p>
+<p>Metoprolol<br/>
+<concept title="Metoprolol" cui="C0025859" type="_medication" tui="T121,T109" from="14112" to="14122" text="Metoprolol">Metoprolol</concept></p>
+<p>Captopril<br/>
+<concept title="Captopril" cui="C0006938" type="_medication" tui="T121,T116" from="14146" to="14155" text="Captopril">Captopril</concept></p>
+<p>Aspirin<br/>
+<concept title="Aspirin" cui="C0004057" type="_medication" tui="T121,T109" from="14181" to="14188" text="Aspirin">Aspirin</concept></p>
+<p>Pantoprazole<br/>
+<concept title="Pantoprazole" cui="C0081876" type="_medication" tui="T121,T109" from="14211" to="14223" text="Pantoprazole">Pantoprazole</concept></p>
+<p>Heparin<br/>
+<concept title="Heparin" cui="C0019134" type="_medication" tui="T121,T123,T118" from="14245" to="14252" text="Heparin">Heparin</concept></p>
+<p>Multivitamin<br/>
+<concept title="Multivitamin preparation" cui="C0301532" type="_medication" tui="T121,T109,T127" from="14291" to="14303" text="Multivitamin">Multivitamin preparation</concept></p>
+<p>Zinc sulfate<br/>
+<concept title="Zinc sulfate" cui="C0078794" type="_medication" tui="T121,T197" from="14330" to="14342" text="Zinc sulfate">Zinc sulfate</concept></p>
+<p>Vitamin C<br/>
+<ambig><concept title="Ascorbic acid" cui="C0003968" type="_medication" tui="T121,T127,T109" from="14365" to="14374" text="Vitamin C">Ascorbic acid</concept> or <concept title="Vitamin C Drug Class" cui="C3714687" type="_medication" tui="T121,T127" from="14365" to="14374" text="Vitamin C">Vitamin C Drug Class</concept></ambig></p>
+<p>Ipratropium<br/>
+<concept title="Ipratropium" cui="C0027235" type="_medication" tui="T121,T109" from="14397" to="14408" text="Ipratropium">Ipratropium</concept></p>
+<p>nebulizers<br/>
+<concept title="nebulizers" cui="C2064916" type="_medication" tui="T121" from="14409" to="14419" text="nebulizers">nebulizers</concept></p>
+<p>wheezing<br/>
+<concept title="Wheeze" cui="C0043144" type="_symptom" tui="T184" from="14443" to="14451" text="wheezing">Wheeze</concept></p>
+<p>Acetaminophen<br/>
+<concept title="Acetaminophen" cui="C0000970" type="_medication" tui="T121,T109" from="14459" to="14472" text="Acetaminophen">Acetaminophen</concept></p>
+<p>pain<br/>
+<concept title="Pain" cui="C0030193" type="_symptom" tui="T184" from="14518" to="14522" text="pain">Pain</concept></p>
+<p>Miconazole<br/>
+<concept title="Miconazole" cui="C0025942" type="_medication" tui="T121,T109" from="14530" to="14540" text="Miconazole">Miconazole</concept></p>
+<p>powder<br/>
+<concept title="Powder" cui="C0032861" type="_medication" tui="T122" from="14544" to="14550" text="powder">Powder</concept></p>
+<p>lotion<br/>
+<concept title="Lotion" cui="C0544341" type="_medication" tui="T122" from="14579" to="14585" text="lotion">Lotion</concept></p>
+<p>heels<br/>
+<concept title="heels" cui="C0175645" type="_procedure" tui="T074" from="14589" to="14594" text="heels">heels</concept></p>
+<p>Regular insulin<br/>
+<concept title="Insulin" cui="C0021641" type="_medication" tui="T121,T116,T125" from="14607" to="14622" text="Regular insulin">Insulin</concept></p>
+<p>sliding-scale<br/>
+<concept title="scale sliding" cui="C2937251" type="_procedure" tui="T061" from="14623" to="14636" text="sliding-scale">scale sliding</concept></p>
+<p>Do not resuscitate<br/>
+<concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="14653" to="14671" text="Do not resuscitate">do not resuscitate</concept></p>
+<p>not resuscitate/do<br/>
+<concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="14656" to="14674" text="not resuscitate/do">do not resuscitate</concept></p>
+<p>resuscitate/do not intubate<br/>
+<clause><concept title="do not resuscitate" cui="C2148537" type="_procedure" tui="T061" from="14660" to="14678" text="resuscitate/do not">do not resuscitate</concept>: <concept title="Not intubated" cui="C0445105" type="_modifier" tui="T169" from="14675" to="14687" text="not intubate">Not intubated</concept></clause></p>
+<p>any changes to the medication list noted above<br/>
+<clause><concept title="Medication changed" cui="C0580105" type="_procedure" tui="T061" from="14816" to="14841" text="changes to the medication">Medication changed</concept>: <concept title="Upper" cui="C1282910" type="_modifier" tui="T082" from="14853" to="14858" text="above">Upper</concept>; <concept title="Any" cui="C1552551" type="_modifier" tui="T080" from="14812" to="14815" text="any">Any</concept></clause></p>
+<p>Schwartz<br/>
+<concept title="Schwartz-Jampel syndrome" cui="C0036391" type="_disease" tui="T019,T047" from="15050" to="15058" text="Schwartz">Schwartz-Jampel syndrome</concept></p></html>

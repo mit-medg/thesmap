@@ -18,7 +18,7 @@ public class SaveAnnotationsDBConnector {
 
 	Connection conn = null;
 	Statement stmt = null;
-	PreparedStatement query = null;
+	PreparedStatement insertStmt = null;
 	static final String loadDBStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
 	static final String insertDBStmt = "INSERT INTO ANNOTATIONS (start, end, cui, tui, preferredText, annotatorFlag, fileName) values (?, ?, ?, ?, ?, ?, ?);";
 	
@@ -34,6 +34,7 @@ public class SaveAnnotationsDBConnector {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, resultUser, resultPassword);
+			insertStmt = conn.prepareStatement(insertDBStmt);
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);
@@ -51,15 +52,14 @@ public class SaveAnnotationsDBConnector {
 	 */
 	public void insertEntry(int start, int end, String cui, String tui, String preferredText, int annotatorValue, String docID) {
 		try {
-			query = conn.prepareStatement(insertDBStmt);
-			query.setInt(1, start);
-			query.setInt(2, end);
-			query.setString(3, cui);
-			query.setString(4, tui);
-			query.setString(5, preferredText);
-			query.setInt(6, annotatorValue);
-			query.setString(7, docID);
-			query.executeUpdate();
+			insertStmt.setInt(1, start);
+			insertStmt.setInt(2, end);
+			insertStmt.setString(3, cui);
+			insertStmt.setString(4, tui);
+			insertStmt.setString(5, preferredText);
+			insertStmt.setInt(6, annotatorValue);
+			insertStmt.setString(7, docID);
+			insertStmt.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("SQL Error saving for doc: \"" + docID + "\": " + e.getMessage());
 		}
@@ -75,9 +75,9 @@ public class SaveAnnotationsDBConnector {
 	 */
 	public void saveCSVToDB(File csvFile) {
 		try {
-			query = conn.prepareStatement(loadDBStmt);
-			query.setString(1, csvFile.getAbsolutePath());
-			query.executeQuery();
+			insertStmt = conn.prepareStatement(loadDBStmt);
+			insertStmt.setString(1, csvFile.getAbsolutePath());
+			insertStmt.executeQuery();
 		} catch (SQLException e) {
 			System.err.println("SQL Error loading file: \""
 					+ csvFile.getAbsolutePath() + "\": " + e.getMessage());
@@ -88,7 +88,7 @@ public class SaveAnnotationsDBConnector {
 		if (conn!=null) {
 			U.p("Closing MySQL Connection.");
 			try{
-				if (query!=null) query.close();
+				if (insertStmt!=null) insertStmt.close();
 			} catch (SQLException e) {}
 			try{
 				if (conn!=null) conn.close();

@@ -1,0 +1,91 @@
+% Examples of <clause>...</clause> from WJL's parse of Example.txt
+
+<p>no urine output<br/>
+<clause><concept title="urine output" cui="C2094175" type="_procedure" tui="T061" from="640" to="652" text="urine output">urine output</concept>: <concept title="no" type="_preneg" from="637" to="639" text="no">no</concept></clause></p>
+
+<p>without subjective<br/>
+<clause><concept title="subjective" cui="C2266644" type="_finding" tui="T033" from="909" to="919" text="subjective">subjective</concept>: <concept title="without" type="_preneg" from="901" to="908" text="without">without</concept></clause></p>
+
+<p>proximal left circumflex stent<br/>
+<clause><concept title="Stent" cui="C1705817" type="_procedure" tui="T074" from="1273" to="1278" text="stent">Stent</concept>: <concept title="Proximal" cui="C0205107" type="_modifier" tui="T082" from="1248" to="1256" text="proximal">Proximal</concept>; <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="1257" to="1261" text="left">Left</concept>; <concept title="Circumflex" cui="C1880089" type="_modifier" tui="T082" from="1262" to="1272" text="circumflex">Circumflex</concept></clause></p>
+
+<p>right coronary artery stent<br/>
+<clause><concept title="Stented coronary artery" cui="C1272587" type="_finding" tui="T033" from="1357" to="1378" text="coronary artery stent">Stented coronary artery</concept>: <concept title="Right coronary artery structure" cui="C1261316" type="_bodyloc" tui="T023" from="1351" to="1372" text="right coronary artery">Right coronary artery structure</concept></clause></p>
+
+<p>no
+percutaneous coronary intervention<br/>
+<clause><concept title="Percutaneous coronary intervention" cui="C1532338" type="_procedure" tui="T061" from="1397" to="1431" text="percutaneous coronary intervention">Percutaneous coronary intervention</concept>: <concept title="no" type="_preneg" from="1394" to="1396" text="no">no</concept></clause></p>
+
+<p>Severe peripheral vascular disease<br/>
+<clause><concept title="Peripheral vascular disease" cui="C0085096" type="_disease" tui="T047" from="2081" to="2108" text="peripheral vascular disease">Peripheral vascular disease</concept>: <concept title="Severe" cui="C0205082" type="_state" tui="T080" from="2074" to="2080" text="Severe">Severe</concept></clause></p>
+
+<p>Chronic nonhealing foot ulcers<br/>
+<clause><concept title="Foot ulcer" cui="C0085119" type="_disease" tui="T047,T020" from="2190" to="2201" text="foot ulcers">Foot ulcer</concept>: <concept title="Chronic" cui="C0205191" type="_event-time" tui="T079" from="2171" to="2178" text="Chronic">Chronic</concept></clause></p>
+
+<p>Recent right pedal cellulitis<br/>
+<clause><concept title="Cellulitis" cui="C0007642" type="_disease" tui="T046" from="2227" to="2237" text="cellulitis">Cellulitis</concept>: <concept title="Recent" cui="C0332185" type="_event-time" tui="T079" from="2208" to="2214" text="Recent">Recent</concept>; <concept title="Right" cui="C0205090" type="_modifier" tui="T082" from="2215" to="2220" text="right">Right</concept>; <concept title="Foot" cui="C0016504" type="_bodyloc" tui="T023" from="2221" to="2226" text="pedal">Foot</concept></clause></p>
+
+<p>no known drug<br/>
+<clause><concept title="Drug" cui="C1254351" type="_medication" tui="T121" from="2277" to="2281" text="drug">Drug</concept>: <concept title="no" type="_preneg" from="2268" to="2270" text="no">no</concept>; <concept title="Known" cui="C0205309" type="_modifier" tui="T080" from="2271" to="2276" text="known">Known</concept></clause></p>
+% this is an error, because the original text says "no known drug allergies", and this missed the last word!
+
+<p>as needed for
+pain<br/>
+<clause><concept title="Pain" cui="C0030193" type="_symptom" tui="T184" from="3007" to="3011" text="pain">Pain</concept>: <concept title="As needed for" cui="C1720688" type="_modifier" tui="T080" from="2993" to="3006" text="as needed for">As needed for</concept></clause></p>
+
+<p>prior to admission<br/>
+<clause><concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="3279" to="3288" text="admission">Admission</concept>: <concept title="Before" cui="C0332152" type="_event-time" tui="T079" from="3270" to="3278" text="prior to">Before</concept></clause></p>
+
+<p>no rubs<br/>
+<clause><concept title="Rubs" cui="C3842105" type="_finding" tui="T033" from="3851" to="3855" text="rubs">Rubs</concept>: <concept title="no" type="_preneg" from="3848" to="3850" text="no">no</concept></clause></p>
+
+<p>palpable bypass graft
+pulse, dopplerable dorsalis pedis and posterior tibialis<br/>
+<clause><concept title="Bypass graft" cui="C0185098" type="_procedure" tui="T061" from="4029" to="4041" text="bypass graft">Bypass graft</concept>: <concept title="Tibialis posterior muscle structure" cui="C0224463" type="_bodyloc" tui="T023" from="4080" to="4098" text="posterior tibialis">Tibialis posterior muscle structure</concept>; <concept title="Palpable" cui="C0522499" type="_modifier" tui="T080" from="4020" to="4028" text="palpable">Palpable</concept></clause></p>
+
+<p>but ultimately negative<br/>
+<clause><concept title="Negative" cui="C1513916" type="_finding" tui="T033" from="4869" to="4877" text="negative">Negative</concept>: <concept title="but" type="_conjneg" from="4854" to="4857" text="but">but</concept></clause></p>
+
+<p>but ultimately grew out
+yeast<br/>
+<clause><concept title="Yeast" cui="C0043393" type="_disease" tui="T004" from="4962" to="4967" text="yeast">Yeast</concept>: <concept title="but" type="_conjneg" from="4938" to="4941" text="but">but</concept>; <concept title="Out" cui="C0849355" type="_modifier" tui="T080" from="4958" to="4961" text="out">Out</concept></clause></p>
+
+<p>out yeast<br/>
+<clause><concept title="Yeast" cui="C0043393" type="_disease" tui="T004" from="5063" to="5068" text="yeast">Yeast</concept>: <concept title="Out" cui="C0849355" type="_modifier" tui="T080" from="5059" to="5062" text="out">Out</concept></clause></p>
+
+<p>No
+radiographic evidence of congestive heart failure<br/>
+<clause><concept title="Congestive heart failure" cui="C0018802" type="_disease" tui="T047" from="5319" to="5343" text="congestive heart failure">Congestive heart failure</concept>: <concept title="no" type="_preneg" from="5291" to="5293" text="No">no</concept>; <concept title="Evidence of" cui="C0332120" type="_modifier" tui="T169" from="5307" to="5318" text="evidence of">Evidence of</concept></clause></p>
+
+<p>inferior/lateral T wave<br/>
+<clause><concept title="T wave feature" cui="C0429103" type="_finding" tui="T033" from="5449" to="5455" text="T wave">T wave feature</concept>: <concept title="Lateral" cui="C0205093" type="_modifier" tui="T082" from="5441" to="5448" text="lateral">Lateral</concept>; <concept title="Inferior" cui="C0542339" type="_modifier" tui="T082" from="5432" to="5440" text="inferior">Inferior</concept></clause></p>
+
+<p>diffuse vascular calcifications<br/>
+<clause><concept title="Vascular calcification" cui="C0342649" type="_disease" tui="T046" from="5680" to="5703" text="vascular calcifications">Vascular calcification</concept>: <concept title="Diffuse" cui="C0205219" type="_modifier" tui="T080" from="5672" to="5679" text="diffuse">Diffuse</concept></clause></p>
+<p>abdominal aortic aneurysm<br/>
+
+<p>simple
+left renal cyst<br/>
+<clause><concept title="Renal Cyst" cui="C2173677" type="_finding" tui="T033" from="5830" to="5840" text="renal cyst">Renal Cyst</concept>: <concept title="Left" cui="C0205091" type="_modifier" tui="T082" from="5825" to="5829" text="left">Left</concept>; <concept title="Simple" cui="C0205352" type="_modifier" tui="T080" from="5818" to="5824" text="simple">Simple</concept></clause></p>
+
+<p>initially admitted<br/>
+<clause>
+<ambig><concept title="Hospital admission" cui="C0184666" type="_procedure" tui="T058" from="5998" to="6006" text="admitted">Hospital admission</concept> or <concept title="Admission" cui="C0809949" type="_procedure" tui="T058" from="5998" to="6006" text="admitted">Admission</concept></ambig>: <concept title="Initially" cui="C0205265" type="_event-time" tui="T079" from="5988" to="5997" text="initially">Initially</concept></clause></p>
+
+<p>gram-negative urosepsis<br/>
+<clause><concept title="Urosepsis" cui="C0149801" type="_disease" tui="T047" from="6160" to="6169" text="urosepsis">Urosepsis</concept>: <concept title="gram negative" type="_pseudoneg" from="6146" to="6159" text="gram-negative">gram negative</concept></clause></p>
+
+<p>never any positive culture<br/>
+<clause><concept title="[D]Nonspecific positive culture findings" cui="C0159125" type="_finding" tui="T033" from="6201" to="6217" text="positive culture">[D]Nonspecific positive culture findings</concept>: <concept title="Never" cui="C2003901" type="_event-time" tui="T079" from="6191" to="6196" text="never">Never</concept>; <concept title="Any" cui="C1552551" type="_modifier" tui="T080" from="6197" to="6200" text="any">Any</concept></clause></p>
+
+<p>night of admission, the patient<br/>
+<clause><concept title="Patient Admission" cui="C0030673" type="_procedure" tui="T058" from="6318" to="6340" text="admission, the patient">Patient Admission</concept>: <concept title="Night time" cui="C0240526" type="_event-time" tui="T079" from="6309" to="6314" text="night">Night time</concept></clause></p>
+
+<p>sudden
+cardiorespiratory arrest<br/>
+<clause><concept title="Cardiopulmonary arrest" cui="C0600228" type="_disease" tui="T046" from="6354" to="6378" text="cardiorespiratory arrest">Cardiopulmonary arrest</concept>: <concept title="Sudden" cui="C1276802" type="_modifier" tui="T080" from="6347" to="6353" text="sudden">Sudden</concept></clause></p>
+
+<p>direct current cardioversion
+times<br/>
+<clause><concept title="Direct current cardioversion" cui="C0542380" type="_procedure" tui="T061" from="6434" to="6462" text="direct current cardioversion">Direct current cardioversion</concept>: <concept title="Times" cui="C1632851" type="_modifier" tui="T081" from="6463" to="6468" text="times">Times</concept></clause></p>
+
