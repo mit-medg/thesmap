@@ -218,7 +218,7 @@ public class BatchWindow extends JFrameW
 		
 		// Add tabbed panes to the main one. 
 		mainTabbedPane = new JTabbedPane();
-		mainTabbedPane.add("Browse", browsePane);
+		mainTabbedPane.add("Directory", browsePane);
 		mainTabbedPane.add("SQL Command", sqlTabPane);
 		mainPanel.add(mainTabbedPane, BorderLayout.CENTER);
 		
