@@ -1,0 +1,10 @@
+Bugs/Ideas for Modification: 
+1. specify the output table location in the batch processing 
+2. Figure out why the progress bar is not properly being updated upon completion
+3. Figure out how to parallelize the different resource connectors.
+4. Include a new column in the tables to account for unique identification for each entry of the database
+5. A way to toggle between either viewing one document or batch processing using the dropdown menu items.
+6. Determine a consistent bit number scheme for the annotators 
+7. Figure out where to put the concept relationships
+8. Determine the pros/cons of using CSV vs. XML 
+9. 
