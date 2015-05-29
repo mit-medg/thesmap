@@ -7,4 +7,4 @@ Bugs/Ideas for Modification:
 6. Determine a consistent bit number scheme for the annotators 
 7. Figure out where to put the concept relationships
 8. Determine the pros/cons of using CSV vs. XML 
-9. 
+9. Bug: Handle the error message when the password is incorrect for the database.

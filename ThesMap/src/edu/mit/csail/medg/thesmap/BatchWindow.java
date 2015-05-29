@@ -188,17 +188,33 @@ public class BatchWindow extends JFrameW
 	
 	// Contents for the panel with sql command.
 	JLabel sqlCmdLabel;
+	// Labels for Original database
+	JLabel sourceSectionLabel;
 	JLabel dbLabel;
 	JLabel dbHostLabel;
 	JLabel dbUserLabel;
 	JLabel dbPwdLabel;
+	
+	//Labels for Destination files
+	JLabel resultSectionLabel;
+	JLabel resultdbLabel;
+	JLabel resultdbHostLabel;
+	JLabel resultdbUserLabel;
+	JLabel resultdbPwdLabel;
+	JLabel resultdbTableLabel;
 	JPanel sqlTabPane;
 	JTextField sqlText;
 	JTextField dbHostText;
 	JTextField dbText;
 	JTextField dbUserText;
 	JPasswordField dbPwdText;
+	JTextField resultdbHostText;
+	JTextField resultdbText;
+	JTextField resultdbUserText;
+	JTextField resultdbTableText;
+	JPasswordField resultdbPwdText;
 	JLabel sqlInstructionLabel;
+
 	
 	
 	/**
@@ -327,6 +343,8 @@ public class BatchWindow extends JFrameW
 	 * Create a tabbed pane for the use case of batch processing using a SQL command on a particular db.
 	 */
 	private void createCommandTab() {
+		sourceSectionLabel = new JLabel("Source Information");
+		
 		dbHostLabel = new JLabel("Host Name: ");
 		dbHostText = new JTextField();
 		dbHostText.setEditable(true);
@@ -342,6 +360,27 @@ public class BatchWindow extends JFrameW
 		dbPwdLabel = new JLabel("Password: ");
 		dbPwdText = new JPasswordField();
 		dbPwdText.setEditable(true);
+		
+		resultSectionLabel = new JLabel("Destination Information");
+		resultdbHostLabel = new JLabel("Host Name: ");
+		resultdbHostText = new JTextField();
+		resultdbHostText.setEditable(true);
+		
+		resultdbLabel = new JLabel("DB Name: ");
+		resultdbText = new JTextField();
+		resultdbText.setEditable(true);
+
+		resultdbUserLabel = new JLabel("User Name: ");
+		resultdbUserText = new JTextField();
+		resultdbUserText.setEditable(true);
+		
+		resultdbPwdLabel = new JLabel("Password: ");
+		resultdbPwdText = new JPasswordField();
+		resultdbPwdText.setEditable(true);
+		
+		resultdbTableLabel = new JLabel("Table Name: ");
+		resultdbTableText = new JTextField();
+		resultdbTableText.setEditable(true);
 		
 		// Load the default properties for the database to use.
 		loadDefaultDB();
@@ -393,10 +432,17 @@ public class BatchWindow extends JFrameW
 			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+					    .addComponent(sourceSectionLabel)
 						.addComponent(dbHostLabel)
 						.addComponent(dbLabel)
 						.addComponent(dbUserLabel)
 						.addComponent(dbPwdLabel)
+						.addComponent(resultSectionLabel)
+						.addComponent(resultdbHostLabel)
+						.addComponent(resultdbLabel)
+						.addComponent(resultdbUserLabel)
+						.addComponent(resultdbPwdLabel)
+						.addComponent(resultdbTableLabel)
 						.addComponent(sqlCmdLabel)
 						.addComponent(tuiSelectorLabel))
 					.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -404,12 +450,18 @@ public class BatchWindow extends JFrameW
 						.addComponent(dbText)
 						.addComponent(dbUserText)
 						.addComponent(dbPwdText)
+						.addComponent(resultdbHostText)
+						.addComponent(resultdbText)
+						.addComponent(resultdbUserText)
+						.addComponent(resultdbPwdText)
+						.addComponent(resultdbTableText)
 						.addComponent(sqlText)
 						.addComponent(tuiSelector)))
 				.addComponent(bottomPanel))
 		);
 		layout.setVerticalGroup(
 		   layout.createSequentialGroup()
+		   	  .addComponent(sourceSectionLabel)
 		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 		        .addComponent(dbHostLabel)
 		        .addComponent(dbHostText))
@@ -422,6 +474,22 @@ public class BatchWindow extends JFrameW
               .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                   .addComponent(dbPwdLabel)
                   .addComponent(dbPwdText))
+              .addComponent(resultSectionLabel)
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+		        .addComponent(resultdbHostLabel)
+		        .addComponent(resultdbHostText))
+		      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(resultdbLabel)
+                  .addComponent(resultdbText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(resultdbUserLabel)
+                  .addComponent(resultdbUserText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(resultdbPwdLabel)
+                  .addComponent(resultdbPwdText))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(resultdbTableLabel)
+                  .addComponent(resultdbTableText))
               .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                   .addComponent(sqlCmdLabel)
                   .addComponent(sqlText))
@@ -434,10 +502,19 @@ public class BatchWindow extends JFrameW
 
 	private void loadDefaultDB() {
 		ThesProps prop = ThesMap.prop;
+		
+		// Load the source database
 		dbHostText.setText(prop.getProperty(ThesProps.sourceHostName));
 		dbText.setText(prop.getProperty(ThesProps.sourceDbName));
 		dbUserText.setText(prop.getProperty(ThesProps.sourceUserName));
 		dbPwdText.setText(prop.getProperty(ThesProps.sourcePasswordName));
+		
+		// Load the destination database
+		resultdbHostText.setText(prop.getProperty(ThesProps.resultHostName));
+		resultdbText.setText(prop.getProperty(ThesProps.resultDbName));
+		resultdbUserText.setText(prop.getProperty(ThesProps.resultUserName));
+		resultdbPwdText.setText(prop.getProperty(ThesProps.resultPasswordName));
+		resultdbTableText.setText(prop.getProperty(ThesProps.resultTableName));
 	}
 	
 	public void setSizeAndLocation() {
@@ -463,7 +540,7 @@ public class BatchWindow extends JFrameW
 	
 	// Default parameters of the window
 	public static final int width = 500;
-	public static final int height = 450;
+	public static final int height = 700;
 	public static final int originX = 20;
 	public static final int originY = 50;
 	//public static final String title = "UMLS Lookup";

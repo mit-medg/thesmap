@@ -64,6 +64,7 @@ public class ThesProps {
 	static final String resultDbName = "resultDb";
 	static final String resultUserName = "resultUser";
 	static final String resultPasswordName = "resultPassword";
+	static final String resultTableName = "resultTableName";
 	
 	// For getting sources to run batch SQL command
 	static final String sourceHostName = "sourceHost";

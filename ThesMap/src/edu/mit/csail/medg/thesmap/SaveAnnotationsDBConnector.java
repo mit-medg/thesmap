@@ -19,8 +19,9 @@ public class SaveAnnotationsDBConnector {
 	Connection conn = null;
 	Statement stmt = null;
 	PreparedStatement insertStmt = null;
-	static final String loadDBStmt = "LOAD DATA LOCAL INFILE ? INTO TABLE thesmap.annotations FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
-	static final String insertDBStmt = "INSERT INTO ANNOTATIONS (start, end, cui, tui, preferredText, annotatorFlag, fileName) values (?, ?, ?, ?, ?, ?, ?);";
+	static String loadDBStmt = "LOAD DATA LOCAL INFILE $tableName INTO TABLE ? FIELDS TERMINATED by ',' enclosed by '\"' lines terminated by '\n';";
+	static String insertDBStmt = "INSERT INTO $tableName (start, end, cui, tui, preferredText, annotatorFlag, fileName) values (?, ?, ?, ?, ?, ?, ?);";
+	String resultTable;
 	
 	public SaveAnnotationsDBConnector() {
 		ThesProps prop = ThesMap.prop;
@@ -28,13 +29,18 @@ public class SaveAnnotationsDBConnector {
 		String resultDb =  prop.getProperty(ThesProps.resultDbName);
 		String resultUser =  prop.getProperty(ThesProps.resultUserName);
 		String resultPassword = prop.getProperty(ThesProps.resultPasswordName);
+		resultTable = prop.getProperty(ThesProps.resultTableName);
 		String dbUrl = "jdbc:mysql://" + resultHost + "/" + resultDb;
-		U.log("Trying to open connection to "+resultDb+" on " +resultHost + " via "+resultUser+"/"+resultPassword);
+		U.log("Trying to open connection to "+resultDb+" on " +resultHost + " via "+resultUser+"/"+resultPassword + " Table:" + resultTable);
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection(dbUrl, resultUser, resultPassword);
+			insertDBStmt = insertDBStmt.replace("$tableName", resultTable);
 			insertStmt = conn.prepareStatement(insertDBStmt);
+			
+			// Update the table that the results are being saved to.
+			loadDBStmt = loadDBStmt.replace("$tableName", resultTable);
 		}
 		catch (ClassNotFoundException e) {
 			System.err.println("Unable to load MySQL driver: " + e);
@@ -77,6 +83,7 @@ public class SaveAnnotationsDBConnector {
 		try {
 			insertStmt = conn.prepareStatement(loadDBStmt);
 			insertStmt.setString(1, csvFile.getAbsolutePath());
+			insertStmt.setString(2, resultTable);
 			insertStmt.executeQuery();
 		} catch (SQLException e) {
 			System.err.println("SQL Error loading file: \""
