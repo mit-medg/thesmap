@@ -129,3 +129,40 @@ on startup we do determine what annotations we can make by seeing what ResourceC
 are available.  Then the order we determine there should provide both the ordering for 
 typeBits for annotations and for the methodChoice panel in UmlsWindow.  This should be easy to
 arrange, but needs some refactoring of code.
+
+____________
+May 8, 2015
+
+Design of result storage.  Possible ways to store annotation results:
+1. DB
+2. XML file
+3. CSV file
+
+Simple annotations need just the following:
+a. Document (either a file name or a database + id)
+b. start position of text being annotated
+c. end position of text being annotated (assumes contiguous span)
+d. CUI
+e. TUI
+f. negation or certainty/attribution status (computed by some annotators)
+g. set of annotators (as number encoding of bit string)
+
+Unique annotations share columns a-e.  We may choose to create a unique ID to
+represent each such unique combination, to simplify inter-annotation relations.
+h. ID
+
+For convenience, we might also store the following, though this can always be recovered
+i. the actual text covered by the span [start, end)
+j. preferred name of the CUI
+k. name of the TUI
+
+To support more complex annotations that involve relations among entities, we also need to
+store (relation, target-annotation).  In a relational DB, this should happen in another table
+that holds
+a. relation
+b. id of source annotation (argues for use of ID column)
+c. id of target annotation
+
+The .csv version of these data should be in the same structure as the DB version.
+An XML version can represent the inter-annotation relations within the representation
+of the source annotations. 

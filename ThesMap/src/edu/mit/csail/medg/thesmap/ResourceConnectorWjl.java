@@ -107,11 +107,14 @@ public class ResourceConnectorWjl extends ResourceConnector {
 		try {
 			out = new OutputStreamWriter(conn.getOutputStream());
 			out.write("text=" + URLEncoder.encode(text, "UTF-8"));
+		} catch (java.net.ConnectException e) {
+			U.log("WJL annotator service not available.");
+			return null;
 		} catch (IOException e) {
 			U.log("***IOException trying to write to HTTP output stream:");
 			U.logException(e);
 			return null;
-		} 
+		}
 		String html = null;
 		try {
 			out.close();

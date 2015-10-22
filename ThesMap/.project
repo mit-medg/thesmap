@@ -3,6 +3,7 @@
 	<name>ThesMap</name>
 	<comment></comment>
 	<projects>
+		<project>files for pipeline root</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
