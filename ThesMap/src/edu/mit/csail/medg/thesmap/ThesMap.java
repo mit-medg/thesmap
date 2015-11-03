@@ -160,6 +160,8 @@ public class ThesMap {
 		if (errcTakes == null) {
 			U.log("Created cTakes connector. cTakes Annotations are feasible.");
 			Annotator.registerType(AnnotatorcTakes.name, "AnnotatorcTakes");
+			System.setProperty("ctakes.umlsuser", prop.getProperty(ThesProps.cTakesUserProp));
+			System.setProperty("ctakes.umlspw", prop.getProperty(ThesProps.cTakesPWProp));
 			//ResourceConnectorcTakes.assurePoolSize(1);
 		} else {
 			U.pe(errcTakes);

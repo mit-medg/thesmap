@@ -59,6 +59,10 @@ public class ThesProps {
 	// For connection to WJL
 	static final String wjlUrl = "WJLUrl";
 	
+	// For connection to cTakes
+	static final String cTakesUserProp = "ctakes.umlsuser";
+	static final String cTakesPWProp = "ctakes.umlspw";
+	
 	// For recording results in the thesmap database
 	static final String resultHostName = "resultHost";
 	static final String resultDbName = "resultDb";
