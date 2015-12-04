@@ -129,7 +129,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 //				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 //				doc = dBuilder.parse(stream);
 				html = readHttpResponse(conn);
-//				System.out.println("WJL Response: " + html);
+				System.out.println("WJL Response: " + html);
 			    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 //			    factory.setValidating(false); // does not avoid malformed xhtml!
 			    DocumentBuilder builder;

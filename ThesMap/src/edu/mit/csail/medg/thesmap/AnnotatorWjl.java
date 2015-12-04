@@ -73,32 +73,35 @@ public class AnnotatorWjl extends Annotator{
 			NodeList nListConcepts = doc.getElementsByTagName("concept");
 			for (int temp = 0; temp < nListConcepts.getLength(); temp++) {
 				Node nNode = nListConcepts.item(temp);
-				U.log("\nCurr Elt: " + nNode.getNodeName());
+				U.log("\nCurr Elt " + temp + ": " + nNode.getNodeName());
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element e = (Element) nNode;
 					// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>
 //					System.out.println("class="+e.getAttribute("class"));
 //					System.out.println("title="+e.getElementsByTagName("title"));
-					String title = e.getAttribute("title");
-					String[] parts = title.split(":");
-					if (parts.length < 3) U.log("Badly formed Wjl response: " + title);
-					String type = parts[0];
-					String cui = parts[1];
-					String str = parts[2];
-					String tui = e.getAttribute("tui");
-					String item = e.getTextContent();
-					Integer from = new Integer(e.getAttribute("from"));
-					Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
-					String itemFromText = text.substring(from, to);
-					if (!itemFromText.equals(item)) {
-						U.log("WJL text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
-					}
+// 				The representation returned by ParseMed has changed, so we need to rewrite this code according to the structures
+//				listed above. First, we just look at what is there:
+					
+//					String title = e.getAttribute("title");
+//					String[] parts = title.split(":");
+//					if (parts.length < 3) U.log("Badly formed Wjl response: " + title);
+//					String type = parts[0];
+//					String cui = parts[1];
+//					String str = parts[2];
+//					String tui = e.getAttribute("tui");
+//					String item = e.getTextContent();
+//					Integer from = new Integer(e.getAttribute("from"));
+//					Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
+//					String itemFromText = text.substring(from, to);
+//					if (!itemFromText.equals(item)) {
+//						U.log("WJL text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
+//					}
 					oldProgress = progress;
-					progress = (int)Math.round((new Double(from))/textl*100.0);
+//					progress = (int)Math.round((new Double(from))/textl*100.0);
 					firePropertyChange(name, oldProgress, progress);
-					myWindow.annSet.add(
-							new Annotation(from, to, item,
-									new InterpretationWjl(cui, item, tui, str, type.equals("FALSE"), type)));
+//					myWindow.annSet.add(
+//							new Annotation(from, to, item,
+//									new InterpretationWjl(cui, item, tui, str, type.equals("FALSE"), type)));
 					}
 			}
 		} catch (Exception e) {
