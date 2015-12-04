@@ -24,10 +24,10 @@ import org.xml.sax.SAXException;
  * @author psz
  *
  */
-public class ResourceConnectorWjl extends ResourceConnector {
+public class ResourceConnectorParseMed extends ResourceConnector {
 
-	static ResourceConnectorPool<ResourceConnectorWjl> pool = 
-			new ResourceConnectorPool<ResourceConnectorWjl>();
+	static ResourceConnectorPool<ResourceConnectorParseMed> pool = 
+			new ResourceConnectorPool<ResourceConnectorParseMed>();
 	/*
 	 * If this resource is not available, we declare it broken and do not
 	 * try to create additional instances.
@@ -36,24 +36,24 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	
 	ThesProps props;
 		
-	public ResourceConnectorWjl() {
-		super("WJL");
+	public ResourceConnectorParseMed() {
+		super("ParseMed");
 		props = ThesMap.prop;
 		initialized = false;
 		Document test = null;
 		test = lookup("MI");
 		if (test != null) {
-			U.log("WJL Test \"MI\":" + test);
+			U.log("ParseMed Test \"MI\":" + test);
 			initialized = true;
 		}
-		U.log("ResourceConnectorWjl initialized = " + initialized);
+		U.log("ResourceConnectorParseMed initialized = " + initialized);
 	}
 	
-	public static ResourceConnectorWjl get() {
+	public static ResourceConnectorParseMed get() {
 		if (broken) return null;
-		ResourceConnectorWjl ans = pool.getNext();
+		ResourceConnectorParseMed ans = pool.getNext();
 		if (ans == null) {
-			pool.add(new ResourceConnectorWjl());
+			pool.add(new ResourceConnectorParseMed());
 			ans = pool.getNext();
 		}
 		if (!ans.initialized) {
@@ -65,7 +65,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	
 	public static void assurePoolSize(int n) {
 		for (; n < pool.size(); n++) {
-			pool.add(new ResourceConnectorWjl());
+			pool.add(new ResourceConnectorParseMed());
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	}
 	
 	/**
-	 * Handles the interface to WJL's text analysis program, which runs on a server
+	 * Handles the interface to WJL's text analysis program, ParseMed, which runs on a server
 	 * and is accessed by a URL defined in props.
 	 * @param text The text to be analyzed
 	 * @return a Document containing the HTML interpretation of the text
@@ -86,12 +86,12 @@ public class ResourceConnectorWjl extends ResourceConnector {
 	public org.w3c.dom.Document lookup(String text) //throws IOException, ParserConfigurationException, SAXException 
 	{
 		Document doc = null;
-		String stringUrl = props.getProperty(ThesProps.wjlUrl);
-		URL wjlUrl;
+		String stringUrl = props.getProperty(ThesProps.parseMedUrl);
+		URL parseMedUrl;
 		HttpURLConnection conn = null;
 		try {
-			wjlUrl = new URL(stringUrl);
-			conn = (HttpURLConnection) wjlUrl.openConnection();
+			parseMedUrl = new URL(stringUrl);
+			conn = (HttpURLConnection) parseMedUrl.openConnection();
 			conn.setRequestMethod("POST");
 		} catch (IOException e) {
 			U.log("***IOException trying to make HTTP connection:");
@@ -108,7 +108,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 			out = new OutputStreamWriter(conn.getOutputStream());
 			out.write("text=" + URLEncoder.encode(text, "UTF-8"));
 		} catch (java.net.ConnectException e) {
-			U.log("WJL annotator service not available.");
+			U.log("ParseMed annotator service not available.");
 			return null;
 		} catch (IOException e) {
 			U.log("***IOException trying to write to HTTP output stream:");
@@ -129,7 +129,7 @@ public class ResourceConnectorWjl extends ResourceConnector {
 //				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 //				doc = dBuilder.parse(stream);
 				html = readHttpResponse(conn);
-				System.out.println("WJL Response: " + html);
+				System.out.println("ParseMed Response: " + html);
 			    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 //			    factory.setValidating(false); // does not avoid malformed xhtml!
 			    DocumentBuilder builder;

@@ -10,23 +10,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class AnnotatorWjl extends Annotator{
+public class AnnotatorParseMed extends Annotator{
 
 //	UmlsWindow myWindow = null;
 	int phraseLength;
-	ResourceConnectorWjl wjl = null;
+	ResourceConnectorParseMed parseMed = null;
 	
-	public static final String name = "WJL";
+	public static final String name = "parseMed";
 	
-	public AnnotatorWjl(UmlsWindow w) {
+	public AnnotatorParseMed(UmlsWindow w) {
 		super(name, w);
 		myWindow = w;
 		phraseLength = ThesMap.getInteger("phraseLength");
-		wjl = ResourceConnectorWjl.get();
+		parseMed = ResourceConnectorParseMed.get();
 	}
 	
-	public static AnnotatorWjl makeAnnotatorInstance(String name, UmlsWindow w) {
-		return new AnnotatorWjl(w);
+	public static AnnotatorParseMed makeAnnotatorInstance(String name, UmlsWindow w) {
+		return new AnnotatorParseMed(w);
 	}
 	
 	/**
@@ -36,15 +36,15 @@ public class AnnotatorWjl extends Annotator{
 	 * @return null if OK, an error string if not.
 	 */
 	public static String errInit() {
-		ResourceConnectorWjl wjl = ResourceConnectorWjl.get();
-		if (wjl == null || !wjl.initialized)
+		ResourceConnectorParseMed parseMed = ResourceConnectorParseMed.get();
+		if (parseMed == null || !parseMed.initialized)
 			return "Could not initialize William J. Long annotator connector.";
 		else return null;
 	}
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		if (!wjl.initialized) return null;
+		if (!parseMed.initialized) return null;
 		int progress = 0;
 		int oldProgress = 0;
 		U.log("Starting to run AnnotatorUmls.doInBackground()");
@@ -52,7 +52,7 @@ public class AnnotatorWjl extends Annotator{
 		String text = myWindow.textArea.getText();
 		double textl = text.length();
 		try {
-			org.w3c.dom.Document doc = wjl.lookup(text);
+			org.w3c.dom.Document doc = parseMed.lookup(text);
 			if (doc == null) {
 				firePropertyChange(name,  -1, 100);
 				return null;
@@ -84,7 +84,7 @@ public class AnnotatorWjl extends Annotator{
 					
 //					String title = e.getAttribute("title");
 //					String[] parts = title.split(":");
-//					if (parts.length < 3) U.log("Badly formed Wjl response: " + title);
+//					if (parts.length < 3) U.log("Badly formed parseMed response: " + title);
 //					String type = parts[0];
 //					String cui = parts[1];
 //					String str = parts[2];
@@ -94,14 +94,14 @@ public class AnnotatorWjl extends Annotator{
 //					Integer to = 1 + new Integer(e.getAttribute("to")); // returns last char, not next!
 //					String itemFromText = text.substring(from, to);
 //					if (!itemFromText.equals(item)) {
-//						U.log("WJL text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
+//						U.log("parseMed text mismatch between \"" + item + "\" and \"" + itemFromText + "\"");
 //					}
 					oldProgress = progress;
 //					progress = (int)Math.round((new Double(from))/textl*100.0);
 					firePropertyChange(name, oldProgress, progress);
 //					myWindow.annSet.add(
 //							new Annotation(from, to, item,
-//									new InterpretationWjl(cui, item, tui, str, type.equals("FALSE"), type)));
+//									new InterpretationparseMed(cui, item, tui, str, type.equals("FALSE"), type)));
 					}
 			}
 		} catch (Exception e) {

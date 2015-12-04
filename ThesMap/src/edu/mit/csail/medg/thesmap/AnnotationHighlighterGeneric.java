@@ -45,7 +45,7 @@ public class AnnotationHighlighterGeneric extends SwingWorker<Void, Void> {
 	 * UMLS - by our simple lookup scheme
 	 * MM - from MetaMap
 	 * CTAKES - from cTakes
-	 * WJL - (maybe) from William J. Long's annotator
+	 * ParseMed - (maybe) from William J. Long's annotator
 	 * 
 	 * We assign a bit to each of these, and then a color scheme to each of the 2^4 possible combinations.
 	 */

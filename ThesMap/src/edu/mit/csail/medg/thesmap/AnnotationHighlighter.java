@@ -45,7 +45,7 @@ public class AnnotationHighlighter extends SwingWorker<Void, Void> {
 	 * UMLS - by our simple lookup scheme
 	 * MetaMap - from MetaMap
 	 * cTakes - (maybe) from cTakes
-	 * WJL - (maybe) from William J. Long's annotator
+	 * ParseMed - (maybe) from William J. Long's annotator
 	 * 
 	 * We assign a bit to each of these, and then a color scheme to each of the 2^4 possible combinations.
 	 */

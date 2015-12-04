@@ -30,6 +30,10 @@ import edu.mit.csail.medg.thesmap.ResourceConnectorASD.ASDNote;
 import edu.mit.csail.medg.thesmap.ResourceConnectorASD.ASDNotesIterator;
 import edu.mit.csail.medg.thesmap.Trie.TrieEntry;
 
+/*
+ * This is some legacy code to compute NTuples.  It's not currently used or maintained.
+ */
+
 public class NTuples {
 	public static ThesProps prop = null; 
 	public static final Pattern splitPatternPunct = Pattern.compile("(\\s+)|(\\p{Punct})");
@@ -43,7 +47,7 @@ public class NTuples {
 	
 	public Trie<String, Integer> resultTrie = new Trie<String, Integer>();
 	public static ResourceConnectorASD rc = null;
-	ResourceConnectorWjl wjl = null;
+	ResourceConnectorParseMed parseMed = null;
 
 	public NTuples() {
 		if (rc == null) rc = ResourceConnectorASD.get();
@@ -465,7 +469,7 @@ public class NTuples {
 	 * 
 	 */
 	private void parseWJL(Integer maxNum) {
-		if (wjl == null) wjl = ResourceConnectorWjl.get();
+		if (parseMed == null) parseMed = ResourceConnectorParseMed.get();
 		int total = rc.getCountAll("Note");
 		int max = (maxNum == null) ? total : maxNum;
 		int limit = (maxNum == null) ? total : Math.min(total,  maxNum);
@@ -499,7 +503,7 @@ public class NTuples {
 	}
 	
 	public void parseWJLById(Integer id) {
-		if (wjl == null) wjl = ResourceConnectorWjl.get();
+		if (parseMed == null) parseMed = ResourceConnectorParseMed.get();
 		String text = "";
 		ResultSet rs = null;
 		try {
@@ -513,7 +517,7 @@ public class NTuples {
 			U.logException(e);
 			return;
 		}
-		Document doc = wjl.lookup(text);
+		Document doc = parseMed.lookup(text);
 		if (doc == null) return;
 		doc.getDocumentElement().normalize();
 		//			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
@@ -550,8 +554,8 @@ public class NTuples {
 
 	
 	public void processWJL (String text, int id) {
-		// If we have already recorded wjl data for this id, skip doing it again.
-		if (rc.existsWjl(id)) return;
+		// If we have already recorded parseMed data for this id, skip doing it again.
+		if (rc.existsParseMed(id)) return;
 		if (!testUTF8(text)) {
 			U.log("Document " + id + " fails UTF8 test!");
 			U.log("***************************************************");
@@ -560,7 +564,7 @@ public class NTuples {
 			return;
 		}
 		try {
-			org.w3c.dom.Document doc = wjl.lookup(text);
+			org.w3c.dom.Document doc = parseMed.lookup(text);
 			if (doc == null) {
 				// An error occurred 
 				U.log(">>>Null Document " + id);
@@ -606,7 +610,7 @@ public class NTuples {
 //						U.log("id="+id+"("+from+","+to+") type="+type+", cui="+cui+", str="+str+", tui="+tui+": "+ item);
 						//recordWJL(int id, Integer from, Integer to, String type,
 						//	String cui, String prefName, String tui, String item)
-						rc.recordWJL(id, from, to, type, cui, title, tui, item, orig, truth);
+						rc.recordParseMed(id, from, to, type, cui, title, tui, item, orig, truth);
 					}
 				}
 			}
@@ -622,7 +626,7 @@ public class NTuples {
 	static final int mismatchStringContextSize = 30;
 	
 	boolean testUTF8(String s) {
-		// Test to see if we are passing bad UTF8 to wjl.
+		// Test to see if we are passing bad UTF8 to parseMed.
 //		"&lt;" represents the < sign.
 //		"&gt;" represents the > sign.
 //		"&amp;" represents the & sign.

@@ -7,7 +7,7 @@ public class InterpretationWjl extends Interpretation {
 
 	public InterpretationWjl(String cui, String str, String tui, String sty, boolean neg, String category) {
 		super();
-		type = AnnotatorWjl.name;
+		type = AnnotatorParseMed.name;
 		this.cui = cui;
 		this.str = str;
 		this.tui = tui;

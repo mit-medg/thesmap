@@ -66,10 +66,10 @@ public class ResourceConnectorASD extends ResourceConnector {
 	PreparedStatement selectCountAllStmt;
 	boolean inTransaction = false;
 	
-	PreparedStatement lookupWjl;
-	static final String lookupWjlT = "select id from wjl where id=? limit 1";
-	PreparedStatement insertWjl;
-	static final String insertWjlT = "insert into wjl values(?,?,?,?,?,?,?,?,?,?)";
+	PreparedStatement lookupParseMed;
+	static final String lookupParseMedT = "select id from ParseMed where id=? limit 1";
+	PreparedStatement insertParseMed;
+	static final String insertParseMedT = "insert into ParseMed values(?,?,?,?,?,?,?,?,?,?)";
 	
 	/*
 	 * We add a unique index to every row of observation_fact, so we don't need to use the compound key
@@ -112,25 +112,25 @@ public class ResourceConnectorASD extends ResourceConnector {
 	 */
 	
 	/*
-	 * We also create a table wjl to record the results of processing notes via Bill Long's parser:
+	 * We also create a table ParseMed to record the results of processing notes via Bill Long's parser:
 	 * 
-	drop table if exists wjl;
+	drop table if exists ParseMed;
 
-	create table wjl (
+	create table ParseMed (
        id integer not null,	-- this is the observation_fact identifier of the note
        start integer not null,	-- character position of the start of the string
        end integer not null,	-- character position of the end of the string
-       type varchar(25) not null,	-- type from WJL's parser, e.g., _symptom
+       type varchar(25) not null,	-- type from ParseMed's parser, e.g., _symptom
        cui char(8) not null,	-- CUI
        concept varchar(255) not null,	-- preferred name of the CUI
        tui varchar(255) not null,	-- TUI
        str varchar(255) not null,	-- actual character string that gave rise to this interpretation
        docstr varchar(255),	-- original document string[start .. end], if different from str
        truth varchar(25),	-- Negex's truth indicator; could be other than truth
-       index wjl_id (id)	-- index by id of the Note
+       index ParseMed_id (id)	-- index by id of the Note
       );
 	 * and eventually we index these
-    alter table wjl add unique index X_wjl (id, start, end, type, cui, tui); 
+    alter table ParseMed add unique index X_ParseMed (id, start, end, type, cui, tui); 
 	 * This will hold the results of annotations such as
 	 <B class="red" title="Percutaneous coronary intervention" cui="C1532338" type="_procedure" 
 	 	truth="false" tui="T061" from="1528" to="1564" onClick="doRcd(this)">
@@ -161,8 +161,8 @@ public class ResourceConnectorASD extends ResourceConnector {
 			selectAllBlobStmt = conn.prepareStatement(selectAllBlobStmtT1);
 			selectCountStmt = conn.prepareStatement(selectCountStmtT);
 			selectCountAllStmt = conn.prepareStatement(selectCountAllStmtT);
-			lookupWjl = conn.prepareStatement(lookupWjlT);
-			insertWjl = conn.prepareStatement(insertWjlT);
+			lookupParseMed = conn.prepareStatement(lookupParseMedT);
+			insertParseMed = conn.prepareStatement(insertParseMedT);
 			stmt = conn.createStatement();
 			
 			initialized = true;
@@ -219,10 +219,10 @@ public class ResourceConnectorASD extends ResourceConnector {
 				if (selectBlobStmt!=null) selectBlobStmt.close();
 			} catch (SQLException e) {}
 			try{
-				if (insertWjl!=null) insertWjl.close();
+				if (insertParseMed!=null) insertParseMed.close();
 			} catch (SQLException e) {}
 			try{
-				if (lookupWjl!=null) lookupWjl.close();
+				if (lookupParseMed!=null) lookupParseMed.close();
 			} catch (SQLException e) {}
 			try{
 				if (stmt!=null) stmt.close();
@@ -343,12 +343,12 @@ public class ResourceConnectorASD extends ResourceConnector {
 		}
 	}
 	
-	public boolean existsWjl(int id) {
+	public boolean existsParseMed(int id) {
 		ResultSet rs = null;
 		boolean ans = false;
 		try {
-			lookupWjl.setInt(1, id);
-			rs = lookupWjl.executeQuery();
+			lookupParseMed.setInt(1, id);
+			rs = lookupParseMed.executeQuery();
 			if (rs.next()) ans=true;
 		} 
 		catch (SQLException e) {} 
@@ -364,20 +364,20 @@ public class ResourceConnectorASD extends ResourceConnector {
 		return ans;
 	}
 
-	public void recordWJL(int id, Integer from, Integer to, String type,
+	public void recordParseMed(int id, Integer from, Integer to, String type,
 			String cui, String prefName, String tui, String item, String orig, String truth) 
 					throws SQLException {
-		insertWjl.setInt(1, id);
-		insertWjl.setInt(2, from);
-		insertWjl.setInt(3, to);
-		insertWjl.setString(4, type);
-		insertWjl.setString(5, cui);
-		insertWjl.setNString(6, prefName);
-		insertWjl.setString(7, tui);
-		insertWjl.setString(8, item);
-		insertWjl.setString(9, orig);
-		insertWjl.setString(10, truth);
-		insertWjl.execute();
+		insertParseMed.setInt(1, id);
+		insertParseMed.setInt(2, from);
+		insertParseMed.setInt(3, to);
+		insertParseMed.setString(4, type);
+		insertParseMed.setString(5, cui);
+		insertParseMed.setNString(6, prefName);
+		insertParseMed.setString(7, tui);
+		insertParseMed.setString(8, item);
+		insertParseMed.setString(9, orig);
+		insertParseMed.setString(10, truth);
+		insertParseMed.execute();
 	}
 	
 	public ResultSet getAllNotes(String noteType, Integer start, Integer limit) throws SQLException {

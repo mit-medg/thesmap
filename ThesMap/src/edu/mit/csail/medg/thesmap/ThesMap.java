@@ -10,7 +10,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 
 /**
- * ThesMap (Thesaurus Map) implements a utility to interpret clinical texts
+ * ThesMap (Thesaurus Map) implements a utility to interpret clinical text
  * according to several possible methods.  It provides either a command-line 
  * invocation that begins processing a collection of files in parallel or
  * an interactive invocation that allows the user to select the type(s)
@@ -59,7 +59,7 @@ public class ThesMap {
 		// Find and load the ThesMap.properties file.
 		prop = new ThesProps();
 		U.log(prop.toShow());
-		U.log("WJL:" + prop.getProperty("WJLUrl") + " " + prop.getProperty(ThesProps.wjlUrl));
+		U.log("ParseMed:" + prop.getProperty("ParseMedUrl") + " " + prop.getProperty(ThesProps.parseMedUrl));
 		
 		// Determine if we are interactive or batch, depending on whether we have a Console.
 //		console = System.console();
@@ -166,10 +166,10 @@ public class ThesMap {
 		} else {
 			U.pe(errcTakes);
 		}
-		String errWjl = AnnotatorWjl.errInit();
-		if (errWjl == null) {
-			U.log("Created WJL connector. WJL Annotations are feasible.");
-			Annotator.registerType(AnnotatorWjl.name, "AnnotatorWjl");
+		String errParseMed = AnnotatorParseMed.errInit();
+		if (errParseMed == null) {
+			U.log("Created ParseMed connector. ParseMed Annotations are feasible.");
+			Annotator.registerType(AnnotatorParseMed.name, "AnnotatorParseMed");
 		}
 		String errNumeric = AnnotatorNumeric.errInit();
 		if (errNumeric == null) {
@@ -189,8 +189,8 @@ public class ThesMap {
 		if (errcTakes == null) {
 			ResourceConnectorcTakes.assurePoolSize(1);
 		}
-		if (errWjl == null) {
-			ResourceConnectorWjl.assurePoolSize(1);
+		if (errParseMed == null) {
+			ResourceConnectorParseMed.assurePoolSize(1);
 		}
 		*/
 		

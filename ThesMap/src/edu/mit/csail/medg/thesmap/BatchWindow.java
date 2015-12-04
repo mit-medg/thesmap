@@ -96,7 +96,7 @@ public class BatchWindow extends JFrameW
 	private DBConnectorOpen dbConnector;
 	
 	// Select which TUI list to use.
-	protected String[] tuiLists = {"All", "WJL", "ASD"}; 
+	protected String[] tuiLists = {"All", "ParseMed", "ASD"}; 
 	protected String currentTuiSelection = "All";
 
 	public BatchWindow() {
@@ -299,8 +299,8 @@ public class BatchWindow extends JFrameW
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Options: {"All", "WJL", "ASD"}
-				// All - keep all semantic types; WJL - use Bill's options. 
+				// Options: {"All", "ParseMed", "ASD"}
+				// All - keep all semantic types; ParseMed - use Bill's options. 
 				// ASD - shortened list for ASD application.
 				JComboBox cb = (JComboBox)e.getSource();
 		        String selectedList = (String)cb.getSelectedItem();
@@ -399,8 +399,8 @@ public class BatchWindow extends JFrameW
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Options: {"All", "WJL", "ASD"}
-				// All - keep all semantic types; WJL - use Bill's options. 
+				// Options: {"All", "ParseMed", "ASD"}
+				// All - keep all semantic types; ParseMed - use Bill's options. 
 				// ASD - shortened list for ASD application.
 				JComboBox cb = (JComboBox)e.getSource();
 		        String selectedList = (String)cb.getSelectedItem();

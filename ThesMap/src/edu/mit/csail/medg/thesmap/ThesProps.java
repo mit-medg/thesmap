@@ -56,8 +56,8 @@ public class ThesProps {
 	static final String mmHighestMappingOnly = "HighestMappingOnly";
 	static final String mmAllMappings = "AllMappings";
 	
-	// For connection to WJL
-	static final String wjlUrl = "WJLUrl";
+	// For connection to WJL's ParseMed
+	static final String parseMedUrl = "ParseMedUrl";
 	
 	// For connection to cTakes
 	static final String cTakesUserProp = "ctakes.umlsuser";
