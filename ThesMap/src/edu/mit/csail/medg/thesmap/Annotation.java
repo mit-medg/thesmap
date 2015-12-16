@@ -5,7 +5,7 @@ import java.util.BitSet;
 /**
  * An Annotation is an InterpretationSet with the character
  * offsets of the start and end of the phrase to which it applies.
- * @author psz
+ * @author psz 
  *
  */
 public class Annotation {
