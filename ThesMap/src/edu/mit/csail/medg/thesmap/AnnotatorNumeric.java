@@ -330,6 +330,34 @@ public class AnnotatorNumeric extends Annotator{
 
 				recordInterpretation(beg, lastGood, ni);
 			}
+			while (mghMatcher.find()) {
+				// "(?i)\\b(ml|mn|cg|ms|s|c)-?\\d{2,}-?\\w?-?\\d{3,}\\b"
+				//         1
+				// What is the right Interpretation for an ID string?
+				String id = mghMatcher.group();
+				Interpretation i = Interpretation.makeInterpretation("C1549734", id, "T078", "Idea or Concept");
+				recordInterpretation(mghMatcher.start(), mghMatcher.end(), i);
+			}
+			while (dateRangeMatcher.find()) {
+				// "\\b(\\d\\d?)/(\\d\\d?)(/(\\d\\d(\\d\\d)?))?-(\\d\\d?)/(\\d\\d?)/(\\d\\d(\\d\\d)?)\\b"
+				Interpretation dr = InterpretationDateRange.makeInterpretationDateRange(
+						dateRangeMatcher.group(3), dateRangeMatcher.group(1), dateRangeMatcher.group(2),
+						dateRangeMatcher.group(7), dateRangeMatcher.group(5), dateRangeMatcher.group(6),
+						dateRangeMatcher.group());
+				if (!dr.isNullInterpretation())
+					recordInterpretation(dateRangeMatcher.start(), dateRangeMatcher.end(), dr);
+			}
+			while (phoneMatcher.find()) {
+//				"\\b((Phone|Cell|Mobile|Work|Home|Fax):)?(1[ -]?)?"
+//				    12                                   3 
+//				+ "((?i)\\b((\\d\\d\\d)[ -]|\\((\\d\\d\\d)\\)\\s*))?(\\d\\d\\d)([ -])?(\\d\\d\\d\\d)"
+//				   4       56                 78                    9          0      1
+//				+ "(\\s*(X|ext)\\.?(\\d+))"
+//				   2    3          4
+				// We actually don't care about the structure of the phone number, so we just record
+				// the entire string
+				
+			}
 
 		} catch (Exception err) {
 			err.printStackTrace(System.err);

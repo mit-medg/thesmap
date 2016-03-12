@@ -32,6 +32,15 @@ public class Interpretation {
 		this.updateTypeBits(type);
 	}
 	
+	public static Interpretation makeInterpretation(String cui, String str, String tui, String sty) {
+		Interpretation i = new Interpretation();
+		i.cui = cui;
+		i.str = str;
+		i.tui = tui;
+		i.sty = sty;
+		return i;
+	}
+	
 	public static Interpretation makeInterpretation(ResultSet rs) {
 		Interpretation i = new Interpretation();
 		try {

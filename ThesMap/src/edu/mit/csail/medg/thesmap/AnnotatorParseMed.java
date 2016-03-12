@@ -70,12 +70,23 @@ public class AnnotatorParseMed extends Annotator{
 			 * Concept or top-level ambigs just create interpretations
 			 * Clauses are more complex because they may contain ambigs
 			 */
-			NodeList nListConcepts = doc.getElementsByTagName("concept");
-			for (int temp = 0; temp < nListConcepts.getLength(); temp++) {
-				Node nNode = nListConcepts.item(temp);
-				U.log("\nCurr Elt " + temp + ": " + nNode.getNodeName());
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element e = (Element) nNode;
+			
+			Node n = null;
+			for (n = doc.getFirstChild(); n != null; n = n.getNextSibling()) {
+				System.out.println(n.toString());
+			}
+			
+//			NodeList elements = doc.getChildNodes();
+//			for (int i = 0; i < elements.getLength(); i++) {
+//				Node nNode = elements.item(i);
+//				U.p(nNode.toString());
+//			}
+//			NodeList nListConcepts = doc.getElementsByTagName("concept");
+//			for (int temp = 0; temp < nListConcepts.getLength(); temp++) {
+//				Node nNode = nListConcepts.item(temp);
+//				U.log("\nCurr Elt " + temp + ": " + nNode.getNodeName());
+//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//					Element e = (Element) nNode;
 					// <B class=BLUE title="_FINDING:C0020649:Hypotension" onClick=doRcd(this)>hypotension</B>
 //					System.out.println("class="+e.getAttribute("class"));
 //					System.out.println("title="+e.getElementsByTagName("title"));
@@ -102,8 +113,8 @@ public class AnnotatorParseMed extends Annotator{
 //					myWindow.annSet.add(
 //							new Annotation(from, to, item,
 //									new InterpretationparseMed(cui, item, tui, str, type.equals("FALSE"), type)));
-					}
-			}
+//					}
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

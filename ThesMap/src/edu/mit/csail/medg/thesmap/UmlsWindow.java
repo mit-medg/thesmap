@@ -6,6 +6,7 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -808,12 +809,11 @@ public class UmlsWindow extends JFrameW
 //		private static final int gridSpace = 6;
 		private static final int spPrefW = 200;
 		private static final int spMinW = 100;
-		private static final int spPrefH = 58;
+		private static final int spPrefH = 48;
 		protected SelectPanel[] panels;
 
 		JButton doit;
 		
-
 		MethodChooser() {
 			setLayout(new BorderLayout());
 			int nMethods = Annotator.annotationTypes.size();
@@ -989,6 +989,7 @@ public class UmlsWindow extends JFrameW
 				pb = new JProgressBar();
 				pb.setStringPainted(true);
 				pb.setBackground(Color.WHITE);
+//				pb.setBorder(new EmptyBorder(new Insets(0,0,0,0)));
 				add(pb);
 				
 				panels[colorNumber] = this;

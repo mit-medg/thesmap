@@ -8,9 +8,9 @@ public class InterpretationDate extends InterpretationNumeric {
 	static final int[] monthLengths = {31, 28, 31, 30, 31, 30, 31, 30, 30, 31, 30, 31};
 	static final int centuryBreak = 30;
 	
-	Integer year = null;
-	Integer month = null;
-	Integer day = null;
+	public Integer year = null;
+	public Integer month = null;
+	public Integer day = null;
 	
 
 	public InterpretationDate(Integer y, Integer m, Integer d, String text) {
